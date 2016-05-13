@@ -1,4 +1,4 @@
-# SGM Data view module
+# Present summary for all scans
 
 from praxes.io import spec
 import matplotlib.pyplot as plt
@@ -37,13 +37,13 @@ def getAllScanNum(fileDirectory):
 
 def generateGoodScanArray(scanNumArray,badScanStr):
 	print "These are the original scan numbers: ", scanNumArray
-    
+	print
 	# split the array based on comma symbol
 	badScanNumArray = badScanStr.split(',', )
 	# convert char(string) to int
 	badScanNumArray = map(int, badScanNumArray)
 	print "These are bad scan numbers: ", badScanNumArray
-    
+	print
 	# remove all the bad scan number from the original list
 	for i in range (0, len(badScanNumArray)):
 		scanNumArray.remove(badScanNumArray[i])
