@@ -2,10 +2,9 @@
 
 from praxes.io import spec
 import matplotlib.pyplot as plt
-from matplotlib.mlab import griddata
 import numpy as np
-from extract_mca import *
-from getScanDetails import *
+from scan_details import *
+from basic_plot import *
 
 def generateSummaryPlot(fileDirectory):
 	sgmData=openAllSGMXAS(fileDirectory)
