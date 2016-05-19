@@ -48,4 +48,5 @@ def generateGoodScanArray(scanNumArray,badScanStr):
 		scanNumArray.remove(badScanNumArray[i])
 
 	print "These are all good scan numbers: ", scanNumArray
-	return scanNumArray
+	goodScan = scanNumArray
+	return goodScan
