@@ -26,7 +26,7 @@ before_install:
    
    
 install: 
-    - conda create -q -n test_env python=$TRAVIS_PYTHON_VERSION numpy scipy h5py dateutil matplotlib pandas nose sphinx
+    - conda create -q -n test_env python=$TRAVIS_PYTHON_VERSION numpy scipy matplotlib pandas nose
     - conda install -n test_env -c praxes praxes=0.7.1
     - source activate test_env
 

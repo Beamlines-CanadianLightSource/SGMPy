@@ -22,7 +22,7 @@ class TestScanDetails(unittest.TestCase):
 		abs_file_path = os.path.join(script_dir, rel_path)   
 		self.assertEqual(checkFileType(abs_file_path), "This is the data file of spectra.")
    
-
+	@unittest.skip("demonstrating skipping")
 	def test_checkFileType_case2(self):
 		script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
 		rel_path = "data/map_example.dat"
