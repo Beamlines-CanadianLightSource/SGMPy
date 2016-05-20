@@ -1,0 +1,37 @@
+# Config file for automatic testing at travis-ci.org
+
+language: python
+
+python:
+    - "2.7"
+    - "3.4"
+
+cache: 
+    - pip
+
+# Whitelisting
+branches:
+  only:
+    - master
+
+
+before_install:
+	- wget http://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh
+    - bash miniconda.sh -b -p $HOME/miniconda
+    - export PATH="$HOME/miniconda/bin:$PATH"
+    - hash -r
+    - conda config --set always_yes yes --set changeps1 no
+    - conda update -q conda
+    - conda info -a
+   
+   
+install: 
+    - conda create -q -n test_env python=$TRAVIS_PYTHON_VERSION numpy scipy h5py dateutil matplotlib pandas nose sphinx
+    - conda install -c praxes praxes=0.7.1
+    - source activate test_env
+
+
+# Adopt code from:  https://github.com/rossant/ipycache/blob/master/.travis.yml
+script: 
+    - nosetests test_scan_details.py
+    - nosetests test_summary_plot.py
