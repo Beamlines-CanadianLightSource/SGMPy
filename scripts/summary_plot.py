@@ -1,6 +1,5 @@
 # Present summary for all scans
 
-from praxes.io import spec
 import matplotlib.pyplot as plt
 import numpy as np
 from scan_details import *

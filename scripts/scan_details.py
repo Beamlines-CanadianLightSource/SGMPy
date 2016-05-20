@@ -1,13 +1,13 @@
 # Open date file and get scan details
 
-from praxes.io import spec
+import praxes.io.spec as spc
 import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
 import numpy as np
 
 # For Windows, Please use "/" instead of "\" in the file directory (URI)
 def openDataFile(fileDirectory):
-	file = spec.open(fileDirectory)
+	file = spc.open(fileDirectory)
 	return file
 
 def getTotalScanNum(fileDirectory):
