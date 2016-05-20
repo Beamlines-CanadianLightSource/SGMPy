@@ -26,10 +26,10 @@ before_install:
    
    
 install: 
-    - conda create -q -n test_env python=$TRAVIS_PYTHON_VERSION numpy scipy h5py dateutil matplotlib pandas nose sphinx
+    - conda create -q -n python=$TRAVIS_PYTHON_VERSION numpy scipy h5py dateutil matplotlib pandas nose sphinx
     - conda install -c praxes praxes=0.7.1
     - pip install praxes
-    - source activate test_env
+    #- source activate test_env
 
 
 # Adopt code from:  https://github.com/rossant/ipycache/blob/master/.travis.yml
