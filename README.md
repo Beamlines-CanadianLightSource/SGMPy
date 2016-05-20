@@ -1,8 +1,12 @@
 # SGM-Beamline
 Data Analysis &amp; Visualization Tools for SGM Beamline
 
-## How to run iPython notebook files and Python scripts?
+---
+
+## How to run our Python scripts?
 Please check our wiki:  https://github.com/Beamlines-CanadianLightSource/SGM-Beamline/wiki/Installation-and-Getting-Start
+
+---
 
 ## Developer's Guide
 
