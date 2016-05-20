@@ -33,5 +33,5 @@ install:
 
 # Adopt code from:  https://github.com/rossant/ipycache/blob/master/.travis.yml
 script: 
-    - "python setup.py develop && nosetests test_scan_details.py/"
-    - "python setup.py develop && nosetests test_summary_plot.py/"
+    - "python setup.py install && nosetests test_scan_details.py/"
+    - "python setup.py install && nosetests test_summary_plot.py/"
