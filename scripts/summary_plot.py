@@ -21,7 +21,7 @@ def generateSummaryPlot(fileDirectory):
 	plt.ylim(0, totalScanNumber+1)
 
 	# add lable for x and y axis
-	plt.xlabel('Incident Energy (ev)')
+	plt.xlabel('Incident Energy (eV)')
 	plt.ylabel('Scan Numbers')
 	# show the plot
 	plt.show()
@@ -38,16 +38,21 @@ def getAllScanNum(fileDirectory):
 def generateGoodScanArray(scanNumArray,badScanStr):
 	print "These are the original scan numbers: ", scanNumArray
 	print
-	# split the array based on comma symbol
-	badScanNumArray = badScanStr.split(',', )
-	# convert char(string) to int
-	badScanNumArray = map(int, badScanNumArray)
-	print "These are bad scan numbers: ", badScanNumArray
-	print
-	# remove all the bad scan number from the original list
-	for i in range (0, len(badScanNumArray)):
-		scanNumArray.remove(badScanNumArray[i])
+	# if badScanStr is null, then return original arrays
+	if badScanStr == '':
+		return scanNumArray
+	# to get good scan numbers
+	else:
+		# split the array based on comma symbol
+		badScanNumArray = badScanStr.split(',', )
+		# convert char(string) to int
+		badScanNumArray = map(int, badScanNumArray)
+		print "These are bad scan numbers: ", badScanNumArray
+		print
+		# remove all the bad scan number from the original list
+		for i in range (0, len(badScanNumArray)):
+			scanNumArray.remove(badScanNumArray[i])
 
-	print "These are all good scan numbers: ", scanNumArray
-	goodScan = scanNumArray
-	return goodScan
+		print "These are all good scan numbers: ", scanNumArray
+		goodScan = scanNumArray
+		return goodScan
