@@ -64,7 +64,7 @@ def create_bins(startEnergy, endEnergy, num_of_bins):
 	print "Number of Bins:", num_of_bins
 	print "Number of Edges:", num_of_edges
 	energyRange = endEnergy - startEnergy
-	print "Energy range is: ", energyRange
+	print "Energy range is: ", startEnergy,"-", endEnergy
 	edges_array = np.linspace(startEnergy, endEnergy, num_of_edges)
 
 	# generate mean of bins  
@@ -74,7 +74,8 @@ def create_bins(startEnergy, endEnergy, num_of_bins):
 	for i in range (0, num_of_bins):
 		mean_energy_array.append(first_mean + 0.1 * i)
 	# print "Mean of energy bins: ", mean_energy_array
-	print "created bins completed." 
+	print "created bins completed."
+	print
 	return  edges_array, mean_energy_array
 
 
@@ -93,7 +94,8 @@ def assign_data (arrayOfPoints, edges):
 			assignBinNum = int (x / binWidth) + 1
 			# print assignBinNum
 			arrayOfBins[assignBinNum-1].append([indexOfScan,indexOfDataPoint])
-	print "Assign data points completed"        
+	print "Assign data points completed"   
+	print
 	return arrayOfBins
 
 def calculateAvgMCA(arrayOfBins, arrayOfPoints):
@@ -145,7 +147,6 @@ def calculateAvgMCA(arrayOfBins, arrayOfPoints):
         
 		if totalDataPoints == 0:
 			print "No data point is in Bin No.", index1+1, ". Average calculation is not necessary"
-			print
 		else:
 			# calculate the average of MCAs
 			# print "Calculating Average of MCA1."
@@ -160,8 +161,10 @@ def calculateAvgMCA(arrayOfBins, arrayOfPoints):
 			# print "Calculating Average of MCA4."
 			mca4AvgArray[index1] = mca4AvgArray[index1] / totalDataPoints
 			# print "Calculation Average of MCA4 is completed."
-			# print 
-	print "Calculation completed."    
+			# print
+
+	print "Calculation completed."
+	print
 	return mca1AvgArray, mca2AvgArray, mca3AvgArray, mca4AvgArray
 
 
@@ -203,7 +206,6 @@ def calculateAvgOfScalers(arrayOfBins, arrayOfPoints):
         
 		if totalDataPoints == 0:
 			print "No data point is in Bin No.", index1+1, ". Average calculation is not necessary"
-			print
 		else:
 			# calculate the average of data (TEY, I0, Diode)
 			# print "Calculating Average of TEY."
@@ -221,11 +223,14 @@ def calculateAvgOfScalers(arrayOfBins, arrayOfPoints):
 			# print
 
 	print "Calculation completed."
+	print
     
 	return teyAvgArray, i0AvgArray, diodeAvgArray
 
 
 def plotAvgOfMAC(binNum, avgMCA):
+    
+	plt.close('all')
     
 	binNumForX = [[]for i in range(binNum)]
 	for bin in range (0, binNum):
@@ -247,10 +252,8 @@ def plotAvgOfMAC(binNum, avgMCA):
 # plot a kind of average scaler
 def plot_one_avg_scaler(mean_energy_array, scalerArray, name):
     
-	# binNumArray = list(range(1, binNum + 1))
-	# print binNumArray
-	# print len(binNumArray)
-    
+	plt.close('all')
+
 	plt.scatter(mean_energy_array, scalerArray)
 	plt.xlabel('Energy (eV)')
 	plt.ylabel(['Average of',name])
@@ -277,7 +280,8 @@ def getPFY_Avg(mcaAvgArray, enStart, enStop):
 
 def plotAvgXAS_all(energyArray, scalerArray, pfyData):
 	
-	print "Plotting XAS."
+	print "Plotting XAS."    
+	plt.close('all')
 
 	en = energyArray
 	tey = scalerArray[0]
@@ -285,45 +289,45 @@ def plotAvgXAS_all(energyArray, scalerArray, pfyData):
 	diode = scalerArray[2]
 
 	plt.figure(1)
-	plt.subplot(241)
+	plt.subplot(4, 2, 1)
 	plt.plot(en, i0)
 	# add lable for x and y axis
 	plt.xlabel('Energy (eV)')
 	plt.ylabel('I0')
     
-	plt.subplot(242)
+	plt.subplot(4, 2, 2)
 	plt.plot(en, tey)
 	plt.xlabel('Energy (eV)')
 	plt.ylabel('TEY')
     
-	plt.subplot(243)
+	plt.subplot(4, 2, 3)
 	plt.plot(en, diode)
 	plt.xlabel('Energy (eV)')
 	plt.ylabel('Diode')
 
-	plt.subplot(245)
+	plt.subplot(4, 2, 5)
 	plt.plot(en, pfyData[0])
 	plt.xlabel('Energy (eV)')
 	plt.ylabel('MCA1')
     
-	plt.subplot(246)
+	plt.subplot(4, 2, 6)
 	plt.plot(en, pfyData[1])
 	plt.xlabel('Energy (eV)')
 	plt.ylabel('MCA2')
     
-	plt.subplot(247)
+	plt.subplot(4, 2, 7)
 	plt.plot(en, pfyData[2])
 	plt.xlabel('Energy (eV)')
 	plt.ylabel('MCA3')
     
-	plt.subplot(248)
+	plt.subplot(4, 2, 8)
 	plt.plot(en, pfyData[3])
 	plt.xlabel('Energy (eV)')
 	plt.ylabel('MCA4')
     
 	figManager = plt.get_current_fig_manager()
-	figManager.window.showMaximized()
+	# figManager.window.showMaximized()
 	# tight_layout() will also adjust spacing between subplots to minimize the overlaps.
-	plt.tight_layout()
+	# plt.tight_layout()
 	plt.show()
     
