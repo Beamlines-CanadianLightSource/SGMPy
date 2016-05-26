@@ -10,8 +10,24 @@ from scan_details import *
 from basic_plot import *
 
 
+def create_bin_assign_data(good_scan, opened_file, start_energy, end_energy, number_of_bins, start_range_of_interest, end_range_of_interest):
+    
+	data_point_array = getGoodDataPoints(good_scan, opened_file)
+
+	temp_array = create_bins(start_energy, end_energy, number_of_bins)
+	edges_array = temp_array[0]
+	bins_mean_array = temp_array[1]
+	assigned_data_array = assign_data(data_point_array , edges_array)
+    # calculate average
+	avg_mca = calculateAvgMCA(assigned_data_array, data_point_array)
+	avg_scaler= calculateAvgOfScalers (assigned_data_array, data_point_array)
+	pyf_data = getPFY_Avg(avg_mca, start_range_of_interest, end_range_of_interest)
+    
+	return bins_mean_array, avg_mca, avg_scaler, pyf_data
+
+
 # Eliminate bad scans and select good scans (data points)
-def getGoodDataPoints(goodScanArray, fileDirectory):
+def getGoodDataPoints(goodScanArray, opened_file):
 	# initial arrays    
 	scan=[]
 	mca1=[]
@@ -20,7 +36,7 @@ def getGoodDataPoints(goodScanArray, fileDirectory):
 	mca4=[]
     
 	# open and read all data from the file and it could take a while
-	scan, mca1, mca2, mca3, mca4 = openAllSGMXAS(fileDirectory)
+	scan, mca1, mca2, mca3, mca4 = openAllSGMXAS(opened_file)
     
 	# Initial arrayOfPoints
 	arrayOfPoints=[[[],[],[],[],[]] for i in range(len(goodScanArray))]
@@ -42,14 +58,27 @@ def getGoodDataPoints(goodScanArray, fileDirectory):
 	return arrayOfPoints
 
 # create bins (for testing startEnergy = 690, endEnergy = 750, numberOfBins = 120, energyArray = scan[goodScan_2[i]-1]['Energy'])
-def createBins(startEnergy, endEnergy, numberOfEdges):
+def create_bins(startEnergy, endEnergy, num_of_bins):
+	print "Start creating bins" 
+	num_of_edges = num_of_bins + 1
+	print "Number of Bins:", num_of_bins
+	print "Number of Edges:", num_of_edges
 	energyRange = endEnergy - startEnergy
-	print energyRange
-	edges_array = np.linspace(startEnergy, endEnergy, numberOfEdges)
-	return  edges_array
+	print "Energy range is: ", energyRange
+	edges_array = np.linspace(startEnergy, endEnergy, num_of_edges)
+
+	# generate mean of bins  
+	mean_energy_array = []
+	first_mean = (edges_array[1] + edges_array[0]) / 2
+	bin_width = edges_array[1] - edges_array[0]
+	for i in range (0, num_of_bins):
+		mean_energy_array.append(first_mean + 0.1 * i)
+	# print "Mean of energy bins: ", mean_energy_array
+	print "created bins completed." 
+	return  edges_array, mean_energy_array
 
 
-def AssignData (arrayOfPoints, edges):
+def assign_data (arrayOfPoints, edges):
 	binNum = len(edges) - 1
 	arrayOfBins = [[] for i in range(binNum)]
 

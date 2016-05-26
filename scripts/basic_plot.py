@@ -32,6 +32,7 @@ def openSGMSpec(sgmFile, scanNum):
 	print "Done!"
 	return scan, mca1, mca2, mca3, mca4
 
+
 def openSGMXAS(sgmFile, scanNum):
 
 	print "Opening scan", str(scanNum)
@@ -61,9 +62,8 @@ def openSGMXAS(sgmFile, scanNum):
 	return scan, mca1, mca2, mca3, mca4
 
 
-def openAllSGMXAS(sgmFile):
-	f = spec.open(sgmFile)
-	totalScanNum = len(f.keys())
+def openAllSGMXAS(opened_file):
+	totalScanNum = len(opened_file.keys())
 	print "Total scan: ", totalScanNum
 	scan=[]
 	mca1=[[] for a in range(totalScanNum)]
@@ -72,13 +72,13 @@ def openAllSGMXAS(sgmFile):
 	mca4=[[] for a in range(totalScanNum)]
     
 	for j in range (0, totalScanNum):
-		print 'index of the for loop is: ', j
-		print 'Scan No.', j+1
-		scan.append(f[str(j+1)])
+		# print 'index of the for loop is: ', j
+		# print 'Scan No.', j+1
+		scan.append(opened_file[str(j+1)])
 		energy = scan[j]['Energy']	
 		mcadata=scan[j]['@A1']
 
-		print "Parsing MCAs"
+		# print "Parsing MCAs"
 
 		for i in range(0,len(energy)):
 			mca1[j].append(mcadata[i*4])
@@ -86,9 +86,10 @@ def openAllSGMXAS(sgmFile):
 			mca3[j].append(mcadata[i*4 + 2])
 			mca4[j].append(mcadata[i*4 + 3])
               
-		print "Done!"
-
+		# print "Done!"
+	print "Opened all scans."
 	return scan, mca1, mca2, mca3, mca4
+
 
 def getPFY(sgmData, enStart, enStop):
 
@@ -107,6 +108,30 @@ def getPFY(sgmData, enStart, enStop):
 	
 	return pfy1, pfy2, pfy3, pfy4
 	print "Done!"
+    
+    
+def get_one_pfy(sgmData, mca_name, enStart, enStop):
+
+	if mca_name == "MCA1":
+		mca = 1
+	elif mca_name == "MCA2":
+		mca = 2
+	elif mca_name == "MCA3":
+		mca = 3
+	elif mca_name == "MCA4":
+		mca = 4    
+	else:
+		print "Error!!!"
+    
+	print "Getting PFY ROIs for", mca_name
+
+	pfy=[]
+
+	for i in range(0, len(sgmData[mca])):
+		pfy.append(np.sum(sgmData[mca][i][enStart:enStop]))
+
+	print "Done!"   
+	return pfy
 
 def plotXAS_one(sgmData, pfyData, name):
 

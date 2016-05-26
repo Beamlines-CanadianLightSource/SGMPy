@@ -1,5 +1,6 @@
 # Open date file and get scan details
 
+import os
 from praxes.io import spec
 import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
@@ -9,6 +10,13 @@ import numpy as np
 def openDataFile(fileDirectory):
 	file = spec.open(fileDirectory)
 	return file
+
+
+def get_abs_path(rel_path):
+	script_dir = os.path.dirname(os.path.realpath('__file__'))
+	abs_path = os.path.join(script_dir, rel_path)
+	return abs_path
+
 
 def getTotalScanNum(fileDirectory):
 	OpenedFile = openDataFile(fileDirectory)
@@ -41,15 +49,14 @@ def checkFileType(fileDirectory):
 	return 'invalid data file!!!'
 
 
-def check_scan_variety(fileDirectory):
+def check_scan_variety(OpenedFile):
 	cmesh_array = []
 	c_array = []
 	a_array = []
 	mesh_array = []
     
-	OpenedFile = openDataFile(fileDirectory)
 	for i in range (1, len(OpenedFile)+1):
-		print "Scan No.", i
+		# print "Scan No.", i
 		string=str(i)
 		string =  OpenedFile[string].attrs['command']
 		temp_array = string.split( )
