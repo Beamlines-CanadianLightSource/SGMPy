@@ -4,7 +4,7 @@ import os
 
 class TestScanDetails(unittest.TestCase):
 
-	def test_getTotalScanNum(self):
+	def test_get_total_Scannum(self):
 		expectedScanNum = 10
         
 		script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
@@ -16,14 +16,14 @@ class TestScanDetails(unittest.TestCase):
 		self.assertEqual(realScanNum, expectedScanNum)
 
         
-	def test_checkFileType_case1(self):
+	def test_check_file_type_case1(self):
 		script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
 		rel_path = "data/spectra_example.dat"
 		abs_file_path = os.path.join(script_dir, rel_path)   
 		self.assertEqual(checkFileType(abs_file_path), "This is the data file of spectra.")
    
 	@unittest.skip("demonstrating skipping")
-	def test_checkFileType_case2(self):
+	def test_check_file_type_case2(self):
 		script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
 		rel_path = "data/map_example.dat"
 		abs_file_path = os.path.join(script_dir, rel_path)       
