@@ -6,10 +6,9 @@ from scan_details import *
 from basic_plot import *
 
 
-def summary_plot(fileDirectory, name, enStart=None, enStop=None):
+def summary_plot(opened_file, name, enStart=None, enStop=None):
 	# mandetory to close all the existing matplot figures
 	plt.close('all')
-	opened_file = openDataFile(fileDirectory)
 	scan_array = check_scan_variety(opened_file)
 	cscan_array = scan_array[0]
 	print "C Scan are including: ", cscan_array

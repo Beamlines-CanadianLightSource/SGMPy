@@ -10,7 +10,7 @@ from scan_details import *
 from basic_plot import *
 
 
-def create_bin_assign_data(good_scan, opened_file, start_energy, end_energy, number_of_bins, start_range_of_interest, end_range_of_interest):
+def prepare_average_plot(good_scan, opened_file, start_energy, end_energy, number_of_bins, start_range_of_interest, end_range_of_interest):
     
 	data_point_array = getGoodDataPoints(good_scan, opened_file)
 
@@ -330,4 +330,12 @@ def plotAvgXAS_all(energyArray, scalerArray, pfyData):
 	# tight_layout() will also adjust spacing between subplots to minimize the overlaps.
 	# plt.tight_layout()
 	plt.show()
+    
+    
+# def mca_division(mca_avg_array, dividend_mca, divisor_mca):
+# 	if dividend_mca = divisor_mca :
+# 		print "not"
+# 	else:
+    
+    
     
