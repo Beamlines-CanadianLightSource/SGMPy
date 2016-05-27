@@ -129,9 +129,8 @@ def get_one_pfy(sgm_data, mca_name, enStart, enStop):
 	for i in range(0, len(sgm_data[mca])):
 		for j in range(0, len(sgm_data[mca][i])):
 			pfy[i].append(np.sum(sgm_data[mca][i][j][enStart:enStop]))
-		print "Length of PFY:", len(pfy[i])
-		print "Length of Energy", sgm_data[0][i]['Energy']
-		print "**************************************"
+		# print "Length of PFY:", len(pfy[i])
+		# print "Length of Energy", sgm_data[0][i]['Energy']
 	print "Done!"   
 	return pfy
 

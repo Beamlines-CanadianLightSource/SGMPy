@@ -13,10 +13,8 @@ def summary_plot(opened_file, name, enStart=None, enStop=None):
 	cscan_array = scan_array[0]
 	print "C Scan are including: ", cscan_array
 	sgm_data=openAllSGMXAS(opened_file)
-	print "energy points", len(sgm_data[0][1]['Energy'])
-	print "MCA1: ", len(sgm_data[1][1])
     
-	if name == "TEY" or name == "I0" or name == "Diode" or name == "Epoch" or name == "SDD1_OCR" or name == "SDD1_ICR"or name == "SDD2_OCR" or name == "SDD2_ICR" or name == "SDD3_OCR" or name == "SDD3_ICR" or name == "SDD4_OCR" or name == "SDD4_ICR":
+	if name == "TEY" or name == "I0" or name == "Diode" or name == "Epoch" or name == "SDD1_OCR" or name == "SDD1_ICR" or name == "SDD2_OCR" or name == "SDD2_ICR" or name == "SDD3_OCR" or name == "SDD3_ICR" or name == "SDD4_OCR" or name == "SDD4_ICR":
 		generate_summary_plot_with_scalers(cscan_array, sgm_data, name)
 	elif name == "MCA1" or name == "MCA2" or name == "MCA3" or name == "MCA4":
 		generate_summary_plot_with_mcas(cscan_array, sgm_data, name, enStart, enStop)
@@ -35,8 +33,7 @@ def generate_summary_plot_with_mcas(cscan_array, sgmData, mca_name, enStart, enS
 		mca = 3
 	elif mca_name == "MCA4":
 		mca = 4
-        
-    
+         
 	str_scaler_name = mca_name
 	total_cscan_num = len(cscan_array)
 	for index in range (0, total_cscan_num):
@@ -47,11 +44,10 @@ def generate_summary_plot_with_mcas(cscan_array, sgmData, mca_name, enStart, enS
         
 		energy_array = sgmData[0][cscan_index]['Energy']
 		total_pfy = get_one_pfy(sgmData, mca_name, enStart, enStop)
-        
 
-		print "Generating plot for scan No.", real_cscan_number
+		#print "Generating plot for scan No.", real_cscan_number
 		plt.scatter(energy_array, scanNumList, c=total_pfy[cscan_index],  s=10, linewidths=0)
-		print "Generated plot for scan No.", real_cscan_number, "completed"
+		print "Generated plot for scan No.", real_cscan_number
     
 	plt.ylim(0, total_cscan_num+1)
 
@@ -63,7 +59,6 @@ def generate_summary_plot_with_mcas(cscan_array, sgmData, mca_name, enStart, enS
 	plt.show()
 
 
-
 def generate_summary_plot_with_scalers(cscan_array, sgmData, scaler_name):
 	str_scaler_name = scaler_name
 	total_cscan_num = len(cscan_array)
@@ -71,11 +66,11 @@ def generate_summary_plot_with_scalers(cscan_array, sgmData, scaler_name):
 		real_cscan_number = cscan_array[index]
 		cscan_index = real_cscan_number - 1
 		scanNumList=np.empty(len(sgmData[0][cscan_index]['Energy']))
-		#
+		# create a list including all the scan number
 		scanNumList.fill(real_cscan_number)
-		print "Generating plot for scan No.", real_cscan_number
+		# print "Generating plot for scan No.", real_cscan_number
 		plt.scatter(sgmData[0][cscan_index]['Energy'], scanNumList, c=sgmData[0][cscan_index][str_scaler_name],  s=10, linewidths=0)
-		print "Generated plot for scan No.", real_cscan_number, "completed"
+		print "Generated plot for scan No.", real_cscan_number
     
 	plt.ylim(0, total_cscan_num+1)
 
