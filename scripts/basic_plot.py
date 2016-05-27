@@ -110,7 +110,7 @@ def getPFY(sgmData, enStart, enStop):
 	print "Done!"
     
     
-def get_one_pfy(sgmData, mca_name, enStart, enStop):
+def get_one_pfy(sgm_data, mca_name, enStart, enStop):
 
 	if mca_name == "MCA1":
 		mca = 1
@@ -125,11 +125,13 @@ def get_one_pfy(sgmData, mca_name, enStart, enStop):
     
 	print "Getting PFY ROIs for", mca_name
 
-	pfy=[]
-
-	for i in range(0, len(sgmData[mca])):
-		pfy.append(np.sum(sgmData[mca][i][enStart:enStop]))
-
+	pfy=[[] for i in range(len(sgm_data[1]) )]
+	for i in range(0, len(sgm_data[mca])):
+		for j in range(0, len(sgm_data[mca][i])):
+			pfy[i].append(np.sum(sgm_data[mca][i][j][enStart:enStop]))
+		print "Length of PFY:", len(pfy[i])
+		print "Length of Energy", sgm_data[0][i]['Energy']
+		print "**************************************"
 	print "Done!"   
 	return pfy
 
