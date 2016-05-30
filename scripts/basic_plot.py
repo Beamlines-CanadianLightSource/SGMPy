@@ -108,7 +108,17 @@ def getPFY(sgmData, enStart, enStop):
 	
 	return pfy1, pfy2, pfy3, pfy4
 	print "Done!"
-    
+   
+# def get_one_pfy_mca(mca_array, start_energy, stop_energy):
+# 	pfy=[[] for i in range(len(mca_array))]
+# 	for i in range(0, len(mca_array)):
+# 		for j in range(0, len(mca_array[i])):
+# 			pfy[i].append(np.sum(mca_array[i][j][start_energy:stop_energy]))
+# 		# print "Length of PFY:", len(pfy[i])
+# 		# print "Length of Energy", sgm_data[0][i]['Energy']
+# 	print "Done!"   
+# 	return pfy
+
     
 def get_one_pfy(sgm_data, mca_name, enStart, enStop):
 

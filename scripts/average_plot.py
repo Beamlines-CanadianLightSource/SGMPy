@@ -277,6 +277,16 @@ def getPFY_Avg(mcaAvgArray, enStart, enStop):
 	
 	return pfy1, pfy2, pfy3, pfy4
 
+def get_one_pfy_avg(mca_avg_array, start_energy, stop_energy):
+
+	print "Getting PFY ROIs"
+
+	pfy=[]
+
+	for i in range(0, len(mca_avg_array)):
+		pfy.append(np.sum(mca_avg_array[i][start_energy:stop_energy]))
+	return pfy
+
 
 def plotAvgXAS_all(energyArray, scalerArray, pfyData):
 	
@@ -332,10 +342,33 @@ def plotAvgXAS_all(energyArray, scalerArray, pfyData):
 	plt.show()
     
     
-# def mca_division(mca_avg_array, dividend_mca, divisor_mca):
-# 	if dividend_mca = divisor_mca :
-# 		print "not"
-# 	else:
-    
-    
+def mca_division(mca_avg_array, dividend_mca, divisor_mca):
+	# initial new_mca_array
+	new_mca_array = []
+	# initial a dict for 4 MCAs name
+	dictionary = {'MCA1': 0, 'MCA2': 1, 'MCA3': 2, 'MCA4': 3}
+	if dividend_mca == divisor_mca :
+		print "Cannot division same MCAs"
+	# calculate division
+	else:
+		dividend_mca_index = dictionary[dividend_mca]
+		divisor_mca_index = dictionary[divisor_mca]
+		for i in range (0, len(mca_avg_array[0])):
+			divisor_value = mca_avg_array[divisor_mca_index][i]
+			# print mca_avg_array[dividend_mca_index][i] / mca_avg_array[divisor_mca_index][i]
+			new_mca_array.append( mca_avg_array[dividend_mca_index][i] / mca_avg_array[divisor_mca_index][i])
+
+	return new_mca_array
+
+
+def plot_mca_division(bins_mean_array, mca_avg_array, dividend_mca, divisor_mca, start_energy, end_energy):
+
+	new_mca_array = mca_division(mca_avg_array, dividend_mca, divisor_mca)
+	pfy_data = get_one_pfy_avg(new_mca_array, start_energy, end_energy)
+	# print "x:", bins_mean_array
+	# print "y:", pfy_data
+	plt.plot(bins_mean_array, pfy_data)
+	plt.xlabel('Energy (eV)')
+	plt.ylabel('Value')
+	plt.show()
     
