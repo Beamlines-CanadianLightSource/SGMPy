@@ -246,17 +246,6 @@ def plotAvgOfMAC(binNum, avgMCA):
 	plt.xlabel('Bin Numbers for Incident Energy')
 	plt.ylabel('Bin Numbers for Emission Energy')
 	plt.show()
-
-
-# plot a kind of average scaler
-def plot_one_avg_scaler(mean_energy_array, scalerArray, name):
-    
-	plt.close('all')
-
-	plt.scatter(mean_energy_array, scalerArray)
-	plt.xlabel('Energy (eV)')
-	plt.ylabel(['Average of',name])
-	plt.show()
     
     
 def get_pfy_avg(mcaAvgArray, enStart, enStop):
@@ -276,6 +265,7 @@ def get_pfy_avg(mcaAvgArray, enStart, enStop):
 	
 	return pfy1, pfy2, pfy3, pfy4
 
+
 def get_one_pfy_avg(mca_avg_array, start_energy, stop_energy):
 
 	print "Getting PFY ROIs"
@@ -287,15 +277,25 @@ def get_one_pfy_avg(mca_avg_array, start_energy, stop_energy):
 	return pfy
 
 
-def plotAvgXAS_all(energyArray, scalerArray, pfyData):
+# plot a kind of average scaler
+def plot_one_avg_scaler(mean_energy_array, scaler_array, name):
+    
+	plt.close('all')
+	plt.scatter(mean_energy_array, scaler_array)
+	plt.xlabel('Energy (eV)')
+	plt.ylabel(['Average of',name])
+	plt.show()
+
+
+def plot_avg_xas_all(energy_array, scaler_array, pfy_data):
 	
 	print "Plotting XAS."    
 	plt.close('all')
 
-	en = energyArray
-	tey = scalerArray[0]
-	i0 = scalerArray[1]
-	diode = scalerArray[2]
+	en = energy_array
+	tey = scaler_array[0]
+	i0 = scaler_array[1]
+	diode = scaler_array[2]
 
 	plt.figure(1)
 	plt.subplot(4, 2, 1)
@@ -315,24 +315,24 @@ def plotAvgXAS_all(energyArray, scalerArray, pfyData):
 	plt.ylabel('Diode')
 
 	plt.subplot(4, 2, 5)
-	plt.plot(en, pfyData[0])
+	plt.plot(en, pfy_data[0])
 	plt.xlabel('Energy (eV)')
-	plt.ylabel('MCA1')
+	plt.ylabel('SDD1')
     
 	plt.subplot(4, 2, 6)
-	plt.plot(en, pfyData[1])
+	plt.plot(en, pfy_data[1])
 	plt.xlabel('Energy (eV)')
-	plt.ylabel('MCA2')
+	plt.ylabel('SDDA2')
     
 	plt.subplot(4, 2, 7)
-	plt.plot(en, pfyData[2])
+	plt.plot(en, pfy_data[2])
 	plt.xlabel('Energy (eV)')
-	plt.ylabel('MCA3')
+	plt.ylabel('SDD3')
     
 	plt.subplot(4, 2, 8)
-	plt.plot(en, pfyData[3])
+	plt.plot(en, pfy_data[3])
 	plt.xlabel('Energy (eV)')
-	plt.ylabel('MCA4')
+	plt.ylabel('SDD4')
     
 	figManager = plt.get_current_fig_manager()
 	# figManager.window.showMaximized()
