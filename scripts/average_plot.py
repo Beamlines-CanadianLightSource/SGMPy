@@ -281,7 +281,7 @@ def get_one_pfy_avg(mca_avg_array, start_energy, stop_energy):
 def plot_one_avg_scaler(mean_energy_array, scaler_array, name):
     
 	plt.close('all')
-	plt.scatter(mean_energy_array, scaler_array)
+	plt.plot(mean_energy_array, scaler_array)
 	plt.xlabel('Energy (eV)')
 	plt.ylabel(['Average of',name])
 	plt.show()
