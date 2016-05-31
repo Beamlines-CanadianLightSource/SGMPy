@@ -12,22 +12,22 @@ from basic_plot import *
 
 def prepare_average_plot(good_scan, opened_file, start_energy, end_energy, number_of_bins, start_range_of_interest, end_range_of_interest):
     
-	data_point_array = getGoodDataPoints(good_scan, opened_file)
+	data_point_array = get_good_datapoint(good_scan, opened_file)
 
 	temp_array = create_bins(start_energy, end_energy, number_of_bins)
 	edges_array = temp_array[0]
 	bins_mean_array = temp_array[1]
 	assigned_data_array = assign_data(data_point_array , edges_array)
     # calculate average
-	avg_mca = calculateAvgMCA(assigned_data_array, data_point_array)
-	avg_scaler= calculateAvgOfScalers (assigned_data_array, data_point_array)
-	pyf_data = getPFY_Avg(avg_mca, start_range_of_interest, end_range_of_interest)
+	avg_mca = calculate_avg_mca(assigned_data_array, data_point_array)
+	avg_scaler= calculate_avg_scalers (assigned_data_array, data_point_array)
+	pyf_data = get_pfy_avg(avg_mca, start_range_of_interest, end_range_of_interest)
     
 	return bins_mean_array, avg_mca, avg_scaler, pyf_data
 
 
 # Eliminate bad scans and select good scans (data points)
-def getGoodDataPoints(goodScanArray, opened_file):
+def get_good_datapoint(good_scan_Array, opened_file):
 	# initial arrays    
 	scan=[]
 	mca1=[]
@@ -39,33 +39,32 @@ def getGoodDataPoints(goodScanArray, opened_file):
 	scan, mca1, mca2, mca3, mca4 = openAllSGMXAS(opened_file)
     
 	# Initial arrayOfPoints
-	arrayOfPoints=[[[],[],[],[],[]] for i in range(len(goodScanArray))]
+	data_array=[[[],[],[],[],[]] for i in range(len(good_scan_Array))]
     
-	for i in range (0, len(goodScanArray)):
+	for i in range (0, len(good_scan_Array)):
 		# scan number is start from 1
 		# print "This is the scan number: ", goodScanArray[i]
 		# array index is start from 0
 		# get all scalers of good scans from original scans' array
-		arrayOfPoints[i][0] = scan[goodScanArray[i]-1]
+		data_array[i][0] = scan[good_scan_Array[i]-1]
 		# get all MCA1 of good scans from original scans
-		arrayOfPoints[i][1] = mca1[goodScanArray[i]-1]
+		data_array[i][1] = mca1[good_scan_Array[i]-1]
 		# get all MCA2 of good scans from original scans
-		arrayOfPoints[i][2] = mca2[goodScanArray[i]-1]
+		data_array[i][2] = mca2[good_scan_Array[i]-1]
 		# get all MCA3 of good scans from original scans
-		arrayOfPoints[i][3] = mca3[goodScanArray[i]-1]
+		data_array[i][3] = mca3[good_scan_Array[i]-1]
 		# get all MCA4 of good scans from original scans
-		arrayOfPoints[i][4] = mca4[goodScanArray[i]-1]
-	return arrayOfPoints
+		data_array[i][4] = mca4[good_scan_Array[i]-1]
+	return data_array
 
 # create bins (for testing startEnergy = 690, endEnergy = 750, numberOfBins = 120, energyArray = scan[goodScan_2[i]-1]['Energy'])
-def create_bins(startEnergy, endEnergy, num_of_bins):
+def create_bins(start_energy, end_energy, num_of_bins):
 	print "Start creating bins" 
 	num_of_edges = num_of_bins + 1
 	print "Number of Bins:", num_of_bins
 	print "Number of Edges:", num_of_edges
-	energyRange = endEnergy - startEnergy
-	print "Energy range is: ", startEnergy,"-", endEnergy
-	edges_array = np.linspace(startEnergy, endEnergy, num_of_edges)
+	print "Energy range is: ", start_energy,"-", end_energy
+	edges_array = np.linspace(start_energy, end_energy, num_of_edges)
 
 	# generate mean of bins  
 	mean_energy_array = []
@@ -79,26 +78,26 @@ def create_bins(startEnergy, endEnergy, num_of_bins):
 	return  edges_array, mean_energy_array
 
 
-def assign_data (arrayOfPoints, edges):
-	binNum = len(edges) - 1
-	arrayOfBins = [[] for i in range(binNum)]
+def assign_data (data_array, edges):
+	bin_num = len(edges) - 1
+	bin_array = [[] for i in range(bin_num)]
 
 	# interation to assign data into bins
-	binWidth = (edges[-1] - edges[0]) / binNum
-	print "The width of a bin is:", binWidth
+	bin_width = (edges[-1] - edges[0]) / bin_num
+	print "The width of a bin is:", bin_width
 	print "Start assigning data points into bins" 
-	for indexOfScan in range (0, len(arrayOfPoints)):
-		for indexOfDataPoint in range (0, len(arrayOfPoints[indexOfScan][0]['Energy'])):
-			x = arrayOfPoints[indexOfScan][0]['Energy'][indexOfDataPoint] - edges[0]
+	for scan_index in range (0, len(data_array)):
+		for datapoint_index in range (0, len(data_array[scan_index][0]['Energy']) ):
+			x = data_array[scan_index][0]['Energy'][datapoint_index] - edges[0]
 			# how to get integer part + 1?????
-			assignBinNum = int (x / binWidth) + 1
+			assign_bin_num = int(x / bin_width) + 1
 			# print assignBinNum
-			arrayOfBins[assignBinNum-1].append([indexOfScan,indexOfDataPoint])
+			bin_array[assign_bin_num-1].append([scan_index, datapoint_index])
 	print "Assign data points completed"   
 	print
-	return arrayOfBins
+	return bin_array
 
-def calculateAvgMCA(arrayOfBins, arrayOfPoints):
+def calculate_avg_mca(arrayOfBins, arrayOfPoints):
 	binNum = len(arrayOfBins)
     
 	# Initial 4 arrays for 4 Average of MCAs
@@ -168,7 +167,7 @@ def calculateAvgMCA(arrayOfBins, arrayOfPoints):
 	return mca1AvgArray, mca2AvgArray, mca3AvgArray, mca4AvgArray
 
 
-def calculateAvgOfScalers(arrayOfBins, arrayOfPoints):
+def calculate_avg_scalers(arrayOfBins, arrayOfPoints):
 
 	binNum = len(arrayOfBins)
     
@@ -260,7 +259,7 @@ def plot_one_avg_scaler(mean_energy_array, scalerArray, name):
 	plt.show()
     
     
-def getPFY_Avg(mcaAvgArray, enStart, enStop):
+def get_pfy_avg(mcaAvgArray, enStart, enStop):
 
 	print "Getting PFY ROIs"
 
