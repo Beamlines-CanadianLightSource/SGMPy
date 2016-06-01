@@ -3,8 +3,8 @@
 from praxes.io import spec
 import matplotlib
 import matplotlib.pyplot as plt
-from matplotlib.mlab import griddata
-from matplotlib.colors import colorConverter
+# from matplotlib.mlab import griddata
+# from matplotlib.colors import colorConverter
 import numpy as np
 from scan_details import *
 from basic_plot import *
@@ -362,6 +362,8 @@ def mca_division(mca_avg_array, dividend_mca, divisor_mca):
 
 def plot_mca_division(bins_mean_array, mca_avg_array, dividend_mca, divisor_mca, start_energy, end_energy):
 
+	print "Plotting disivion SDD."    
+	plt.close('all')
 	new_mca_array = mca_division(mca_avg_array, dividend_mca, divisor_mca)
 	pfy_data = get_one_pfy_avg(new_mca_array, start_energy, end_energy)
 	# print "x:", bins_mean_array
