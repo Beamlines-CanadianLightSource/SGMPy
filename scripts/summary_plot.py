@@ -6,7 +6,7 @@ from scan_details import *
 from basic_plot import *
 
 
-def summary_plot(opened_file, name, enStart=None, enStop=None):
+def summary_plot(opened_file, name, start_energy=None, stop_energy=None):
 	# mandetory to close all the existing matplot figures
 	plt.close('all')
 	scan_array = check_scan_variety(opened_file)
@@ -17,33 +17,27 @@ def summary_plot(opened_file, name, enStart=None, enStop=None):
 	if name == "TEY" or name == "I0" or name == "Diode" or name == "Epoch" or name == "SDD1_OCR" or name == "SDD1_ICR" or name == "SDD2_OCR" or name == "SDD2_ICR" or name == "SDD3_OCR" or name == "SDD3_ICR" or name == "SDD4_OCR" or name == "SDD4_ICR":
 		generate_summary_plot_with_scalers(cscan_array, sgm_data, name)
 	elif name == "MCA1" or name == "MCA2" or name == "MCA3" or name == "MCA4":
-		generate_summary_plot_with_mcas(cscan_array, sgm_data, name, enStart, enStop)
+		generate_summary_plot_with_mcas(cscan_array, sgm_data, name, start_energy, stop_energy)
 	else:
 		print "Errors with the scaler input"
 	return cscan_array
 
 
-def generate_summary_plot_with_mcas(cscan_array, sgmData, mca_name, enStart, enStop):
-
-	if mca_name == "MCA1":
-		mca = 1
-	elif mca_name == "MCA2":
-		mca = 2
-	elif mca_name == "MCA3":
-		mca = 3
-	elif mca_name == "MCA4":
-		mca = 4
+def generate_summary_plot_with_mcas(cscan_array, sgm_data, mca_name, start_energy, stop_energy):
+        
+	mca_dict = {'MCA1': 0, 'MCA2': 1, 'MCA3': 2, 'MCA4': 3}
+	mca = mca_dict[mca_name]
          
 	str_scaler_name = mca_name
 	total_cscan_num = len(cscan_array)
 	for index in range (0, total_cscan_num):
 		real_cscan_number = cscan_array[index]
 		cscan_index = real_cscan_number - 1
-		scanNumList=np.empty(len(sgmData[0][cscan_index]['Energy']))
+		scanNumList=np.empty(len(sgm_data[0][cscan_index]['Energy']))
 		scanNumList.fill(real_cscan_number)
         
-		energy_array = sgmData[0][cscan_index]['Energy']
-		total_pfy = get_one_pfy(sgmData, mca_name, enStart, enStop)
+		energy_array = sgm_data[0][cscan_index]['Energy']
+		total_pfy = get_one_pfy(sgm_data, mca_name, start_energy, stop_energy)
 
 		#print "Generating plot for scan No.", real_cscan_number
 		plt.scatter(energy_array, scanNumList, c=total_pfy[cscan_index],  s=10, linewidths=0)
@@ -59,17 +53,17 @@ def generate_summary_plot_with_mcas(cscan_array, sgmData, mca_name, enStart, enS
 	plt.show()
 
 
-def generate_summary_plot_with_scalers(cscan_array, sgmData, scaler_name):
+def generate_summary_plot_with_scalers(cscan_array, sgm_data, scaler_name):
 	str_scaler_name = scaler_name
 	total_cscan_num = len(cscan_array)
 	for index in range (0, total_cscan_num):
 		real_cscan_number = cscan_array[index]
 		cscan_index = real_cscan_number - 1
-		scanNumList=np.empty(len(sgmData[0][cscan_index]['Energy']))
+		scanNumList=np.empty(len(sgm_data[0][cscan_index]['Energy']))
 		# create a list including all the scan number
 		scanNumList.fill(real_cscan_number)
 		# print "Generating plot for scan No.", real_cscan_number
-		plt.scatter(sgmData[0][cscan_index]['Energy'], scanNumList, c=sgmData[0][cscan_index][str_scaler_name],  s=10, linewidths=0)
+		plt.scatter(sgm_data[0][cscan_index]['Energy'], scanNumList, c=sgm_data[0][cscan_index][str_scaler_name],  s=10, linewidths=0)
 		print "Generated plot for scan No.", real_cscan_number
     
 	plt.ylim(0, total_cscan_num+1)
@@ -82,32 +76,31 @@ def generate_summary_plot_with_scalers(cscan_array, sgmData, scaler_name):
 	plt.show()
 
     
-def getAllScanNum(fileDirectory):
-	OpenedFile = openDataFile(fileDirectory)
-	scanNumArray = OpenedFile.keys()
+def get_all_scan_num(opened_file):
+	scan_num_array = opened_file.keys()
 	# convert char(string) to integer
-	scanNumArray = map(int, scanNumArray)
-	return scanNumArray
+	scan_num_array = map(int, scan_num_array)
+	return scan_num_array
 
 
-def generateGoodScanArray(scanNumArray,badScanStr):
-	print "These are the original scan numbers: ", scanNumArray
+def generate_good_scan_array(scan_num_array, bad_scan_str):
+	print "These are the original scan numbers: ", scan_num_array
 	print
 	# if badScanStr is null, then return original arrays
-	if badScanStr == '':
-		return scanNumArray
+	if bad_scan_str == '':
+		return scan_num_array
 	# to get good scan numbers
 	else:
 		# split the array based on comma symbol
-		badScanNumArray = badScanStr.split(',', )
+		bad_scan_num_array = bad_scan_str.split(',', )
 		# convert char(string) to int
-		badScanNumArray = map(int, badScanNumArray)
+		bad_scan_num_array = map(int, bad_scan_num_array)
 		print "These are bad scan numbers: ", badScanNumArray
 		print
 		# remove all the bad scan number from the original list
-		for i in range (0, len(badScanNumArray)):
-			scanNumArray.remove(badScanNumArray[i])
+		for i in range (0, len(bad_scan_num_array)):
+			scan_num_array.remove(bad_scan_num_array[i])
 
-		print "These are all good scan numbers: ", scanNumArray
-		goodScan = scanNumArray
-		return goodScan
+		print "These are all good scan numbers: ", scan_num_array
+		good_scan = scan_num_array
+		return good_scan

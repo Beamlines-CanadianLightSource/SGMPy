@@ -2,15 +2,19 @@
 
 import os
 from praxes.io import spec
+from praxes.io.phynx import File
 import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
 import numpy as np
 
 # For Windows, Please use "/" instead of "\" in the file directory (URI)
-def openDataFile(fileDirectory):
-	file = spec.open(fileDirectory)
-	return file
+def open_spec_data_file(file_directory):
+	opened_file = spec.open(file_directory)
+	return opened_file
 
+def open_hdf5_file(file_directory):
+	opened_file = File(file_directory)
+	return opened_file
 
 def get_abs_path(rel_path):
 	script_dir = os.path.dirname(os.path.realpath('__file__'))
@@ -18,47 +22,44 @@ def get_abs_path(rel_path):
 	return abs_path
 
 
-def getTotalScanNum(fileDirectory):
-	OpenedFile = openDataFile(fileDirectory)
-	totalScanNum = len(OpenedFile.keys())
-	return totalScanNum
+def get_total_scan_num(opened_file):
+	total_scan_num = len(opened_file.keys())
+	return total_scan_num
     
     
-def getBasicScanDetails(fileDirectory):
-	OpenedFile = openDataFile(fileDirectory)
-	ScanDetailsList = OpenedFile.keys()
-	for i in range(0,len(ScanDetailsList)):
-		labels = OpenedFile[ScanDetailsList[i]].attrs['labels']
-		command = OpenedFile[ScanDetailsList[i]].attrs['command']
-		date = OpenedFile[ScanDetailsList[i]].attrs['date']
-		print 'Scan:', ScanDetailsList[i], '    The Command is: ',command, '    DateTime: ', date
+def get_scan_details(opened_file):
+	scan_details_list = opened_file.keys()
+	for i in range(0,len(scan_details_list)):
+		labels = opened_file[scan_details_list[i]].attrs['labels']
+		command = opened_file[scan_details_list[i]].attrs['command']
+		date = opened_file[scan_details_list[i]].attrs['date']
+		print 'Scan:', scan_details_list[i], '    The Command is: ',command, '    DateTime: ', date
 		print
         
         
-def checkFileType(fileDirectory):
-	OpenedFile = openDataFile(fileDirectory)
-	scan = OpenedFile['1']
-	keysList = scan.keys()
-	# Iterate keys in the list
-	for i in range(0,len(keysList)):
-		if keysList[i] == 'Energy':
-			return 'This is the data file of spectra.'
-		elif keysList[i] == 'Hex_XP':
-			return 'This is a map data file.'
-	# It is a weird case, neither map nor spectra file
-	return 'invalid data file!!!'
+#def checkFileType(opened_file):
+#	scan = opened_file['1']
+#	keys_list = scan.keys()
+#	# Iterate keys in the list
+#	for i in range(0,len(keys_list)):
+#		if keys_list[i] == 'Energy':
+#			return 'This is the data file of spectra.'
+#		elif keys_list[i] == 'Hex_XP':
+#			return 'This is a map data file.'
+#	# It is a weird case, neither map nor spectra file
+#	return 'invalid data file!!!'
 
 
-def check_scan_variety(OpenedFile):
+def check_scan_variety(opened_file):
 	cmesh_array = []
 	c_array = []
 	a_array = []
 	mesh_array = []
     
-	for i in range (1, len(OpenedFile)+1):
+	for i in range (1, len(opened_file)+1):
 		# print "Scan No.", i
 		string=str(i)
-		string =  OpenedFile[string].attrs['command']
+		string =  opened_file[string].attrs['command']
 		temp_array = string.split( )
 		if temp_array[0] == "cmesh":
 			cmesh_array.append(i)

@@ -3,8 +3,6 @@
 from praxes.io import spec
 import matplotlib
 import matplotlib.pyplot as plt
-# from matplotlib.mlab import griddata
-# from matplotlib.colors import colorConverter
 import numpy as np
 from scan_details import *
 from basic_plot import *
