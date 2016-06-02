@@ -95,7 +95,7 @@ def generate_good_scan_array(scan_num_array, bad_scan_str):
 		bad_scan_num_array = bad_scan_str.split(',', )
 		# convert char(string) to int
 		bad_scan_num_array = map(int, bad_scan_num_array)
-		print "These are bad scan numbers: ", badScanNumArray
+		print "These are bad scan numbers: ", bad_scan_num_array
 		print
 		# remove all the bad scan number from the original list
 		for i in range (0, len(bad_scan_num_array)):
