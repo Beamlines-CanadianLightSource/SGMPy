@@ -225,28 +225,37 @@ def calculate_avg_scalers(arrayOfBins, arrayOfPoints):
 	return teyAvgArray, i0AvgArray, diodeAvgArray
 
 
-def plotAvgOfMAC(binNum, avgMCA):
+def plot_incident_emission_en_coordinate_for_avg_mca(bins_mean_array, avg_mca, name):
     
+	print "Plotting incident v emission energy coordinate based on average of MCAs"    
 	plt.close('all')
     
-	binNumForX = [[]for i in range(binNum)]
-	for bin in range (0, binNum):
-		binNumForX[bin]=np.empty(256)
-		# bin number start from 1
-		binNumForX[bin].fill(bin+1)
+	mca_dict = {'MCA1': 0, 'MCA2': 1, 'MCA3': 2, 'MCA4': 3}
+	sub_mca_array_index = mca_dict[name]
+	sub_mca_array = avg_mca[sub_mca_array_index]
+    
+	num_of_bin = len (bins_mean_array) 
+    
+	bin_num_for_x = [[]for i in range(num_of_bin)]
+	for bin in range (0, num_of_bin):
+		bin_num_for_x[bin]=np.empty(256)
+		# fill energy into the array
+		bin_num_for_x[bin].fill(bins_mean_array[bin])
 
 	# generate a list of number to present 1 - 256 bins for emission energy
-	binNumForY = list(range(1,257))
+	bin_num_for_y = list(range(1,257))
 
-	for x in range (0, binNum):
-		plt.scatter(binNumForX[x], binNumForY, c= avgMCA[x] ,s=7, linewidths=0)
+	for x in range (0, num_of_bin):
+		plt.scatter(bin_num_for_x[x], bin_num_for_y, c= sub_mca_array[x], s=7, linewidths=0)
         
-	plt.xlabel('Bin Numbers for Incident Energy')
-	plt.ylabel('Bin Numbers for Emission Energy')
+	plt.xlabel('Incident Energy (eV)')
+	plt.ylabel('Emission Energy (eV)')
 	plt.show()
+	print "Incident Energy range:", bin_num_for_x[0][0], "-", bin_num_for_x[-1][0]
+	print "Incident Energy range:", bin_num_for_y[0], "-", bin_num_for_y[-1]
     
     
-def get_pfy_avg(mcaAvgArray, enStart, enStop):
+def get_pfy_avg(mca_avg_array, start_energy, stop_energy):
 
 	print "Getting PFY ROIs"
 
@@ -255,11 +264,11 @@ def get_pfy_avg(mcaAvgArray, enStart, enStop):
 	pfy3=[]
 	pfy4=[]
 
-	for i in range(0, len(mcaAvgArray[0])):
-		pfy1.append(np.sum(mcaAvgArray[0][i][enStart:enStop]))
-		pfy2.append(np.sum(mcaAvgArray[1][i][enStart:enStop]))
-		pfy3.append(np.sum(mcaAvgArray[2][i][enStart:enStop]))
-		pfy4.append(np.sum(mcaAvgArray[3][i][enStart:enStop]))
+	for i in range(0, len(mca_avg_array[0])):
+		pfy1.append(np.sum(mca_avg_array[0][i][start_energy:stop_energy]))
+		pfy2.append(np.sum(mca_avg_array[1][i][start_energy:stop_energy]))
+		pfy3.append(np.sum(mca_avg_array[2][i][start_energy:stop_energy]))
+		pfy4.append(np.sum(mca_avg_array[3][i][start_energy:stop_energy]))
 	
 	return pfy1, pfy2, pfy3, pfy4
 
@@ -287,7 +296,7 @@ def plot_one_avg_scaler(mean_energy_array, scaler_array, name):
 
 def plot_avg_xas_all(energy_array, scaler_array, pfy_data):
 	
-	print "Plotting XAS."    
+	print "Plotting average XAS."    
 	plt.close('all')
 
 	en = energy_array
