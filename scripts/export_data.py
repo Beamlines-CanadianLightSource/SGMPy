@@ -4,19 +4,19 @@ from numpy import arange
 from average_plot import *
 
 
-def export_data(file_directory, mean_energy_array, name, avg_scaler, pfy_data):
-	headers = get_header(file_directory)
+def export_data(export_file_directory, origin_file_directory, mean_energy_array, name, avg_scaler, pfy_data):
+	headers = get_header(origin_file_directory)
 	mca_dict = {'MCA1': 0, 'MCA2': 1, 'MCA3': 2, 'MCA4': 3}
 	scaler_dict = {'TEY': 0, 'I0': 1, 'Diode': 2}
     
 	if name == "MCA1" or name == "MCA2" or name == "MCA3" or name == "MCA4":
 		sub_pfy_index = int(mca_dict[name])
-		export_pfy(headers, mean_energy_array, pfy_data[sub_pfy_index], name)
+		export_pfy(export_file_directory, headers, mean_energy_array, pfy_data[sub_pfy_index], name)
 		print "Export data complete!"
 
 	elif name == "TEY" or name == "I0" or name == "Diode":
 		sub_scaler_index = scaler_dict[name]
-		export_scaler(headers, mean_energy_array, avg_scaler[sub_scaler_index], name)
+		export_scaler(export_file_directory, headers, mean_energy_array, avg_scaler[sub_scaler_index], name)
 		print "Export data complete!"
 
 	else:
@@ -34,8 +34,8 @@ def get_date_time(header_lines):
 	return str_date_time[3:]
     
 
-def export_pfy(headers, mean_energy_array, sub_pfy, name):
-	with open("output_data.xas", "w") as out_file:
+def export_pfy(export_file_directory, headers, mean_energy_array, sub_pfy, name):
+	with open(export_file_directory, "w") as out_file:
 		# write header into the data file
 		out_file.write("# Beamline.file-content: average ")
 		out_file.write(name)
@@ -64,8 +64,8 @@ def export_pfy(headers, mean_energy_array, sub_pfy, name):
 			out_file.write(out_string)
 
 
-def export_scaler(headers, mean_energy_array, sub_avg_scaler, name):
-	with open("output_data1.xas", "w") as out_file:
+def export_scaler(export_file_directory, headers, mean_energy_array, sub_avg_scaler, name):
+	with open(export_file_directory, "w") as out_file:
 		# write header into the data file
 		out_file.write("# Beamline.file-content: average ")
 		out_file.write(name)

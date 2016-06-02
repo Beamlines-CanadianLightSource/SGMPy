@@ -234,16 +234,17 @@ def plot_incident_emission_en_coordinate_for_avg_mca(bins_mean_array, avg_mca, n
 	sub_mca_array_index = mca_dict[name]
 	sub_mca_array = avg_mca[sub_mca_array_index]
     
-	num_of_bin = len (bins_mean_array) 
+	num_of_bin = len (bins_mean_array)
+	num_of_emission_bins = len(sub_mca_array[0])
     
 	bin_num_for_x = [[]for i in range(num_of_bin)]
 	for bin in range (0, num_of_bin):
-		bin_num_for_x[bin]=np.empty(256)
+		bin_num_for_x[bin]=np.empty(num_of_emission_bins)
 		# fill energy into the array
 		bin_num_for_x[bin].fill(bins_mean_array[bin])
 
 	# generate a list of number to present 1 - 256 bins for emission energy
-	bin_num_for_y = list(range(1,257))
+	bin_num_for_y = list(range(1,num_of_emission_bins+1))
 
 	for x in range (0, num_of_bin):
 		plt.scatter(bin_num_for_x[x], bin_num_for_y, c= sub_mca_array[x], s=7, linewidths=0)
