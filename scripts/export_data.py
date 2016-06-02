@@ -28,21 +28,27 @@ def get_header(file_directory):
 		lines = content.readlines()
 	return lines[:19]
 
+def get_date_time(header_lines):
+	str_date_time = header_lines[2]
+	print str_date_time[3:]
+	return str_date_time[3:]
+    
 
 def export_pfy(headers, mean_energy_array, sub_pfy, name):
 	with open("output_data.xas", "w") as out_file:
 		# write header into the data file
-		out_file.write("SGM Datafile")
+		out_file.write("# Beamline.file-content: average ")
+		out_file.write(name)
 		out_file.write("\n")
-		out_file.write("\n")
-		for i in range (0, 19):
-			out_file.write(headers[i])
-		out_file.write("-----------------------------------------------------------")
-		out_file.write("\n")
+		out_file.write("# Beamline.name: SGM\n")
+		out_file.write("# Beamline.grating: Medium Energy\n")
+		out_file.write("# Time.start: ")
+		str_date_time = get_date_time(headers)
+		out_file.write(str_date_time)
+		out_file.write("#-----------------------------------------------------------\n")
     
 		# write table header into the data file
-		out_file.write("Energy")
-		out_file.write("\t")
+		out_file.write("# Energy\t")
 		out_file.write(name)
 		out_file.write("\n")
     
@@ -61,17 +67,18 @@ def export_pfy(headers, mean_energy_array, sub_pfy, name):
 def export_scaler(headers, mean_energy_array, sub_avg_scaler, name):
 	with open("output_data1.xas", "w") as out_file:
 		# write header into the data file
-		out_file.write("SGM Datafile")
+		out_file.write("# Beamline.file-content: average ")
+		out_file.write(name)
 		out_file.write("\n")
-		out_file.write("\n")
-		for i in range (0, 19):
-			out_file.write(headers[i])
-		out_file.write("-----------------------------------------------------------")
-		out_file.write("\n")
+		out_file.write("# Beamline.name: SGM\n")
+		out_file.write("# Beamline.grating: Medium Energy\n")
+		out_file.write("# Time.start: ")
+		str_date_time = get_date_time(headers)
+		out_file.write(str_date_time)
+		out_file.write("#-----------------------------------------------------------\n")
     
 		# write table header into the data file
-		out_file.write("Energy")
-		out_file.write("\t")
+		out_file.write("# Energy\t")
 		out_file.write(name)
 		out_file.write("\n")
     
