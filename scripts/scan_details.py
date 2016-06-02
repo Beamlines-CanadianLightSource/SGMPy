@@ -3,8 +3,8 @@
 import os
 from praxes.io import spec
 from praxes.io.phynx import File
-import matplotlib.pyplot as plt
-import matplotlib.mlab as mlab
+#import matplotlib.pyplot as plt
+# import matplotlib.mlab as mlab
 import numpy as np
 
 # For Windows, Please use "/" instead of "\" in the file directory (URI)

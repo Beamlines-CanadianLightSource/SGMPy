@@ -1,5 +1,7 @@
 # Present summary for all scans
 
+import matplotlib
+matplotlib.use('agg')
 import matplotlib.pyplot as plt
 import numpy as np
 from scan_details import *

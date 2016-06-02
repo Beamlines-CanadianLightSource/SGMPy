@@ -5,7 +5,6 @@ import os
 import numpy as np
 
 
-
 class TestSummaryPlot(unittest.TestCase):
 
 	def test_get_all_scan_num(self):
