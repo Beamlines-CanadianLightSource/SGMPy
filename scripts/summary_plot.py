@@ -17,17 +17,20 @@ def summary_plot(opened_file, name, start_energy=None, stop_energy=None):
 	sgm_data=openAllSGMXAS(opened_file)
     
 	if name == "TEY" or name == "I0" or name == "Diode" or name == "Epoch" or name == "SDD1_OCR" or name == "SDD1_ICR" or name == "SDD2_OCR" or name == "SDD2_ICR" or name == "SDD3_OCR" or name == "SDD3_ICR" or name == "SDD4_OCR" or name == "SDD4_ICR":
-		generate_summary_plot_with_scalers(cscan_array, sgm_data, name)
-	elif name == "MCA1" or name == "MCA2" or name == "MCA3" or name == "MCA4":
-		generate_summary_plot_with_mcas(cscan_array, sgm_data, name, start_energy, stop_energy)
+		generate_summary_plot_with_scaler(cscan_array, sgm_data, name)
+	elif name == "PFY_SDD1" or name == "PFY_SDD2" or name == "PFY_SDD3" or name == "PFY_SDD4":
+		generate_summary_plot_with_pfy(cscan_array, sgm_data, name, start_energy, stop_energy)
 	else:
 		print "Errors with the scaler input"
 	return cscan_array
 
 
-def generate_summary_plot_with_mcas(cscan_array, sgm_data, mca_name, start_energy, stop_energy):
+def generate_summary_plot_with_pfy(cscan_array, sgm_data, pfy_name, start_energy, stop_energy):
         
+	# MCA is SDD; after getting PFY of ROI then it becomes PFY_SDD
+	pfy_dict = {'PFY_SDD1': 'MCA1', 'PFY_SDD2': 'MCA2', 'PFY_SDD3': 'MCA3', 'PFY_SDD4': 'MCA4'}
 	mca_dict = {'MCA1': 0, 'MCA2': 1, 'MCA3': 2, 'MCA4': 3}
+	mca_name = pfy_dict[pfy_name]
 	mca = mca_dict[mca_name]
          
 	str_scaler_name = mca_name
@@ -55,7 +58,7 @@ def generate_summary_plot_with_mcas(cscan_array, sgm_data, mca_name, start_energ
 	plt.show()
 
 
-def generate_summary_plot_with_scalers(cscan_array, sgm_data, scaler_name):
+def generate_summary_plot_with_scaler(cscan_array, sgm_data, scaler_name):
 	str_scaler_name = scaler_name
 	total_cscan_num = len(cscan_array)
 	for index in range (0, total_cscan_num):

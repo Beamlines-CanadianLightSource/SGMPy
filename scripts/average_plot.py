@@ -4,6 +4,7 @@ from praxes.io import spec
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
+from cStringIO import StringIO
 from scan_details import *
 from basic_plot import *
 
@@ -118,7 +119,7 @@ def calculate_avg_mca(arrayOfBins, arrayOfPoints):
 		mca4AvgArray[i] = np.empty(256)
 		mca4AvgArray[i].fill(0)
 
-	print "Start calcualting Average of MCA1, MCA2, MCA3 & MCA4..."
+	print "Start calcualting Average of SDD1(MCA1), SDD2(MCA2), SDD3(MCA3) & SDD4(MCA4)..."
         
 	for index1 in range (0, binNum):
 		# get the total number of data points in a particular bins
@@ -225,12 +226,12 @@ def calculate_avg_scalers(arrayOfBins, arrayOfPoints):
 	return teyAvgArray, i0AvgArray, diodeAvgArray
 
 
-def plot_incident_emission_en_coordinate_for_avg_mca(bins_mean_array, avg_mca, name):
+def plot_incident_emission_en_coordinate_for_avg_sdd(bins_mean_array, avg_mca, name):
     
-	print "Plotting incident v emission energy coordinate based on average of MCAs"    
+	print "Plotting incident v emission energy coordinate based on average of SDD(MCA)"    
 	plt.close('all')
-    
-	mca_dict = {'MCA1': 0, 'MCA2': 1, 'MCA3': 2, 'MCA4': 3}
+	# MCA is SDD and SDD is MCA
+	mca_dict = {'SDD1': 0, 'SDD2': 1, 'SDD3': 2, 'SDD4': 3}
 	sub_mca_array_index = mca_dict[name]
 	sub_mca_array = avg_mca[sub_mca_array_index]
     
@@ -307,15 +308,15 @@ def plot_avg_xas_all(energy_array, scaler_array, pfy_data):
 
 	plt.figure(1)
 	plt.subplot(4, 2, 1)
-	plt.plot(en, i0)
+	plt.plot(en, tey)
 	# add lable for x and y axis
 	plt.xlabel('Energy (eV)')
-	plt.ylabel('I0')
+	plt.ylabel('TEY')
     
 	plt.subplot(4, 2, 2)
-	plt.plot(en, tey)
+	plt.plot(en, i0)
 	plt.xlabel('Energy (eV)')
-	plt.ylabel('TEY')
+	plt.ylabel('I0')
     
 	plt.subplot(4, 2, 3)
 	plt.plot(en, diode)
@@ -349,17 +350,17 @@ def plot_avg_xas_all(energy_array, scaler_array, pfy_data):
 	plt.show()
     
     
-def mca_division(mca_avg_array, dividend_mca, divisor_mca):
+def sdd_division(mca_avg_array, dividend_mca, divisor_mca):
 	# initial new_mca_array
 	new_mca_array = []
-	# initial a dict for 4 MCAs name
-	dictionary = {'MCA1': 0, 'MCA2': 1, 'MCA3': 2, 'MCA4': 3}
+	# initial a dictionary for 4 SDD(MCA) name
+	mca_dict = {'SDD1': 0, 'SDD2': 1, 'SDD3': 2, 'SDD4': 3}
 	if dividend_mca == divisor_mca :
-		print "Cannot division same MCAs"
+		print "Cannot division same SDD(MCA)"
 	# calculate division
 	else:
-		dividend_mca_index = dictionary[dividend_mca]
-		divisor_mca_index = dictionary[divisor_mca]
+		dividend_mca_index = mca_dict[dividend_mca]
+		divisor_mca_index = mca_dict[divisor_mca]
 		for i in range (0, len(mca_avg_array[0])):
 			divisor_value = mca_avg_array[divisor_mca_index][i]
 			# print mca_avg_array[dividend_mca_index][i] / mca_avg_array[divisor_mca_index][i]
@@ -368,16 +369,20 @@ def mca_division(mca_avg_array, dividend_mca, divisor_mca):
 	return new_mca_array
 
 
-def plot_mca_division(bins_mean_array, mca_avg_array, dividend_mca, divisor_mca, start_energy, end_energy):
+def plot_sdd_division(bins_mean_array, mca_avg_array, dividend_mca, divisor_mca, start_energy, end_energy):
 
 	print "Plotting disivion SDD."    
 	plt.close('all')
-	new_mca_array = mca_division(mca_avg_array, dividend_mca, divisor_mca)
+	new_mca_array = sdd_division(mca_avg_array, dividend_mca, divisor_mca)
 	pfy_data = get_one_pfy_avg(new_mca_array, start_energy, end_energy)
 	# print "x:", bins_mean_array
 	# print "y:", pfy_data
 	plt.plot(bins_mean_array, pfy_data)
 	plt.xlabel('Energy (eV)')
-	plt.ylabel('Value')
+	str_y_axis = StringIO()
+	str_y_axis.write(dividend_mca)
+	str_y_axis.write('/')
+	str_y_axis.write(divisor_mca)
+	plt.ylabel(str_y_axis.getvalue())
 	plt.show()
     

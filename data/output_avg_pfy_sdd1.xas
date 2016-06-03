@@ -1,9 +1,9 @@
-# Beamline.file-content: average MCA1
+# Beamline.file-content: average PFY_SDD1
 # Beamline.name: SGM
 # Beamline.grating: Medium Energy
 # Time.start: Sun May 15 11:19:51 2016
 #-----------------------------------------------------------
-# Energy	MCA1
+# Energy	PFY_SDD1
 690.05	8816.28846154
 690.15	9158.13793103
 690.25	9165.10810811

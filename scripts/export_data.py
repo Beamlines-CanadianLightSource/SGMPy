@@ -6,11 +6,12 @@ from average_plot import *
 
 def export_data(export_file_directory, origin_file_directory, mean_energy_array, name, avg_scaler, pfy_data):
 	headers = get_header(origin_file_directory)
-	mca_dict = {'MCA1': 0, 'MCA2': 1, 'MCA3': 2, 'MCA4': 3}
+	# MCA is SDD; after getting PFY of ROI then it becomes PFY_SDD
+	pfy_dict = {'PFY_SDD1': 0, 'PFY_SDD2': 1, 'PFY_SDD3': 2, 'PFY_SDD4': 3}
 	scaler_dict = {'TEY': 0, 'I0': 1, 'Diode': 2}
     
-	if name == "MCA1" or name == "MCA2" or name == "MCA3" or name == "MCA4":
-		sub_pfy_index = int(mca_dict[name])
+	if name == "PFY_SDD1" or name == "PFY_SDD2" or name == "PFY_SDD3" or name == "PFY_SDD4":
+		sub_pfy_index = int(pfy_dict[name])
 		export_pfy(export_file_directory, headers, mean_energy_array, pfy_data[sub_pfy_index], name)
 		print "Export data complete!"
 
