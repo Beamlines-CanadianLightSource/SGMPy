@@ -64,7 +64,7 @@ def openSGMXAS(sgmFile, scanNum):
 
 def openAllSGMXAS(opened_file):
 	totalScanNum = len(opened_file.keys())
-	print "Total scan: ", totalScanNum
+	# print "OriginalTotal scan: ", totalScanNum
 	scan=[]
 	mca1=[[] for a in range(totalScanNum)]
 	mca2=[[] for a in range(totalScanNum)]
