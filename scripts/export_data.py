@@ -29,11 +29,17 @@ def get_header(file_directory):
 		lines = content.readlines()
 	return lines[:19]
 
+
 def get_date_time(header_lines):
 	str_date_time = header_lines[2]
 	print str_date_time[3:]
 	return str_date_time[3:]
-    
+
+
+def get_original_file_name(header_lines):
+	str_file_name = header_lines[0]
+	return str_file_name[3:]
+
 
 def export_pfy(export_file_directory, headers, mean_energy_array, sub_pfy, name):
 	with open(export_file_directory, "w") as out_file:
@@ -41,6 +47,9 @@ def export_pfy(export_file_directory, headers, mean_energy_array, sub_pfy, name)
 		out_file.write("# Beamline.file-content: average ")
 		out_file.write(name)
 		out_file.write("\n")
+		out_file.write("# Beamline.origin-filename: ")
+		str_origin_file_name = get_original_file_name(headers)
+		out_file.write(str_origin_file_name)
 		out_file.write("# Beamline.name: SGM\n")
 		out_file.write("# Beamline.grating: Medium Energy\n")
 		out_file.write("# Time.start: ")
@@ -71,6 +80,9 @@ def export_scaler(export_file_directory, headers, mean_energy_array, sub_avg_sca
 		out_file.write("# Beamline.file-content: average ")
 		out_file.write(name)
 		out_file.write("\n")
+		out_file.write("# Beamline.origin-filename: ")
+		str_origin_file_name = get_original_file_name(headers)
+		out_file.write(str_origin_file_name)
 		out_file.write("# Beamline.name: SGM\n")
 		out_file.write("# Beamline.grating: Medium Energy\n")
 		out_file.write("# Time.start: ")
