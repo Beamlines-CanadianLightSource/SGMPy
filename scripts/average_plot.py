@@ -228,7 +228,7 @@ def calculate_avg_scalers(arrayOfBins, arrayOfPoints):
 	return teyAvgArray, i0AvgArray, diodeAvgArray
 
 
-def plot_incident_emission_en_coordinate_for_avg_sdd(bins_mean_array, avg_mca, name):
+def plot_excitation_emission_matrix(bins_mean_array, avg_mca, name):
     
 	print "Plotting incident v emission energy coordinate based on average of SDD(MCA)"    
 	plt.close('all')
@@ -257,7 +257,7 @@ def plot_incident_emission_en_coordinate_for_avg_sdd(bins_mean_array, avg_mca, n
 	plt.show()
 	print "Incident Energy range:", bin_num_for_x[0][0], "-", bin_num_for_x[-1][0]
 	print "Incident Energy range:", bin_num_for_y[0], "-", bin_num_for_y[-1]
-    
+	return bin_num_for_y
     
 def get_pfy_avg(mca_avg_array, start_energy, stop_energy):
 
