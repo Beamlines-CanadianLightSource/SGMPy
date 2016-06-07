@@ -64,7 +64,7 @@ def openSGMXAS(sgmFile, scanNum):
 
 def openAllSGMXAS(opened_file):
 	totalScanNum = len(opened_file.keys())
-	print "Total scan: ", totalScanNum
+	# print "OriginalTotal scan: ", totalScanNum
 	scan=[]
 	mca1=[[] for a in range(totalScanNum)]
 	mca2=[[] for a in range(totalScanNum)]
@@ -91,7 +91,7 @@ def openAllSGMXAS(opened_file):
 	return scan, mca1, mca2, mca3, mca4
 
 
-def getPFY(sgmData, enStart, enStop):
+def get_pfy(sgmData, enStart, enStop):
 
 	print "Getting PFY ROIs"
 
@@ -108,76 +108,85 @@ def getPFY(sgmData, enStart, enStop):
 	
 	return pfy1, pfy2, pfy3, pfy4
 	print "Done!"
-   
-# def get_one_pfy_mca(mca_array, start_energy, stop_energy):
-# 	pfy=[[] for i in range(len(mca_array))]
-# 	for i in range(0, len(mca_array)):
-# 		for j in range(0, len(mca_array[i])):
-# 			pfy[i].append(np.sum(mca_array[i][j][start_energy:stop_energy]))
-# 		# print "Length of PFY:", len(pfy[i])
-# 		# print "Length of Energy", sgm_data[0][i]['Energy']
-# 	print "Done!"   
-# 	return pfy
 
-    
-def get_one_pfy(sgm_data, mca_name, enStart, enStop):
 
-	if mca_name == "MCA1":
-		mca = 1
-	elif mca_name == "MCA2":
-		mca = 2
-	elif mca_name == "MCA3":
-		mca = 3
-	elif mca_name == "MCA4":
-		mca = 4    
+def plot_xas(sgmData, name, pfy_data=None):
+	plt.close('all')
+	if name == "TEY" or name == "I0" or name == "Diode" or name == "SDD1_OCR" or name == "SDD1_ICR" or name == "SDD2_OCR" or name == "SDD2_ICR" or name == "SDD3_OCR" or name == "SDD3_ICR" or name == "SDD4_OCR" or name == "SDD4_ICR":
+		plot_xas_scaler(sgmData, name)
+	elif name == "PFY_SDD1" or name == "PFY_SDD2" or name == "PFY_SDD3" or name == "PFY_SDD4":
+		plot_xas_pfy(sgmData, pfy_data, name)
 	else:
-		print "Error!!!"
-    
-	print "Getting PFY ROIs for", mca_name
+		print "Errors with the name input"
 
-	pfy=[[] for i in range(len(sgm_data[1]) )]
-	for i in range(0, len(sgm_data[mca])):
-		for j in range(0, len(sgm_data[mca][i])):
-			pfy[i].append(np.sum(sgm_data[mca][i][j][enStart:enStop]))
-		# print "Length of PFY:", len(pfy[i])
-		# print "Length of Energy", sgm_data[0][i]['Energy']
-	print "Done!"   
-	return pfy
 
-def plotXAS_one(sgmData, pfyData, name):
-
-	print "Plotting %s" %name
-
-	en = sgmData[0]['Energy']
-	data = sgmData[0][name]	
-	
+def plot_xas_pfy(sgm_data, pfy_data, name):
+	print "Plotting", name, "Spectra"
+	pfy_dict = {'PFY_SDD1': 0, 'PFY_SDD2': 1, 'PFY_SDD3': 2, 'PFY_SDD4': 3}
+	pfy_index = pfy_dict[name]
+	sub_pfy_data = pfy_data[pfy_index]
+	en = sgm_data[0]['Energy']
+	data = sub_pfy_data
 	plt.plot(en, data)
+	plt.xlabel("Energy (eV)")
+	plt.ylabel(name)
 	plt.show()
 
-def plotXAS_all(sgmData, pfyData):
-	
+
+def plot_xas_scaler(sgm_data, name):
+	print "Plotting", name, "Spectra"
+	en = sgm_data[0]['Energy']
+	data = sgm_data[0][name]
+	plt.plot(en, data)
+	plt.xlabel("Energy (eV)")
+	plt.ylabel(name)
+	plt.show()
+
+
+def plot_xas_all(sgm_data, pfy_data):
+	plt.close('all')
 	print "Plotting XAS."
 
-	en = sgmData[0]['Energy']
-	tey = sgmData[0]['TEY']
-	i0 = sgmData[0]['I0']
-	diode = sgmData[0]['Diode']
+	en = sgm_data[0]['Energy']
+	tey = sgm_data[0]['TEY']
+	i0 = sgm_data[0]['I0']
+	diode = sgm_data[0]['Diode']
 
 	plt.figure(1)
-	plt.subplot(241)
-	plt.plot(en, i0)
-	plt.subplot(242)
+	plt.subplot(4, 2, 1)
 	plt.plot(en, tey)
-	plt.subplot(243)
+	plt.xlabel('Energy (eV)')
+	plt.ylabel('TEY')
+    
+	plt.subplot(4, 2, 2)
+	plt.plot(en, i0)
+	plt.xlabel('Energy (eV)')
+	plt.ylabel('I0')
+
+	plt.subplot(4, 2, 3)
 	plt.plot(en, diode)
-	plt.subplot(245)
-	plt.plot(en, pfyData[0])
-	plt.subplot(246)
-	plt.plot(en, pfyData[1])
-	plt.subplot(247)
-	plt.plot(en, pfyData[2])
-	plt.subplot(248)
-	plt.plot(en, pfyData[3])
+	plt.xlabel('Energy (eV)')
+	plt.ylabel('Diode')
+    
+	plt.subplot(4, 2, 5)
+	plt.plot(en, pfy_data[0])
+	plt.xlabel('Energy (eV)')
+	plt.ylabel('PFY_SDD1')
+    
+	plt.subplot(4, 2, 6)
+	plt.plot(en, pfy_data[1])
+	plt.xlabel('Energy (eV)')
+	plt.ylabel('PFY_SDD2')
+    
+	plt.subplot(4, 2, 7)
+	plt.plot(en, pfy_data[2])
+	plt.xlabel('Energy (eV)')
+	plt.ylabel('PFY_SDD3')
+    
+	plt.subplot(4, 2, 8)
+	plt.plot(en, pfy_data[3])
+	plt.xlabel('Energy (eV)')
+	plt.ylabel('PFY_SDD4')
 	plt.show()
 
 def getXRF(sgmData):

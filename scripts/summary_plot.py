@@ -16,12 +16,12 @@ def summary_plot(opened_file, name, start_energy=None, stop_energy=None):
 	print "C Scan are including: ", cscan_array
 	sgm_data=openAllSGMXAS(opened_file)
     
-	if name == "TEY" or name == "I0" or name == "Diode" or name == "Epoch" or name == "SDD1_OCR" or name == "SDD1_ICR" or name == "SDD2_OCR" or name == "SDD2_ICR" or name == "SDD3_OCR" or name == "SDD3_ICR" or name == "SDD4_OCR" or name == "SDD4_ICR":
+	if name == "TEY" or name == "I0" or name == "Diode" or name == "SDD1_OCR" or name == "SDD1_ICR" or name == "SDD2_OCR" or name == "SDD2_ICR" or name == "SDD3_OCR" or name == "SDD3_ICR" or name == "SDD4_OCR" or name == "SDD4_ICR":
 		generate_summary_plot_with_scaler(cscan_array, sgm_data, name)
 	elif name == "PFY_SDD1" or name == "PFY_SDD2" or name == "PFY_SDD3" or name == "PFY_SDD4":
 		generate_summary_plot_with_pfy(cscan_array, sgm_data, name, start_energy, stop_energy)
 	else:
-		print "Errors with the scaler input"
+		print "Errors with the name input"
 	return cscan_array
 
 
@@ -42,7 +42,7 @@ def generate_summary_plot_with_pfy(cscan_array, sgm_data, pfy_name, start_energy
 		scanNumList.fill(real_cscan_number)
         
 		energy_array = sgm_data[0][cscan_index]['Energy']
-		total_pfy = get_one_pfy(sgm_data, mca_name, start_energy, stop_energy)
+		total_pfy = get_one_pfy_from_all_scan(sgm_data, mca_name, start_energy, stop_energy)
 
 		#print "Generating plot for scan No.", real_cscan_number
 		plt.scatter(energy_array, scanNumList, c=total_pfy[cscan_index],  s=10, linewidths=0)
@@ -109,3 +109,29 @@ def generate_good_scan_array(scan_num_array, bad_scan_str):
 		print "These are all good scan numbers: ", scan_num_array
 		good_scan = scan_num_array
 		return good_scan
+
+    
+def get_one_pfy_from_all_scan(sgm_data, mca_name, enStart, enStop):
+
+	if mca_name == "MCA1":
+		mca = 1
+	elif mca_name == "MCA2":
+		mca = 2
+	elif mca_name == "MCA3":
+		mca = 3
+	elif mca_name == "MCA4":
+		mca = 4    
+	else:
+		print "Error!!!"
+    
+	print "Getting PFY ROIs for", mca_name
+
+	pfy=[[] for i in range(len(sgm_data[1]) )]
+	for i in range(0, len(sgm_data[mca])):
+		for j in range(0, len(sgm_data[mca][i])):
+			pfy[i].append(np.sum(sgm_data[mca][i][j][enStart:enStop]))
+		# print "Length of PFY:", len(pfy[i])
+		# print "Length of Energy", sgm_data[0][i]['Energy']
+	print "Done!"   
+	return pfy    
+    

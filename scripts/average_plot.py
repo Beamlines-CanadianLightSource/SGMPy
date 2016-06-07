@@ -27,6 +27,8 @@ def prepare_average_plot(good_scan, opened_file, start_energy, end_energy, numbe
 
 # Eliminate bad scans and select good scans (data points)
 def get_good_datapoint(good_scan_Array, opened_file):
+    
+	print "Total good scan numbers:", len(good_scan_Array)
 	# initial arrays    
 	scan=[]
 	mca1=[]
@@ -226,7 +228,7 @@ def calculate_avg_scalers(arrayOfBins, arrayOfPoints):
 	return teyAvgArray, i0AvgArray, diodeAvgArray
 
 
-def plot_incident_emission_en_coordinate_for_avg_sdd(bins_mean_array, avg_mca, name):
+def plot_excitation_emission_matrix(bins_mean_array, avg_mca, name):
     
 	print "Plotting incident v emission energy coordinate based on average of SDD(MCA)"    
 	plt.close('all')
@@ -255,7 +257,7 @@ def plot_incident_emission_en_coordinate_for_avg_sdd(bins_mean_array, avg_mca, n
 	plt.show()
 	print "Incident Energy range:", bin_num_for_x[0][0], "-", bin_num_for_x[-1][0]
 	print "Incident Energy range:", bin_num_for_y[0], "-", bin_num_for_y[-1]
-    
+	return bin_num_for_y
     
 def get_pfy_avg(mca_avg_array, start_energy, stop_energy):
 
@@ -287,12 +289,33 @@ def get_one_pfy_avg(mca_avg_array, start_energy, stop_energy):
 
 
 # plot a kind of average scaler
-def plot_one_avg_scaler(mean_energy_array, scaler_array, name):
-    
+def plot_avg_xas(mean_energy_array, name, scaler_data=None, pfy_data=None):
 	plt.close('all')
-	plt.plot(mean_energy_array, scaler_array)
+	if name == "TEY" or name == "I0" or name == "Diode":
+		plot_avg_xas_scaler(mean_energy_array, scaler_data, name)
+	elif name == "PFY_SDD1" or name == "PFY_SDD2" or name == "PFY_SDD3" or name == "PFY_SDD4":
+		plot_avg_xas_pfy(mean_energy_array, pfy_data, name)
+	else:
+		print "Errors with the name input"
+
+        
+def plot_avg_xas_scaler(mean_energy_array, scaler_data, name):
+	plt.close('all')
+	scaler_dict = {'TEY': 0, 'I0': 1, 'Diode':2}
+	scaler_index = scaler_dict[name]
+	plt.plot(mean_energy_array, scaler_data[scaler_index])
 	plt.xlabel('Energy (eV)')
-	plt.ylabel(['Average of',name])
+	plt.ylabel(name)
+	plt.show()
+    
+def plot_avg_xas_pfy(mean_energy_array, pfy_data, name):
+	plt.close('all')
+    
+	pfy_dict = {'PFY_SDD1': 0, 'PFY_SDD2': 1, 'PFY_SDD3': 2, 'PFY_SDD4': 3}
+	pfy_index = pfy_dict[name]
+	plt.plot(mean_energy_array, pfy_data[pfy_index])
+	plt.xlabel('Energy (eV)')
+	plt.ylabel(name)
 	plt.show()
 
 
@@ -362,10 +385,8 @@ def sdd_division(mca_avg_array, dividend_mca, divisor_mca):
 		dividend_mca_index = mca_dict[dividend_mca]
 		divisor_mca_index = mca_dict[divisor_mca]
 		for i in range (0, len(mca_avg_array[0])):
-			divisor_value = mca_avg_array[divisor_mca_index][i]
-			# print mca_avg_array[dividend_mca_index][i] / mca_avg_array[divisor_mca_index][i]
+			# print mca_avg_array[divisor_mca_index][i]
 			new_mca_array.append( mca_avg_array[dividend_mca_index][i] / mca_avg_array[divisor_mca_index][i])
-
 	return new_mca_array
 
 

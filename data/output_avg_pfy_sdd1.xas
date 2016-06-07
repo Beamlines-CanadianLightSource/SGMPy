@@ -1,6 +1,9 @@
 # Beamline.file-content: average PFY_SDD1
+# Beamline.origin-filename: Fe2O3.dat
 # Beamline.name: SGM
-# Beamline.grating: Medium Energy
+# Beamline.grating: Medium Energy.
+# Beamline.stripe: Silicon
+# Beamline.exit-slit: 10.0934
 # Time.start: Sun May 15 11:19:51 2016
 #-----------------------------------------------------------
 # Energy	PFY_SDD1
