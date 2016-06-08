@@ -172,15 +172,12 @@ def calculate_avg_scalers(arrayOfBins, arrayOfPoints):
 
 	binNum = len(arrayOfBins)
     
-	teyAvgArray = []
 	teyAvgArray = np.empty(binNum)
 	teyAvgArray.fill(0)
     
-	i0AvgArray = []
 	i0AvgArray = np.empty(binNum)
 	i0AvgArray.fill(0)
     
-	diodeAvgArray = []
 	diodeAvgArray = np.empty(binNum)
 	diodeAvgArray.fill(0)
     
@@ -373,32 +370,27 @@ def plot_avg_xas_all(energy_array, scaler_array, pfy_data):
 	plt.show()
     
     
-def sdd_division(mca_avg_array, dividend_mca, divisor_mca):
+def pfy_sdd_division(pfy_data, dividend_mca, divisor_mca):
 	# initial new_mca_array
-	new_mca_array = []
+	new_mca_array = np.empty(len(pfy_data[0]))
 	# initial a dictionary for 4 SDD(MCA) name
-	mca_dict = {'SDD1': 0, 'SDD2': 1, 'SDD3': 2, 'SDD4': 3}
-	if dividend_mca == divisor_mca :
+	pfy_dict = {'PFY_SDD1': 0, 'PFY_SDD2': 1, 'PFY_SDD3': 2, 'PFY_SDD4': 3}
+	if dividend_mca == divisor_mca:
 		print "Cannot division same SDD(MCA)"
 	# calculate division
 	else:
-		dividend_mca_index = mca_dict[dividend_mca]
-		divisor_mca_index = mca_dict[divisor_mca]
-		for i in range (0, len(mca_avg_array[0])):
-			# print mca_avg_array[divisor_mca_index][i]
-			new_mca_array.append( mca_avg_array[dividend_mca_index][i] / mca_avg_array[divisor_mca_index][i])
-	return new_mca_array
+		dividend_mca_index = pfy_dict[dividend_mca]
+		divisor_mca_index = pfy_dict[divisor_mca]
+		new_mca_array = np.array(pfy_data[dividend_mca_index]) / np.array(pfy_data[divisor_mca_index])
+		return new_mca_array
 
 
-def plot_sdd_division(bins_mean_array, mca_avg_array, dividend_mca, divisor_mca, start_energy, end_energy):
+def plot_pfy_sdd_division(bins_mean_array, pfy_data, dividend_mca, divisor_mca):
 
 	print "Plotting disivion SDD."    
 	plt.close('all')
-	new_mca_array = sdd_division(mca_avg_array, dividend_mca, divisor_mca)
-	pfy_data = get_one_pfy_avg(new_mca_array, start_energy, end_energy)
-	# print "x:", bins_mean_array
-	# print "y:", pfy_data
-	plt.plot(bins_mean_array, pfy_data)
+	division_pfy_array = pfy_sdd_division(pfy_data, dividend_mca, divisor_mca)
+	plt.plot(bins_mean_array, division_pfy_array)
 	plt.xlabel('Energy (eV)')
 	str_y_axis = StringIO()
 	str_y_axis.write(dividend_mca)
