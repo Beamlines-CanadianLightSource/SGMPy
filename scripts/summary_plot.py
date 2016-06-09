@@ -1,9 +1,11 @@
 # Present summary for all scans
 
-import matplotlib
-matplotlib.use('agg')
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 import numpy as np
+import matplotlib
+
+matplotlib.use('agg')
 from scan_details import *
 from basic_plot import *
 
@@ -45,15 +47,21 @@ def generate_summary_plot_with_pfy(cscan_array, sgm_data, pfy_name, start_energy
 		total_pfy = get_one_pfy_from_all_scan(sgm_data, mca_name, start_energy, stop_energy)
 
 		#print "Generating plot for scan No.", real_cscan_number
-		plt.scatter(energy_array, scanNumList, c=total_pfy[cscan_index],  s=10, linewidths=0)
+		plt.scatter(energy_array, scanNumList, c=total_pfy[cscan_index],  s=90, linewidths=0, marker='s')
 		print "Generated plot for scan No.", real_cscan_number
-    
-	plt.ylim(0, total_cscan_num+1)
-
+	# setup the y-axis ticks
+	#plt.ylim(0, total_cscan_num+1)
+	plt.yticks(np.arange(0+1, total_cscan_num+1, 1.0))
 	# add lable for x and y axis
 	plt.xlabel('Incident Energy (eV)')
 	plt.ylabel('Scan Numbers')
+	plt.colorbar()
 	plt.title(['color is :', str_scaler_name])
+	y_axis_height = total_cscan_num * 0.2
+	# change the figure configuration
+	fig = plt.gcf()
+	fig.set_size_inches(11, y_axis_height)
+	plt.grid()
 	# show the plot
 	plt.show()
 
@@ -68,15 +76,21 @@ def generate_summary_plot_with_scaler(cscan_array, sgm_data, scaler_name):
 		# create a list including all the scan number
 		scanNumList.fill(real_cscan_number)
 		# print "Generating plot for scan No.", real_cscan_number
-		plt.scatter(sgm_data[0][cscan_index]['Energy'], scanNumList, c=sgm_data[0][cscan_index][str_scaler_name],  s=10, linewidths=0)
+		plt.scatter(sgm_data[0][cscan_index]['Energy'], scanNumList, c=sgm_data[0][cscan_index][str_scaler_name],  s=90, linewidths=0, marker='s')
 		print "Generated plot for scan No.", real_cscan_number
-    
-	plt.ylim(0, total_cscan_num+1)
-
+	# setup the y-axis ticks
+	# plt.ylim(0, total_cscan_num+1)
+	plt.yticks(np.arange(0+1, total_cscan_num+1, 1.0))
 	# add lable for x and y axis
 	plt.xlabel('Incident Energy (eV)')
 	plt.ylabel('Scan Numbers')
+	plt.colorbar()
 	plt.title(['color is :', str_scaler_name])
+	y_axis_height = total_cscan_num * 0.2
+	# change the figure configuration
+	fig = plt.gcf()
+	fig.set_size_inches(11, y_axis_height)
+	plt.grid()
 	# show the plot
 	plt.show()
 
