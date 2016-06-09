@@ -102,24 +102,25 @@ def calculate_avg_mca(arrayOfBins, arrayOfPoints):
 	binNum = len(arrayOfBins)
     
 	# Initial 4 arrays for 4 Average of MCAs
-	mca1AvgArray = [[] for i in range(binNum)]
-	mca2AvgArray = [[] for i in range(binNum)]
-	mca3AvgArray = [[] for i in range(binNum)]
-	mca4AvgArray = [[] for i in range(binNum)]
+	mca1AvgArray = np.zeros(shape=(binNum,256))
+	mca2AvgArray = np.zeros(shape=(binNum,256))
+	mca3AvgArray = np.zeros(shape=(binNum,256))
+	mca4AvgArray = np.zeros(shape=(binNum,256))
+    
     
 	# Added 256 of zero into each sub array, so that it could calculate summary and then get the average
-	for i in range(binNum):
-		mca1AvgArray[i] = np.empty(256)
-		mca1AvgArray[i].fill(0)
-
-		mca2AvgArray[i] = np.empty(256)
-		mca2AvgArray[i].fill(0)
-        
-		mca3AvgArray[i] = np.empty(256)
-		mca3AvgArray[i].fill(0)
-        
-		mca4AvgArray[i] = np.empty(256)
-		mca4AvgArray[i].fill(0)
+#	for i in range(binNum):
+#		mca1AvgArray[i] = np.empty(256)
+#		mca1AvgArray[i].fill(0)
+#
+#		mca2AvgArray[i] = np.empty(256)
+#		mca2AvgArray[i].fill(0)
+#        
+#		mca3AvgArray[i] = np.empty(256)
+#		mca3AvgArray[i].fill(0)
+#        
+#		mca4AvgArray[i] = np.empty(256)
+#		mca4AvgArray[i].fill(0)
 
 	print "Start calcualting Average of SDD1(MCA1), SDD2(MCA2), SDD3(MCA3) & SDD4(MCA4)..."
         
@@ -172,14 +173,9 @@ def calculate_avg_scalers(arrayOfBins, arrayOfPoints):
 
 	binNum = len(arrayOfBins)
     
-	teyAvgArray = np.empty(binNum)
-	teyAvgArray.fill(0)
-    
-	i0AvgArray = np.empty(binNum)
-	i0AvgArray.fill(0)
-    
-	diodeAvgArray = np.empty(binNum)
-	diodeAvgArray.fill(0)
+	teyAvgArray = np.zeros(binNum)
+	i0AvgArray = np.zeros(binNum)
+	diodeAvgArray = np.zeros(binNum)
     
 	print "Start calcualting Average of I0, TEY & Diode..."
     
