@@ -47,7 +47,7 @@ def generate_summary_plot_with_pfy(cscan_array, sgm_data, pfy_name, start_energy
 		total_pfy = get_one_pfy_from_all_scan(sgm_data, mca_name, start_energy, stop_energy)
 
 		#print "Generating plot for scan No.", real_cscan_number
-		plt.scatter(energy_array, scanNumList, c=total_pfy[cscan_index],  s=90, linewidths=0, marker='s')
+		plt.scatter(energy_array, scanNumList, c=total_pfy[cscan_index],  s=140, linewidths=0, marker='s')
 		print "Generated plot for scan No.", real_cscan_number
 	# setup the y-axis ticks
 	#plt.ylim(0, total_cscan_num+1)
@@ -57,7 +57,7 @@ def generate_summary_plot_with_pfy(cscan_array, sgm_data, pfy_name, start_energy
 	plt.ylabel('Scan Numbers')
 	plt.colorbar()
 	plt.title(['color is :', str_scaler_name])
-	y_axis_height = total_cscan_num * 0.2
+	y_axis_height = total_cscan_num * 0.25
 	# change the figure configuration
 	fig = plt.gcf()
 	fig.set_size_inches(11, y_axis_height)
@@ -76,7 +76,7 @@ def generate_summary_plot_with_scaler(cscan_array, sgm_data, scaler_name):
 		# create a list including all the scan number
 		scanNumList.fill(real_cscan_number)
 		# print "Generating plot for scan No.", real_cscan_number
-		plt.scatter(sgm_data[0][cscan_index]['Energy'], scanNumList, c=sgm_data[0][cscan_index][str_scaler_name],  s=90, linewidths=0, marker='s')
+		plt.scatter(sgm_data[0][cscan_index]['Energy'], scanNumList, c=sgm_data[0][cscan_index][str_scaler_name],  s=140, linewidths=0, marker='s')
 		print "Generated plot for scan No.", real_cscan_number
 	# setup the y-axis ticks
 	# plt.ylim(0, total_cscan_num+1)
@@ -86,7 +86,7 @@ def generate_summary_plot_with_scaler(cscan_array, sgm_data, scaler_name):
 	plt.ylabel('Scan Numbers')
 	plt.colorbar()
 	plt.title(['color is :', str_scaler_name])
-	y_axis_height = total_cscan_num * 0.2
+	y_axis_height = total_cscan_num * 0.25
 	# change the figure configuration
 	fig = plt.gcf()
 	fig.set_size_inches(11, y_axis_height)
