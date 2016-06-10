@@ -24,7 +24,9 @@ def prepare_average_plot(good_scan, opened_file, start_energy, end_energy, numbe
 	avg_scaler = calculate_avg_scalers(assigned_data_array, data_point_array)
 	pyf_data = get_pfy_avg(avg_mca, start_range_of_interest, end_range_of_interest)
     
-	return bins_mean_array, avg_mca, avg_scaler, pyf_data, empty_bin_num
+    #remove empty bins
+    
+	return bins_mean_array[:-empty_bin_num], avg_mca, avg_scaler, pyf_data
 
 
 # Eliminate bad scans and select good scans (data points)
@@ -155,13 +157,13 @@ def calculate_avg_mca(arrayOfBins, arrayOfPoints):
 
 	print "Calculation completed."
 	print
-	return mca1AvgArray, mca2AvgArray, mca3AvgArray, mca4AvgArray, empty_bins
+	return mca1AvgArray[:-empty_bins], mca2AvgArray[:-empty_bins], mca3AvgArray[:-empty_bins], mca4AvgArray[:-empty_bins], empty_bins
 
 
 def calculate_avg_scalers(arrayOfBins, arrayOfPoints):
 
 	binNum = len(arrayOfBins)
-    
+	empty_bins = 0
 	teyAvgArray = np.zeros(binNum)
 	i0AvgArray = np.zeros(binNum)
 	diodeAvgArray = np.zeros(binNum)
@@ -187,6 +189,7 @@ def calculate_avg_scalers(arrayOfBins, arrayOfPoints):
 		# print "Bin No.", index1+1, "; it contains ", totalDataPoints, "data point"   
         
 		if totalDataPoints == 0:
+			empty_bins = empty_bins + 1
 			print "No data point is in Bin No.", index1+1, ". Average calculation is not necessary"
 		else:
 			# print totalDataPoints
@@ -208,7 +211,7 @@ def calculate_avg_scalers(arrayOfBins, arrayOfPoints):
 	print "Calculation completed."
 	print
     
-	return teyAvgArray, i0AvgArray, diodeAvgArray
+	return teyAvgArray[:-4], i0AvgArray[:-4], diodeAvgArray[:-4]
 
 
 def plot_excitation_emission_matrix(bins_mean_array, avg_mca, name):
@@ -225,7 +228,7 @@ def plot_excitation_emission_matrix(bins_mean_array, avg_mca, name):
     
 	bin_num_for_x = [[]for i in range(num_of_bin)]
 	for bin in range (0, num_of_bin):
-		bin_num_for_x[bin]=np.empty(num_of_emission_bins)
+		bin_num_for_x[bin] = np.empty(num_of_emission_bins)
 		# fill energy into the array
 		bin_num_for_x[bin].fill(bins_mean_array[bin])
 
@@ -272,31 +275,31 @@ def get_one_pfy_avg(mca_avg_array, start_energy, stop_energy):
 
 
 # plot a kind of average scaler
-def plot_avg_xas(mean_energy_array, name, empty_bin_num, scaler_data=None, pfy_data=None):
+def plot_avg_xas(mean_energy_array, name, scaler_data=None, pfy_data=None):
 	plt.close('all')
 	if name == "TEY" or name == "I0" or name == "Diode":
-		plot_avg_xas_scaler(mean_energy_array, scaler_data, name, empty_bin_num)
+		plot_avg_xas_scaler(mean_energy_array, scaler_data, name)
 	elif name == "PFY_SDD1" or name == "PFY_SDD2" or name == "PFY_SDD3" or name == "PFY_SDD4":
-		plot_avg_xas_pfy(mean_energy_array, pfy_data, name, empty_bin_num)
+		plot_avg_xas_pfy(mean_energy_array, pfy_data, name)
 	else:
 		print "Errors with the name input"
 
         
-def plot_avg_xas_scaler(mean_energy_array, scaler_data, name, empty_bin_num):
+def plot_avg_xas_scaler(mean_energy_array, scaler_data, name):
 	plt.close('all')
 	scaler_dict = {'TEY': 0, 'I0': 1, 'Diode':2}
 	scaler_index = scaler_dict[name]
-	plt.plot(mean_energy_array[:-empty_bin_num], scaler_data[scaler_index][:-empty_bin_num])
+	plt.plot(mean_energy_array, scaler_data[scaler_index])
 	plt.xlabel('Energy (eV)')
 	plt.ylabel(name)
 	plt.show()
     
-def plot_avg_xas_pfy(mean_energy_array, pfy_data, name, empty_bin_num):
+def plot_avg_xas_pfy(mean_energy_array, pfy_data, name):
 	plt.close('all')
     
 	pfy_dict = {'PFY_SDD1': 0, 'PFY_SDD2': 1, 'PFY_SDD3': 2, 'PFY_SDD4': 3}
 	pfy_index = pfy_dict[name]
-	plt.plot(mean_energy_array[:-empty_bin_num], pfy_data[pfy_index][:-empty_bin_num])
+	plt.plot(mean_energy_array, pfy_data[pfy_index])
 	plt.xlabel('Energy (eV)')
 	plt.ylabel(name)
 	plt.show()
