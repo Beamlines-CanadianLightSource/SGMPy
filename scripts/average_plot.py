@@ -99,7 +99,6 @@ def assign_data (data_array, edges):
 			# print assignBinNum
 			bin_array[assign_bin_num-1].append([scan_index, datapoint_index])
 	print "Assign data points completed"   
-	print bin_array[595]
 	return bin_array
 
 def calculate_avg_mca(arrayOfBins, arrayOfPoints):
@@ -211,7 +210,7 @@ def calculate_avg_scalers(arrayOfBins, arrayOfPoints):
 	print "Calculation completed."
 	print
     
-	return teyAvgArray[:-4], i0AvgArray[:-4], diodeAvgArray[:-4]
+	return teyAvgArray[:-empty_bins], i0AvgArray[:-empty_bins], diodeAvgArray[:-empty_bins]
 
 
 def plot_excitation_emission_matrix(bins_mean_array, avg_mca, name):
