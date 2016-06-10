@@ -18,11 +18,13 @@ def prepare_average_plot(good_scan, opened_file, start_energy, end_energy, numbe
 	bins_mean_array = temp_array[1]
 	assigned_data_array = assign_data(data_point_array , edges_array)
     # calculate average
-	avg_mca = calculate_avg_mca(assigned_data_array, data_point_array)
-	avg_scaler= calculate_avg_scalers (assigned_data_array, data_point_array)
+	result = calculate_avg_mca(assigned_data_array, data_point_array)
+	avg_mca = result[:-1]
+	empty_bin_num = result[-1]
+	avg_scaler = calculate_avg_scalers(assigned_data_array, data_point_array)
 	pyf_data = get_pfy_avg(avg_mca, start_range_of_interest, end_range_of_interest)
     
-	return bins_mean_array, avg_mca, avg_scaler, pyf_data
+	return bins_mean_array, avg_mca, avg_scaler, pyf_data, empty_bin_num
 
 
 # Eliminate bad scans and select good scans (data points)
@@ -95,32 +97,18 @@ def assign_data (data_array, edges):
 			# print assignBinNum
 			bin_array[assign_bin_num-1].append([scan_index, datapoint_index])
 	print "Assign data points completed"   
-	print
+	print bin_array[595]
 	return bin_array
 
 def calculate_avg_mca(arrayOfBins, arrayOfPoints):
 	binNum = len(arrayOfBins)
-    
+	empty_bins = 0
 	# Initial 4 arrays for 4 Average of MCAs
+	# Added 256 of zero into each sub array, so that it could calculate summary and then get the average
 	mca1AvgArray = np.zeros(shape=(binNum,256))
 	mca2AvgArray = np.zeros(shape=(binNum,256))
 	mca3AvgArray = np.zeros(shape=(binNum,256))
 	mca4AvgArray = np.zeros(shape=(binNum,256))
-    
-    
-	# Added 256 of zero into each sub array, so that it could calculate summary and then get the average
-#	for i in range(binNum):
-#		mca1AvgArray[i] = np.empty(256)
-#		mca1AvgArray[i].fill(0)
-#
-#		mca2AvgArray[i] = np.empty(256)
-#		mca2AvgArray[i].fill(0)
-#        
-#		mca3AvgArray[i] = np.empty(256)
-#		mca3AvgArray[i].fill(0)
-#        
-#		mca4AvgArray[i] = np.empty(256)
-#		mca4AvgArray[i].fill(0)
 
 	print "Start calcualting Average of SDD1(MCA1), SDD2(MCA2), SDD3(MCA3) & SDD4(MCA4)..."
         
@@ -147,6 +135,7 @@ def calculate_avg_mca(arrayOfBins, arrayOfPoints):
 		# print "Bin No.", index1+1, "; it contains ", totalDataPoints, "data points"
         
 		if totalDataPoints == 0:
+			empty_bins = empty_bins + 1
 			print "No data point is in Bin No.", index1+1, ". Average calculation is not necessary"
 		else:
 			# calculate the average of MCAs
@@ -166,7 +155,7 @@ def calculate_avg_mca(arrayOfBins, arrayOfPoints):
 
 	print "Calculation completed."
 	print
-	return mca1AvgArray, mca2AvgArray, mca3AvgArray, mca4AvgArray
+	return mca1AvgArray, mca2AvgArray, mca3AvgArray, mca4AvgArray, empty_bins
 
 
 def calculate_avg_scalers(arrayOfBins, arrayOfPoints):
@@ -200,6 +189,7 @@ def calculate_avg_scalers(arrayOfBins, arrayOfPoints):
 		if totalDataPoints == 0:
 			print "No data point is in Bin No.", index1+1, ". Average calculation is not necessary"
 		else:
+			# print totalDataPoints
 			# calculate the average of data (TEY, I0, Diode)
 			# print "Calculating Average of TEY."
 			teyAvgArray[index1] = teyAvgArray[index1] / totalDataPoints
@@ -282,31 +272,31 @@ def get_one_pfy_avg(mca_avg_array, start_energy, stop_energy):
 
 
 # plot a kind of average scaler
-def plot_avg_xas(mean_energy_array, name, scaler_data=None, pfy_data=None):
+def plot_avg_xas(mean_energy_array, name, empty_bin_num, scaler_data=None, pfy_data=None):
 	plt.close('all')
 	if name == "TEY" or name == "I0" or name == "Diode":
-		plot_avg_xas_scaler(mean_energy_array, scaler_data, name)
+		plot_avg_xas_scaler(mean_energy_array, scaler_data, name, empty_bin_num)
 	elif name == "PFY_SDD1" or name == "PFY_SDD2" or name == "PFY_SDD3" or name == "PFY_SDD4":
-		plot_avg_xas_pfy(mean_energy_array, pfy_data, name)
+		plot_avg_xas_pfy(mean_energy_array, pfy_data, name, empty_bin_num)
 	else:
 		print "Errors with the name input"
 
         
-def plot_avg_xas_scaler(mean_energy_array, scaler_data, name):
+def plot_avg_xas_scaler(mean_energy_array, scaler_data, name, empty_bin_num):
 	plt.close('all')
 	scaler_dict = {'TEY': 0, 'I0': 1, 'Diode':2}
 	scaler_index = scaler_dict[name]
-	plt.plot(mean_energy_array, scaler_data[scaler_index])
+	plt.plot(mean_energy_array[:-empty_bin_num], scaler_data[scaler_index][:-empty_bin_num])
 	plt.xlabel('Energy (eV)')
 	plt.ylabel(name)
 	plt.show()
     
-def plot_avg_xas_pfy(mean_energy_array, pfy_data, name):
+def plot_avg_xas_pfy(mean_energy_array, pfy_data, name, empty_bin_num):
 	plt.close('all')
     
 	pfy_dict = {'PFY_SDD1': 0, 'PFY_SDD2': 1, 'PFY_SDD3': 2, 'PFY_SDD4': 3}
 	pfy_index = pfy_dict[name]
-	plt.plot(mean_energy_array, pfy_data[pfy_index])
+	plt.plot(mean_energy_array[:-empty_bin_num], pfy_data[pfy_index][:-empty_bin_num])
 	plt.xlabel('Energy (eV)')
 	plt.ylabel(name)
 	plt.show()
