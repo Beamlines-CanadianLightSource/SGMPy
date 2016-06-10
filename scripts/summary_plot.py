@@ -1,11 +1,10 @@
 # Present summary for all scans
 
+import matplotlib
+matplotlib.use('agg')
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np
-import matplotlib
-
-matplotlib.use('agg')
 from scan_details import *
 from basic_plot import *
 
