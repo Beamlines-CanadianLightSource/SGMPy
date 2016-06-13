@@ -62,7 +62,7 @@ def get_good_datapoint(good_scan_Array, opened_file):
 		data_array[i][4] = mca4[good_scan_Array[i]-1]
 	return data_array
 
-# create bins (for testing startEnergy = 690, endEnergy = 750, numberOfBins = 120, energyArray = scan[goodScan_2[i]-1]['Energy'])
+# create bins (for testing startEnergy = 690, endEnergy = 750, numberOfBins = 600, energyArray = scan[goodScan_2[i]-1]['Energy'])
 def create_bins(start_energy, end_energy, num_of_bins):
 	print "Start creating bins" 
 	num_of_edges = num_of_bins + 1
@@ -76,7 +76,7 @@ def create_bins(start_energy, end_energy, num_of_bins):
 	first_mean = (edges_array[1] + edges_array[0]) / 2
 	bin_width = edges_array[1] - edges_array[0]
 	for i in range (0, num_of_bins):
-		mean_energy_array.append(first_mean + 0.1 * i)
+		mean_energy_array.append(first_mean + bin_width * i)
 	# print "Mean of energy bins: ", mean_energy_array
 	print "created bins completed."
 	print
