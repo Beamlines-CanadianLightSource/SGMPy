@@ -232,8 +232,7 @@ def plot_excitation_emission_matrix(bins_mean_array, avg_mca, name):
 		bin_num_for_x[bin].fill(bins_mean_array[bin])
 
 	# generate a list of number to present 1 - 256 bins for emission energy
-	bin_num_for_y = list(range(1,num_of_emission_bins+1))
-
+	bin_num_for_y = np.arange(10, (num_of_emission_bins+1)*10, 10)
 	for x in range (0, num_of_bin):
 		plt.scatter(bin_num_for_x[x], bin_num_for_y, c= sub_mca_array[x], s=7, linewidths=0)
         
@@ -241,7 +240,7 @@ def plot_excitation_emission_matrix(bins_mean_array, avg_mca, name):
 	plt.ylabel('Emission Energy (eV)')
 	plt.show()
 	print "Incident Energy range:", bin_num_for_x[0][0], "-", bin_num_for_x[-1][0]
-	print "Incident Energy range:", bin_num_for_y[0], "-", bin_num_for_y[-1]
+	print "Emission Energy range:", bin_num_for_y[0], "-", bin_num_for_y[-1]
 	return bin_num_for_y
     
 def get_pfy_avg(mca_avg_array, start_energy, stop_energy):
