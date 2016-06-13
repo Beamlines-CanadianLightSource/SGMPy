@@ -357,32 +357,38 @@ def plot_avg_xas_all(energy_array, scaler_array, pfy_data):
 	plt.show()
     
     
-def pfy_sdd_division(pfy_data, dividend_mca, divisor_mca):
+def division(pfy_data, dividend, divisor, scaler_data = None):
 	# initial new_mca_array
-	new_mca_array = np.empty(len(pfy_data[0]))
+	division_pfy_array = np.empty(len(pfy_data[0]))
 	# initial a dictionary for 4 SDD(MCA) name
 	pfy_dict = {'PFY_SDD1': 0, 'PFY_SDD2': 1, 'PFY_SDD3': 2, 'PFY_SDD4': 3}
-	if dividend_mca == divisor_mca:
+	scaler_dict = {'TEY': 0, 'I0': 1, 'Diode': 2}
+	if dividend == divisor:
 		print "Cannot division same SDD(MCA)"
 	# calculate division
 	else:
-		dividend_mca_index = pfy_dict[dividend_mca]
-		divisor_mca_index = pfy_dict[divisor_mca]
-		new_mca_array = np.array(pfy_data[dividend_mca_index]) / np.array(pfy_data[divisor_mca_index])
-		return new_mca_array
+		if divisor == "I0" or divisor == "TEY" or divisor =="Diode":
+			dividend_index = pfy_dict[dividend]
+			divisor_index = scaler_dict[divisor]
+			division_array = np.array(pfy_data[dividend_index]) / np.array(scaler_data[divisor_index])
+		else:
+			dividend_index = pfy_dict[dividend]
+			divisor_index = pfy_dict[divisor]
+			division_array = np.array(pfy_data[dividend_index]) / np.array(pfy_data[divisor_index])
+		return division_array
 
 
-def plot_pfy_sdd_division(bins_mean_array, pfy_data, dividend_mca, divisor_mca):
+def plot_division(bins_mean_array, pfy_data, dividend, divisor, scaler_data = None):
 
 	print "Plotting disivion SDD."    
 	plt.close('all')
-	division_pfy_array = pfy_sdd_division(pfy_data, dividend_mca, divisor_mca)
-	plt.plot(bins_mean_array, division_pfy_array)
+	division_array = division(pfy_data, dividend, divisor, scaler_data)
+	plt.plot(bins_mean_array, division_array)
 	plt.xlabel('Energy (eV)')
 	str_y_axis = StringIO()
-	str_y_axis.write(dividend_mca)
+	str_y_axis.write(dividend)
 	str_y_axis.write('/')
-	str_y_axis.write(divisor_mca)
+	str_y_axis.write(divisor)
 	plt.ylabel(str_y_axis.getvalue())
 	plt.show()
     
