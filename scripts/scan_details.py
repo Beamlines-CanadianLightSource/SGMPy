@@ -3,8 +3,6 @@
 import os
 from praxes.io import spec
 from praxes.io.phynx import File
-#import matplotlib.pyplot as plt
-# import matplotlib.mlab as mlab
 import numpy as np
 
 # For Windows, Please use "/" instead of "\" in the file directory (URI)
@@ -12,9 +10,9 @@ def open_spec_data_file(file_directory):
 	opened_file = spec.open(file_directory)
 	return opened_file
 
-def open_hdf5_file(file_directory):
-	opened_file = File(file_directory)
-	return opened_file
+# def open_hdf5_file(file_directory):
+	# opened_file = File(file_directory)
+	# return opened_file
 
 def get_abs_path(rel_path):
 	script_dir = os.path.dirname(os.path.realpath('__file__'))
