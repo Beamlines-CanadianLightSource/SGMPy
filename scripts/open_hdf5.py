@@ -15,8 +15,8 @@ def read_hdf5(file_directory):
 			scaler_array[i][0] = scan['data']['TEY'][0:]
 			scaler_array[i][1] = scan['data']['I0'][0:]
 			scaler_array[i][2] = scan['data']['Diode'][0:]
-			#mca_data = scan['data']['_mca_']
-			#mca_array.append( get_mca_from_hdf5(mca_data) )
+			mca_data = scan['data']['_mca_']
+			mca_array.append( get_mca_from_hdf5(mca_data) )
 	return energy_array, mca_array, scaler_array
 
 
