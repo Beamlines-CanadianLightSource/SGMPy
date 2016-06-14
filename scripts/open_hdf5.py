@@ -1,6 +1,19 @@
 import numpy as np
 import h5py
 
+
+def get_all_scan_num_hdf5(file_directory):
+	with h5py.File(file_directory,'r') as hf:
+		scan_num_array = map(str, hf.keys())
+		scan_num_array = get_number(scan_num_array)
+		scan_num_array = map(int, scan_num_array)
+		return scan_num_array
+    
+def get_number(scan_num_array):
+	for i in range (0, len(scan_num_array)):
+		scan_num_array[i] = scan_num_array[i][1:]
+	return scan_num_array
+
 def read_hdf5(file_directory):
 	energy_array = []
 	scaler_array = []
