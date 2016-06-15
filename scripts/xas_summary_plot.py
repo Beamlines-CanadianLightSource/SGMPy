@@ -5,8 +5,7 @@ matplotlib.use('agg')
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np
-from scan_details import *
-from basic_plot import *
+from open_spec import *
 
 
 def summary_plot(opened_file, name, start_energy=None, stop_energy=None):
@@ -92,13 +91,6 @@ def generate_summary_plot_with_scaler(cscan_array, sgm_data, scaler_name):
 	plt.grid()
 	# show the plot
 	plt.show()
-
-    
-def get_all_scan_num(opened_file):
-	scan_num_array = opened_file.keys()
-	# convert char(string) to integer
-	scan_num_array = map(int, scan_num_array)
-	return scan_num_array
 
 
 def generate_good_scan_array(scan_num_array, bad_scan_str):

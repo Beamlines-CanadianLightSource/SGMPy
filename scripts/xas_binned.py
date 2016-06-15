@@ -1,13 +1,12 @@
-# Selection and binning
+# binning and plotting
 
 from praxes.io import spec
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 from cStringIO import StringIO
-from scan_details import *
-from basic_plot import *
-from scripts.open_hdf5 import *
+from open_hdf5 import *
+from open_spec import *
 
 def prepare_bin_plot_hdf5 (good_scan, file_directory, start_energy, end_energy, number_of_bins, start_range_of_interest, end_range_of_interest):
 	energy_data, mca_data, scaler_data = read_hdf5(file_directory)

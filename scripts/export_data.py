@@ -1,7 +1,7 @@
 # Open date file and get scan details
 
 from numpy import arange
-from average_plot import *
+#from average_plot import *
 
 
 def export_data(export_file_directory, origin_file_directory, mean_energy_array, name, avg_scaler=None, pfy_data=None):
