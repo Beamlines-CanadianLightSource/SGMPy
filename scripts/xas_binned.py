@@ -139,6 +139,60 @@ def assign_data (energy_array, edges):
 	print "Assign data points completed"   
 	return bin_array
 
+def get_good_datapoint_sdd1_spec(good_scan_Array, opened_file):
+    
+	# print "Total good scan numbers:", len(good_scan_Array)
+    
+	energy_array = []
+	sdd1_array=[]
+
+	# open and read all data from the file and it could take a while
+	scan, mca1, mca2, mca3, mca4 = openAllSGMXAS(opened_file)
+        
+	for i in range (0, len(good_scan_Array)):
+		# scan number is start from 1
+		# print "This is the scan number: ", goodScanArray[i]
+		# array index is start from 0
+		# get all scalers of good scans from original scans' array
+		energy_array.append(scan[good_scan_Array[i]-1]['Energy'])
+
+		# get all MCA1 of good scans from original scans
+		sdd1_array.append( mca1[good_scan_Array[i]-1] )
+
+	return energy_array, sdd1_array
+
+
+def calculate_blank_sdd1(bin_array, sdd1):
+	bin_num = len(bin_array)
+	empty_bins = 0  
+	mca1_bin_array = np.zeros(shape=(bin_num,256))
+       
+	for index1 in range (0, bin_num):
+		# get the total number of data points in a particular bins
+		total_data_point = len(bin_array[index1])
+        
+		for index2 in range (0, total_data_point):
+			# get index of scans
+			index_of_scan = bin_array[index1][index2][0]
+			# get index of data points
+			index_of_data_point = bin_array[index1][index2][1]
+			# print "index_of_scan: ", index_of_scan_2, "  ;  ", "index_of_data_point: ", index_of_data_point
+
+			# calculate the sum of MCA1
+			mca1_bin_array[index1] = mca1_bin_array[index1] + sdd1[index_of_scan][index_of_data_point]
+		if total_data_point == 0:
+			empty_bins = empty_bins + 1
+			print "No data point is in Bin No.", index1+1, ". Average calculation is not necessary"
+		else:
+			# calculate the average of MCAs
+			# print "Calculating Average of MCA1."
+			mca1_bin_array[index1] = mca1_bin_array[index1] / total_data_point
+			# print "Calculation Average of MCA1 is completed.
+	print "Calculation completed."
+	print
+	return mca1_bin_array[:-empty_bins]
+            
+
 def calculate_bin_mca(bin_array, mca_array):
 	bin_num = len(bin_array)
 	empty_bins = 0
