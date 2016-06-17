@@ -31,7 +31,7 @@ class TestXASSummaryPlot(unittest.TestCase):
 		self.assertEqual(generate_good_scan_array(originalScanNum, badScanNum), expectedGoodScanNum)                   
      
 	# @patch is only for Travis CI automation testing
-	@patch("matplotlib.pyplot.show")
+    @patch("matplotlib.pyplot.show")
 	def test_summary_plot(self, mock_show):
 		script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
 		rel_path = "data/spectra_example.dat"
