@@ -1,11 +1,11 @@
 import unittest
-from scripts.summary_plot import *
+from scripts.xas_summary_plot import *
 from mock import patch
 import os
 import numpy as np
 
 
-class TestSummaryPlot(unittest.TestCase):
+class TestXASSummaryPlot(unittest.TestCase):
 
 	def test_get_all_scan_num(self):
 		expectedScanNum = list(range(1,11))
@@ -30,7 +30,8 @@ class TestSummaryPlot(unittest.TestCase):
 		expectedGoodScanNum = [2, 3, 4, 5, 7, 8, 9]
 		self.assertEqual(generate_good_scan_array(originalScanNum, badScanNum), expectedGoodScanNum)                   
      
-	@patch("matplotlib.pyplot.show")
+	# @patch is only for Travis CI automation testing
+    @patch("matplotlib.pyplot.show")
 	def test_summary_plot(self, mock_show):
 		script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
 		rel_path = "data/spectra_example.dat"
