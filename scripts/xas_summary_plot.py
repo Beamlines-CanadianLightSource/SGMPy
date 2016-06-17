@@ -22,7 +22,7 @@ def summary_plot(opened_file, name, start_energy=None, stop_energy=None):
 		generate_summary_plot_with_pfy(cscan_array, sgm_data, name, start_energy, stop_energy)
 	else:
 		print "Errors with the name input"
-	# return cscan_array
+	return cscan_array
 
 
 def generate_summary_plot_with_pfy(cscan_array, sgm_data, pfy_name, start_energy, stop_energy):
