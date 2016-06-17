@@ -8,7 +8,7 @@ from cStringIO import StringIO
 from open_hdf5 import *
 from open_spec import *
 
-def prepare_bin_plot_hdf5 (good_scan, file_directory, start_energy, end_energy, number_of_bins, start_range_of_interest, end_range_of_interest):
+def prepare_bin_plot_hdf5 (good_scan, file_directory, start_energy, end_energy, number_of_bins, start_region_of_interest, end_region_of_interest):
 	energy_data, mca_data, scaler_data = read_hdf5(file_directory)
 	energy_array, mca_array, scaler_array = get_good_datapoint_hdf5(good_scan, energy_data, mca_data, scaler_data)
 
@@ -19,7 +19,7 @@ def prepare_bin_plot_hdf5 (good_scan, file_directory, start_energy, end_energy, 
 	bin_mca = result[:-1]
 	empty_bin_num = result[-1]
 	bin_scaler = calculate_bin_scalers(assigned_data_array, scaler_array)
-	pyf_data = get_pfy_bin(bin_mca, start_range_of_interest, end_range_of_interest)
+	pyf_data = get_pfy_bin(bin_mca, start_region_of_interest, end_region_of_interest)
     
 	#remove empty bins
 	return bins_mean_array[:-empty_bin_num], bin_mca, bin_scaler, pyf_data
@@ -49,10 +49,17 @@ def get_good_datapoint_hdf5(good_scan_Array, energy_data, mca_data, scaler_data)
 		# get all MCA4 of good scans from original scans
 		mca_array[i][3] = mca_data[good_scan_Array[i]-1][3]
 	return energy_array, mca_array, scaler_array
+
+
+def prepare_blank_bin_plot_spec(good_scan_array, opened_blank_file, start_energy, end_energy, number_of_bins, start_region_of_interest, end_region_of_interest):
+	energy_array, sdd1_array = get_good_datapoint_sdd1_spec(good_scan_array, opened_blank_file)
+	edges_array, mean_energy_array = create_bins(start_energy, end_energy, number_of_bins)
+	bin_array = assign_data(energy_array, edges_array)
+	blank_sdd1_binned_array = calculate_blank_sdd1(bin_array, sdd1_array)
+	blank_pfy_sdd1_binned_array = get_one_pfy_bin(blank_sdd1_binned_array, start_region_of_interest, end_region_of_interest)
+	return blank_pfy_sdd1_binned_array
     
-    
-    
-def prepare_bin_plot_spec(good_scan, opened_file, start_energy, end_energy, number_of_bins, start_range_of_interest, end_range_of_interest):
+def prepare_bin_plot_spec(good_scan, opened_file, start_energy, end_energy, number_of_bins, start_region_of_interest, end_region_of_interest):
     
 	energy_array, mca_array, scaler_array = get_good_datapoint_spec(good_scan, opened_file)
 
@@ -63,7 +70,7 @@ def prepare_bin_plot_spec(good_scan, opened_file, start_energy, end_energy, numb
 	bin_mca = result[:-1]
 	empty_bin_num = result[-1]
 	bin_scaler = calculate_bin_scalers(assigned_data_array, scaler_array)
-	pyf_data = get_pfy_bin(bin_mca, start_range_of_interest, end_range_of_interest)
+	pyf_data = get_pfy_bin(bin_mca, start_region_of_interest, end_region_of_interest)
     
 	#remove empty bins
 	return bins_mean_array[:-empty_bin_num], bin_mca, bin_scaler, pyf_data
