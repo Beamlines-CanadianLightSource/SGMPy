@@ -38,7 +38,7 @@ def open_spec_data_file(file_directory):
 def get_all_scan_num(opened_file):
 	scan_num_array = opened_file.keys()
 	# convert char(string) to integer
-	scan_num_array = map(int, scan_num_array)
+	scan_num_array = map(float, scan_num_array)
 	return scan_num_array
 
 
@@ -68,11 +68,10 @@ def check_scan_variety(opened_file):
 	a_array = []
 	mesh_array = []
     
-	for i in range (1, len(opened_file)+1):
+	for i in range (1, len(opened_file.keys())+1):
 		# print "Scan No.", i
-		string=str(i)
-		string =  opened_file[string].attrs['command']
-		temp_array = string.split( )
+		scan_commmand_str =  opened_file[ opened_file.keys()[i-1] ].attrs['command']
+		temp_array = scan_commmand_str.split( )
 		if temp_array[0] == "cmesh":
 			cmesh_array.append(i)
 		elif temp_array[0] == "cscan":
@@ -125,7 +124,7 @@ def openAllSGMXAS(opened_file):
 	for j in range (0, totalScanNum):
 		# print 'index of the for loop is: ', j
 		# print 'Scan No.', j+1
-		scan.append(opened_file[str(j+1)])
+		scan.append(opened_file[ opened_file.keys()[j] ])
 		energy = scan[j]['Energy']	
 		mcadata=scan[j]['@A1']
 

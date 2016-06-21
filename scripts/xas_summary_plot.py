@@ -17,15 +17,15 @@ def summary_plot(opened_file, name, start_energy=None, stop_energy=None):
 	sgm_data=openAllSGMXAS(opened_file)
     
 	if name == "TEY" or name == "I0" or name == "Diode" or name == "SDD1_OCR" or name == "SDD1_ICR" or name == "SDD2_OCR" or name == "SDD2_ICR" or name == "SDD3_OCR" or name == "SDD3_ICR" or name == "SDD4_OCR" or name == "SDD4_ICR":
-		generate_summary_plot_with_scaler(cscan_array, sgm_data, name)
+		generate_summary_plot_with_scaler(opened_file, cscan_array, sgm_data, name)
 	elif name == "PFY_SDD1" or name == "PFY_SDD2" or name == "PFY_SDD3" or name == "PFY_SDD4":
-		generate_summary_plot_with_pfy(cscan_array, sgm_data, name, start_energy, stop_energy)
+		generate_summary_plot_with_pfy(opened_file, cscan_array, sgm_data, name, start_energy, stop_energy)
 	else:
 		print "Errors with the name input"
 	return cscan_array
 
 
-def generate_summary_plot_with_pfy(cscan_array, sgm_data, pfy_name, start_energy, stop_energy):
+def generate_summary_plot_with_pfy(opened_file, cscan_array, sgm_data, pfy_name, start_energy, stop_energy):
         
 	# MCA is SDD; after getting PFY of ROI then it becomes PFY_SDD
 	pfy_dict = {'PFY_SDD1': 'MCA1', 'PFY_SDD2': 'MCA2', 'PFY_SDD3': 'MCA3', 'PFY_SDD4': 'MCA4'}
@@ -36,17 +36,20 @@ def generate_summary_plot_with_pfy(cscan_array, sgm_data, pfy_name, start_energy
 	str_scaler_name = mca_name
 	total_cscan_num = len(cscan_array)
 	for index in range (0, total_cscan_num):
-		real_cscan_number = cscan_array[index]
-		cscan_index = real_cscan_number - 1
+		cscan_number = cscan_array[index]
+		cscan_index = cscan_number - 1
 		scanNumList=np.empty(len(sgm_data[0][cscan_index]['Energy']))
-		scanNumList.fill(real_cscan_number)
+		scanNumList.fill(cscan_number)
         
 		energy_array = sgm_data[0][cscan_index]['Energy']
 		total_pfy = get_one_pfy_from_all_scan(sgm_data, mca_name, start_energy, stop_energy)
 
-		#print "Generating plot for scan No.", real_cscan_number
+		# real scan number from the data file
+		real_cscan_number = opened_file.keys()[cscan_index]
+        
+		#print "Generating plot for scan No.", cscan_number, "real scan number:", real_cscan_number
 		plt.scatter(energy_array, scanNumList, c=total_pfy[cscan_index],  s=140, linewidths=0, marker='s')
-		print "Generated plot for scan No.", real_cscan_number
+		print "Generated plot for No.", cscan_number, "in c scan array.  Real scan number is:", real_cscan_number
 	# setup the y-axis ticks
 	#plt.ylim(0, total_cscan_num+1)
 	plt.yticks(np.arange(0+1, total_cscan_num+1, 1.0))
@@ -64,18 +67,22 @@ def generate_summary_plot_with_pfy(cscan_array, sgm_data, pfy_name, start_energy
 	plt.show()
 
 
-def generate_summary_plot_with_scaler(cscan_array, sgm_data, scaler_name):
+def generate_summary_plot_with_scaler(opened_file, cscan_array, sgm_data, scaler_name):
 	str_scaler_name = scaler_name
 	total_cscan_num = len(cscan_array)
 	for index in range (0, total_cscan_num):
-		real_cscan_number = cscan_array[index]
-		cscan_index = real_cscan_number - 1
+		cscan_number = cscan_array[index]
+		cscan_index = cscan_number - 1
 		scanNumList=np.empty(len(sgm_data[0][cscan_index]['Energy']))
 		# create a list including all the scan number
-		scanNumList.fill(real_cscan_number)
-		# print "Generating plot for scan No.", real_cscan_number
+		scanNumList.fill(cscan_number)
+        
+		# real scan number from the data file
+		real_cscan_number = opened_file.keys()[cscan_index]
+        
+		# print "Generating plot for scan No.", cscan_number
 		plt.scatter(sgm_data[0][cscan_index]['Energy'], scanNumList, c=sgm_data[0][cscan_index][str_scaler_name],  s=140, linewidths=0, marker='s')
-		print "Generated plot for scan No.", real_cscan_number
+		print "Generated plot for No.", cscan_number, "in c scan array.  Real scan number is:", real_cscan_number
 	# setup the y-axis ticks
 	# plt.ylim(0, total_cscan_num+1)
 	plt.yticks(np.arange(0+1, total_cscan_num+1, 1.0))
@@ -91,29 +98,6 @@ def generate_summary_plot_with_scaler(cscan_array, sgm_data, scaler_name):
 	plt.grid()
 	# show the plot
 	plt.show()
-
-
-def generate_good_scan_array(scan_num_array, bad_scan_str):
-	print "These are the original scan numbers: ", scan_num_array
-	print
-	# if badScanStr is null, then return original arrays
-	if bad_scan_str == '':
-		return scan_num_array
-	# to get good scan numbers
-	else:
-		# split the array based on comma symbol
-		bad_scan_num_array = bad_scan_str.split(',', )
-		# convert char(string) to int
-		bad_scan_num_array = map(int, bad_scan_num_array)
-		print "These are bad scan numbers: ", bad_scan_num_array
-		print
-		# remove all the bad scan number from the original list
-		for i in range (0, len(bad_scan_num_array)):
-			scan_num_array.remove(bad_scan_num_array[i])
-
-		print "These are all good scan numbers: ", scan_num_array
-		good_scan = scan_num_array
-		return good_scan
 
     
 def get_one_pfy_from_all_scan(sgm_data, mca_name, enStart, enStop):
