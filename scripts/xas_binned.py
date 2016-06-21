@@ -8,7 +8,6 @@ from cStringIO import StringIO
 from open_hdf5 import *
 from open_spec import *
 
-
 def generate_good_scan_index(scan_num_array, bad_scan_str):
 	#good_scan_index = []
 	# if badScanStr is null, then return original arrays
@@ -35,7 +34,7 @@ def generate_good_scan_index(scan_num_array, bad_scan_str):
 		return good_scan_index
 
 
-def prepare_bin_plot_hdf5 (good_scan, file_directory, start_energy, end_energy, number_of_bins, start_region_of_interest, end_region_of_interest):
+def prepare_bin_plot_hdf5 (good_scan_index, file_directory, start_energy, end_energy, number_of_bins, start_region_of_interest, end_region_of_interest):
 
 	energy_data, mca_data, scaler_data = read_hdf5(file_directory)
 	energy_array, mca_array, scaler_array = get_good_datapoint_hdf5(good_scan_index, energy_data, mca_data, scaler_data)
