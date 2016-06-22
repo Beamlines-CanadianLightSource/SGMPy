@@ -22,13 +22,13 @@ class TestXASSummaryPlot(unittest.TestCase):
 		originalScanNum = list(range(1,11))
 		badScanNum = "4 , 7 , 10"
 		expectedGoodScanNum = [1, 2, 3, 5, 6, 8, 9]
-		self.assertEqual(generate_good_scan_array(originalScanNum, badScanNum), expectedGoodScanNum)
+		self.assertEqual(generate_good_scan_index(originalScanNum, badScanNum), expectedGoodScanNum)
                          
 	def test_generate_good_scan_array_case2(self):
 		originalScanNum = list(range(1,11))
 		badScanNum = "  1 , 6 , 10   "
 		expectedGoodScanNum = [2, 3, 4, 5, 7, 8, 9]
-		self.assertEqual(generate_good_scan_array(originalScanNum, badScanNum), expectedGoodScanNum)                   
+		self.assertEqual(generate_good_scan_index(originalScanNum, badScanNum), expectedGoodScanNum)                   
      
 	# @patch is only for Travis CI automation testing
 	@patch("matplotlib.pyplot.show")
