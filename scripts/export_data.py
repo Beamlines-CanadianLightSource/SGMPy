@@ -1,10 +1,10 @@
 # Open date file and get scan details
 
 from numpy import arange
-from average_plot import *
+#from average_plot import *
 
 
-def export_data(export_file_directory, origin_file_directory, mean_energy_array, name, avg_scaler, pfy_data):
+def export_data(export_file_directory, origin_file_directory, mean_energy_array, name, avg_scaler=None, pfy_data=None):
 	headers = get_header(origin_file_directory)
 	# MCA is SDD; after getting PFY of ROI then it becomes PFY_SDD
 	pfy_dict = {'PFY_SDD1': 0, 'PFY_SDD2': 1, 'PFY_SDD3': 2, 'PFY_SDD4': 3}
@@ -32,7 +32,7 @@ def get_header(file_directory):
 
 def get_date_time(header_lines):
 	str_date_time = header_lines[2]
-	print str_date_time[3:]
+	# print str_date_time[3:]
 	return str_date_time[3:]
 
 
@@ -62,7 +62,7 @@ def get_stripe(header_lines):
 def export_pfy(export_file_directory, headers, mean_energy_array, sub_pfy, name):
 	with open(export_file_directory, "w") as out_file:
 		# write header into the data file
-		out_file.write("# Beamline.file-content: average ")
+		out_file.write("# Beamline.file-content: binned and averaged")
 		out_file.write(name)
 		out_file.write("\n# Beamline.origin-filename: ")
 		str_origin_file_name = get_original_file_name(headers)
@@ -102,7 +102,7 @@ def export_pfy(export_file_directory, headers, mean_energy_array, sub_pfy, name)
 def export_scaler(export_file_directory, headers, mean_energy_array, sub_avg_scaler, name):
 	with open(export_file_directory, "w") as out_file:
 		# write header into the data file
-		out_file.write("# Beamline.file-content: average ")
+		out_file.write("# Beamline.file-content: binned and averaged")
 		out_file.write(name)
 		out_file.write("\n# Beamline.origin-filename: ")
 		str_origin_file_name = get_original_file_name(headers)
@@ -182,3 +182,87 @@ def export_eem(export_file_directory, origin_file_directory, mean_energy_array, 
 				out_string += "\n"
 				# print out_string
 				out_file.write(out_string)
+	print ("Export data complete.")
+                
+                
+def export_all (export_file_directory, origin_file_directory, mean_energy_array, avg_scaler, avg_pfy):
+	headers = get_header(origin_file_directory)
+	with open(export_file_directory, "w") as out_file:
+		out_file.write("# Beamline.file-content: all data\n")
+		out_file.write("\n# Beamline.origin-filename: ")
+		str_origin_file_name = get_original_file_name(headers)
+		out_file.write(str_origin_file_name)
+		out_file.write("# Beamline.name: SGM\n")
+		out_file.write("# Beamline.grating: ")
+		str_grating = get_grating(headers)
+		out_file.write(str_grating)
+		out_file.write("\n# Beamline.stripe: ")
+		str_stripe = get_stripe(headers)
+		out_file.write(str_stripe)
+		out_file.write("\n# Beamline.exit-slit: ")
+		str_exit_slit = get_exit_slit(headers)
+		out_file.write(str_exit_slit)
+		out_file.write("\n# Time.start: ")
+		str_date_time = get_date_time(headers)
+		out_file.write(str_date_time)
+		out_file.write("#-----------------------------------------------------------\n")
+		# write table header into the data file
+		out_file.write("# Energy\tTEY\tI0\tDiode\tPFY_SDD1\tPFY_SDD2\tPFY_SDD3\tPFY_SDD4\n")
+
+		for i in range(0, len(mean_energy_array)):
+			out_string = ""
+			# print mean_energy_array[i]
+			out_string += str(mean_energy_array[i])
+			out_string += "\t"
+			out_string += str(avg_scaler[0][i])
+			out_string += "\t"
+			out_string += str(avg_scaler[1][i])
+			out_string += "\t"
+			out_string += str(avg_scaler[2][i])
+			out_string += "\t"
+			out_string += str(avg_pfy[0][i])
+			out_string += "\t"
+			out_string += str(avg_pfy[1][i])
+			out_string += "\t"
+			out_string += str(avg_pfy[2][i])
+			out_string += "\t"
+			out_string += str(avg_pfy[3][i])
+			# print sub_pfy[i]
+			out_string += "\n"
+			# print out_string
+			out_file.write(out_string)
+	print ("Export data complete.")
+            
+        
+def export_normalized_data(export_file_directory, origin_file_directory, column1, column2, column1_name, column2_name):
+	headers = get_header(origin_file_directory)
+	with open(export_file_directory, "w") as out_file:
+		str_file_content = "# Beamline.file-content: normalized" + column2_name + "\n"
+		out_file.write(str_file_content)
+		str_origin_file_name = "# Beamline.origin-filename: " + get_original_file_name(headers)
+		out_file.write(str_origin_file_name)
+		out_file.write("# Beamline.name: SGM\n")
+		str_grating = "# Beamline.grating: " + get_grating(headers) + "\n"
+		out_file.write(str_grating)
+		str_stripe = "# Beamline.stripe: " + get_stripe(headers) + "\n"
+		out_file.write(str_stripe)
+		str_exit_slit = "# Beamline.exit-slit: " + get_exit_slit(headers) + "\n"
+		out_file.write(str_exit_slit)
+		str_date_time = "# Time.start: " + get_date_time(headers)+ "\n"
+		out_file.write(str_date_time)
+		out_file.write("#-----------------------------------------------------------\n")
+		# write table header into the data file
+		string_table_header = "# "+ column1_name + "\t" + column2_name + "\n"
+		out_file.write(string_table_header)
+		for i in range(0, len(column1)):
+			out_string = ""
+			# print mean_energy_array[i]
+			out_string += str(column1[i])
+			out_string += "\t"
+			out_string += str(column2[i])
+			# print sub_pfy[i]
+			out_string += "\n"
+			# print out_string
+			out_file.write(out_string)
+	print ("Export data complete.")
+    

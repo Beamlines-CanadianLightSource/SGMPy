@@ -1,11 +1,12 @@
 import unittest
-from scripts.summary_plot import *
+from scripts.xas_summary_plot import *
+from scripts.xas_binned import *
 from mock import patch
 import os
 import numpy as np
 
 
-class TestSummaryPlot(unittest.TestCase):
+class TestXASSummaryPlot(unittest.TestCase):
 
 	def test_get_all_scan_num(self):
 		expectedScanNum = list(range(1,11))
@@ -22,14 +23,15 @@ class TestSummaryPlot(unittest.TestCase):
 		originalScanNum = list(range(1,11))
 		badScanNum = "4 , 7 , 10"
 		expectedGoodScanNum = [1, 2, 3, 5, 6, 8, 9]
-		self.assertEqual(generate_good_scan_array(originalScanNum, badScanNum), expectedGoodScanNum)
+		self.assertEqual(generate_good_scan_index(originalScanNum, badScanNum), expectedGoodScanNum)
                          
 	def test_generate_good_scan_array_case2(self):
 		originalScanNum = list(range(1,11))
 		badScanNum = "  1 , 6 , 10   "
 		expectedGoodScanNum = [2, 3, 4, 5, 7, 8, 9]
-		self.assertEqual(generate_good_scan_array(originalScanNum, badScanNum), expectedGoodScanNum)                   
+		self.assertEqual(generate_good_scan_index(originalScanNum, badScanNum), expectedGoodScanNum)                   
      
+	# @patch is only for Travis CI automation testing
 	@patch("matplotlib.pyplot.show")
 	def test_summary_plot(self, mock_show):
 		script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in

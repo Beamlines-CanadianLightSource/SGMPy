@@ -1,9 +1,9 @@
 import os
 import unittest
-from scripts.scan_details import *
+from scripts.open_spec import *
 
 
-class TestScanDetails(unittest.TestCase):
+class TestOpenSpec(unittest.TestCase):
 
 	def test_get_total_Scannum(self):
 		expectedScanNum = 10
