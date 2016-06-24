@@ -63,12 +63,6 @@ def open_spec_data_file(file_directory):
 	opened_file = spec.open(file_directory)
 	return opened_file
 
-def get_all_scan_num(opened_file):
-	scan_num_array = opened_file.keys()
-	# convert char(string) to integer
-	scan_num_array = map(float, scan_num_array)
-	return scan_num_array
-
 
 def get_abs_path(rel_path):
 	script_dir = os.path.dirname(os.path.realpath('__file__'))
@@ -118,21 +112,21 @@ def get_cmesh_scan(opened_file):
 		scan_commmand_str =  opened_file[ opened_file.keys()[i-1] ].attrs['command']
 		temp_array = scan_commmand_str.split( )
 		if temp_array[0] == "cmesh":
-			string = str(i)
-			cmesh_array.append(string)
+			scan_num_str = str(i)
+			cmesh_array.append(scan_num_str)
 	return cmesh_array
 
 
 def get_c_scan(opened_file):
-	cmesh_array = []
-	for i in range (1, len(opened_file.keys())+1):
-		# print "Scan No.", i
-		scan_commmand_str =  opened_file[ opened_file.keys()[i-1] ].attrs['command']
+	c_array = []
+	for i in range (0, len(opened_file.keys())):
+		scan_commmand_str =  opened_file[ str(i+1) ].attrs['command']
 		temp_array = scan_commmand_str.split( )
-		if temp_array[0] == "cscan":
-			string = str(i)
-			c_array.append(i)
-	return cmesh_array
+		if temp_array[0] == "cscan" and len(opened_file[str(i+1)]['Energy']) != 0 :
+			# print "Scan No.", i
+			scan_num_str = str(i+1)
+			c_array.append(scan_num_str)
+	return c_array
 
 
 # open a specific scan of spectrum        
@@ -165,21 +159,26 @@ def openSGMXAS(sgmFile, scanNum):
 	return scan, mca1, mca2, mca3, mca4
 
 # open all scans of spectra
-def openAllSGMXAS(opened_file):
-	totalScanNum = len(opened_file.keys())
+def open_all_sgm_xas(opened_file):
+	counter = 0
+	c_scan = get_c_scan(opened_file)
+	total_scan_num = len(c_scan)
+    
 	# print "OriginalTotal scan: ", totalScanNum
 	scan=[]
-	mca1=[[] for a in range(totalScanNum)]
-	mca2=[[] for a in range(totalScanNum)]
-	mca3=[[] for a in range(totalScanNum)]
-	mca4=[[] for a in range(totalScanNum)]
+	mca1=[[] for a in range(total_scan_num)]
+	mca2=[[] for a in range(total_scan_num)]
+	mca3=[[] for a in range(total_scan_num)]
+	mca4=[[] for a in range(total_scan_num)]
     
-	for j in range (0, totalScanNum):
+	for j in range (0, total_scan_num):
 		# print 'index of the for loop is: ', j
 		# print 'Scan No.', j+1
-		scan.append(opened_file[ opened_file.keys()[j] ])
+		# print c_scan[j]
+
+		scan.append(opened_file[ c_scan[j] ])
 		energy = scan[j]['Energy']
-		mcadata=scan[j]['@A1']
+		mcadata = scan[j]['@A1']
 
 		# print "Parsing MCAs"
 
