@@ -120,12 +120,12 @@ def get_cmesh_scan(opened_file):
 def get_c_scan(opened_file):
 	c_array = []
 	for i in range (0, len(opened_file.keys())):
-		scan_commmand_str =  opened_file[ str(i+1) ].attrs['command']
+		index = opened_file.keys()[i] 
+		scan_commmand_str =  opened_file[index].attrs['command']
 		temp_array = scan_commmand_str.split( )
-		if temp_array[0] == "cscan" and len(opened_file[str(i+1)]['Energy']) != 0 :
+		if temp_array[0] == "cscan" and len(opened_file[index]['Energy']) != 0 :
 			# print "Scan No.", i
-			scan_num_str = str(i+1)
-			c_array.append(scan_num_str)
+			c_array.append(index)
 	return c_array
 
 

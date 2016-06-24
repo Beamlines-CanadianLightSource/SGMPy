@@ -76,8 +76,6 @@ def generate_summary_plot_with_scaler(opened_file, cscan_array, sgm_data, scaler
         
 		# real scan number from the data file
 		cscan_number = cscan_array[index]
-		cscan_index = int(cscan_number) - 1
-		real_cscan_number = opened_file.keys()[cscan_index]
         
 		# print "Generating plot for scan No.", cscan_number
 		plt.scatter(energy_array, scan_num_list, c=sgm_data[0][index][str_scaler_name],  s=140, linewidths=0, marker='s')
