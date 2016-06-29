@@ -11,11 +11,11 @@ from open_spec import *
 def generate_good_scan_index(scan_num_index, bad_scan_index_str):
 	# if badScanStr is null, then return original arrays
 	if bad_scan_index_str == '':
-		print "In if"
+		# print "In if"
 		return scan_num_index
 	# to get good scan numbers
 	else:
-		print "In else"
+		# print "In else"
 		# split the array based on comma symbol
 		bad_scan_index_array = bad_scan_index_str.split(',', )
 		length = len(scan_num_index)
@@ -23,16 +23,15 @@ def generate_good_scan_index(scan_num_index, bad_scan_index_str):
 		print good_scan_index
 		for i in range(0, length):
 			for j in range (0, len(bad_scan_index_array)):
-				print "i=",i
-				print "j=",j
+				# print "i=",i
+				# print "j=",j
 				if scan_num_index[i] == bad_scan_index_array[j]:
 					print "removed", bad_scan_index_array[j]
 					good_scan_index.remove(i+1)
 		return good_scan_index
 
 
-def prepare_bin_plot_hdf5 (good_scan_index, file_directory, start_energy, end_energy, number_of_bins, start_region_of_interest, end_region_of_interest):
-	energy_data, mca_data, scaler_data = read_hdf5(file_directory)
+def prepare_bin_plot_hdf5 (good_scan_index, energy_data, mca_data, scaler_data, start_energy, end_energy, number_of_bins, start_region_of_interest, end_region_of_interest):
 	energy_array, mca_array, scaler_array = get_good_datapoint_hdf5(good_scan_index, energy_data, mca_data, scaler_data)
 
 	edges_array, bins_mean_array = create_bins(start_energy, end_energy, number_of_bins)

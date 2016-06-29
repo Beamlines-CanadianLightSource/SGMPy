@@ -93,9 +93,11 @@ def generate_summary_plot_with_pfy_hdf5(energy_data, mca_data, scan_nums, pfy_na
         
 		# real scan number from the data file
 		cscan_number = scan_nums[index]
-		print len(energy_data[index])
-		print len(scan_num_list)
-		print len(total_pfy[index])
+        
+		# print len(energy_data[index])
+		# print len(scan_num_list)
+		# print len(total_pfy[index])
+        
 		# print "Generating plot for scan No.", cscan_number, "real scan number:", real_cscan_number
 		plt.scatter(energy_data[index], scan_num_list, c=total_pfy[index],  s=140, linewidths=0, marker='s')
 		print "Generated plot for No.", index+1, "in c scan array.  Real scan number is:", cscan_number
@@ -154,7 +156,51 @@ def generate_summary_plot_with_scaler(opened_file, cscan_array, sgm_data, scaler
 	# show the plot
 	plt.show()
 	return index_of_scan_num
+
+
+def generate_summary_plot_with_scaler_hdf5(energy_data, scaler_data, scan_nums, scaler_name):
+	scaler_dict = {'TEY': 0, 'I0': 1, 'Diode':2}
+	scaler_index = scaler_dict[scaler_name]
     
+	index_of_scan_num = []
+	str_scaler_name = scaler_name
+	total_cscan_num = len(scan_nums)
+	for index in range (0, total_cscan_num):
+
+		scan_num_list=np.empty(len(energy_data[index]))
+		# create a list including all the scan number
+		scan_num_list.fill(index+1)
+        
+		# real scan number from the data file
+		cscan_number = scan_nums[index]
+        
+		# print len(energy_data[index])
+		# print len(scan_num_list)
+		# print len(scaler_data[index][scaler_index])
+        
+		# print "Generating plot for scan No.", cscan_number
+		plt.scatter(energy_data[index], scan_num_list, c=scaler_data[index][scaler_index],  s=140, linewidths=0, marker='s')
+		print "Generated plot for No.", index+1, "in c scan array.  Real scan number is:", cscan_number
+		index_of_scan_num.append(cscan_number)
+        
+	# setup the y-axis ticks
+	# plt.ylim(0, total_cscan_num+1)
+	plt.yticks(np.arange(0+1, total_cscan_num+1, 1.0))
+	# add lable for x and y axis
+	plt.xlabel('Incident Energy (eV)')
+	plt.ylabel('Scan Numbers')
+	plt.colorbar()
+	plt.title(['color is :', str_scaler_name])
+	y_axis_height = total_cscan_num * 0.25
+	# change the figure configuration
+	fig = plt.gcf()
+	fig.set_size_inches(11, y_axis_height)
+	plt.grid()
+	# show the plot
+	plt.show()
+	return index_of_scan_num
+
+
     
 def get_one_pfy_from_all_scan(sgm_data, mca_name, enStart, enStop):
 
@@ -178,7 +224,7 @@ def get_one_pfy_from_all_scan(sgm_data, mca_name, enStart, enStop):
 		# print "Length of PFY:", len(pfy[i])
 		# print "Length of Energy", sgm_data[0][i]['Energy']
 	# print "Done!" 
-	print "pfy length: ", len(pfy)
+	# print "pfy length: ", len(pfy)
 	return pfy    
 
 
@@ -198,7 +244,7 @@ def get_one_pfy_from_all_scan_hdf5(mca_data, mca_name, enStart, enStop):
 	# print "Getting PFY ROIs for", mca_name
 
 	pfy=[[] for i in range(len(mca_data) )]
-	print "length of mca_data", len(mca_data)
+	# print "length of mca_data", len(mca_data)
 	for i in range(0, len(mca_data)):
 		for j in range(0, len(mca_data[i][mca])):
 			pfy[i].append(np.sum(mca_data[i][mca][j][enStart:enStop]))
