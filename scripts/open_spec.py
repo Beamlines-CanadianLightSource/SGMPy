@@ -107,12 +107,13 @@ def get_diff_scan(opened_file):
 
 def get_cmesh_scan(opened_file):
 	cmesh_array = []
-	for i in range (1, len(opened_file.keys())+1):
+	for i in range (0, len(opened_file.keys())):
+		index = opened_file.keys()[i] 
 		# print "Scan No.", i
-		scan_commmand_str =  opened_file[ opened_file.keys()[i-1] ].attrs['command']
+		scan_commmand_str =  opened_file[index].attrs['command']
 		temp_array = scan_commmand_str.split( )
 		if temp_array[0] == "cmesh":
-			scan_num_str = str(i)
+			scan_num_str = str(index)
 			cmesh_array.append(scan_num_str)
 	return cmesh_array
 
