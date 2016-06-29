@@ -9,18 +9,44 @@ from open_hdf5 import *
 from open_spec import *
 
 def generate_good_scan_index(scan_num_index, bad_scan_index_str):
+	length = len(scan_num_index)
 	# if badScanStr is null, then return original arrays
 	if bad_scan_index_str == '':
 		# print "In if"
-		return scan_num_index
+		good_scan_index = range(1, length+1, 1)
 	# to get good scan numbers
 	else:
 		# print "In else"
 		# split the array based on comma symbol
-		bad_scan_index_array = bad_scan_index_str.split(',', )
-		length = len(scan_num_index)
+		bad_scan_index_array = [x.strip() for x in bad_scan_index_str.split(',')]
 		good_scan_index = range(1, length+1, 1)
-		print good_scan_index
+		print "Original scan", scan_num_index
+		for i in range(0, length):
+			for j in range (0, len(bad_scan_index_array)):
+				# print "i=",i
+				# print "j=",j
+				# print scan_num_index[i]
+				# print bad_scan_index_array[j]
+				if scan_num_index[i] == bad_scan_index_array[j]:
+					print "removed", bad_scan_index_array[j]
+					good_scan_index.remove(i+1)
+	return good_scan_index
+
+
+
+def generate_good_scan_index_hdf5(scan_num_index, bad_scan_index_str):
+	length = len(scan_num_index)
+	# if badScanStr is null, then return original arrays
+	if bad_scan_index_str == '':
+		# print "In if"
+		good_scan_index = range(1, length+1, 1)
+	# to get good scan numbers
+	else:
+		# print "In else"
+		# split the array based on comma symbol
+		bad_scan_index_array = [x.strip() for x in bad_scan_index_str.split(',')]
+		good_scan_index = range(1, length+1, 1)
+		print "Original scan", scan_num_index
 		for i in range(0, length):
 			for j in range (0, len(bad_scan_index_array)):
 				# print "i=",i
@@ -28,7 +54,7 @@ def generate_good_scan_index(scan_num_index, bad_scan_index_str):
 				if scan_num_index[i] == bad_scan_index_array[j]:
 					print "removed", bad_scan_index_array[j]
 					good_scan_index.remove(i+1)
-		return good_scan_index
+	return good_scan_index
 
 
 def prepare_bin_plot_hdf5 (good_scan_index, energy_data, mca_data, scaler_data, start_energy, end_energy, number_of_bins, start_region_of_interest, end_region_of_interest):
@@ -138,18 +164,20 @@ def get_good_datapoint_spec(good_scan_index, sgm_data):
 		# print "This is the scan number: ", goodScanArray[i]
 		# array index is start from 0
 		# get all scalers of good scans from original scans' array
-		energy_array.append(scan[good_scan_index[i]-1]['Energy'])
-		scaler_array[i][0] = scan[good_scan_index[i]-1]['TEY']
-		scaler_array[i][1] = scan[good_scan_index[i]-1]['I0']
-		scaler_array[i][2] = scan[good_scan_index[i]-1]['Diode']
+		good_scan_index_number = int(good_scan_index[i]-1)
+		# print good_scan_index_number
+		energy_array.append(scan[good_scan_index_number]['Energy'])
+		scaler_array[i][0] = scan[good_scan_index_number]['TEY']
+		scaler_array[i][1] = scan[good_scan_index_number]['I0']
+		scaler_array[i][2] = scan[good_scan_index_number]['Diode']
 		# get all MCA1 of good scans from original scans
-		mca_array[i][0] = mca1[good_scan_index[i]-1]
+		mca_array[i][0] = mca1[good_scan_index_number]
 		# get all MCA2 of good scans from original scans
-		mca_array[i][1] = mca2[good_scan_index[i]-1]
+		mca_array[i][1] = mca2[good_scan_index_number]
 		# get all MCA3 of good scans from original scans
-		mca_array[i][2] = mca3[good_scan_index[i]-1]
+		mca_array[i][2] = mca3[good_scan_index_number]
 		# get all MCA4 of good scans from original scans
-		mca_array[i][3] = mca4[good_scan_index[i]-1]
+		mca_array[i][3] = mca4[good_scan_index_number]
 	return energy_array, mca_array, scaler_array
 
 
@@ -574,4 +602,3 @@ def plot_division(bins_mean_array, pfy_data, dividend, divisor, scaler_data = No
 	str_y_axis.write(divisor)
 	plt.ylabel(str_y_axis.getvalue())
 	plt.show()
-    

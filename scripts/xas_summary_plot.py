@@ -250,6 +250,6 @@ def get_one_pfy_from_all_scan_hdf5(mca_data, mca_name, enStart, enStop):
 			pfy[i].append(np.sum(mca_data[i][mca][j][enStart:enStop]))
 		# print "Length of PFY:", len(pfy[i])
 	# print "Done!"
-	print "pfy length: ", len(pfy)
+	# print "pfy length: ", len(pfy)
 	return pfy    
     
