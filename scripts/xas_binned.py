@@ -8,28 +8,25 @@ from cStringIO import StringIO
 from open_hdf5 import *
 from open_spec import *
 
-def generate_good_scan_index(scan_num_array, bad_scan_str):
-	#good_scan_index = []
+def generate_good_scan_index(scan_num_index, bad_scan_index_str):
 	# if badScanStr is null, then return original arrays
-	if bad_scan_str == '':
+	if bad_scan_index_str == '':
 		print "In if"
-		length = len(scan_num_array)
-		good_scan_index = range(0, length, 1)
-		return good_scan_index
+		return scan_num_index
 	# to get good scan numbers
 	else:
 		print "In else"
 		# split the array based on comma symbol
-		bad_scan_num_array = bad_scan_str.split(',', )
-		# convert char(string) to int
-		bad_scan_num_array = map(float, bad_scan_num_array)
-		length = len(scan_num_array)
+		bad_scan_index_array = bad_scan_index_str.split(',', )
+		length = len(scan_num_index)
 		good_scan_index = range(1, length+1, 1)
-		print "original good_scan_index:", good_scan_index
-		for i in range(0, len(scan_num_array)):
-			for j in range (0, len(bad_scan_num_array)):
-				if scan_num_array[i] == bad_scan_num_array[j]:
-					print "removed", scan_num_array[i]
+		print good_scan_index
+		for i in range(0, length):
+			for j in range (0, len(bad_scan_index_array)):
+				print "i=",i
+				print "j=",j
+				if scan_num_index[i] == bad_scan_index_array[j]:
+					print "removed", bad_scan_index_array[j]
 					good_scan_index.remove(i+1)
 		return good_scan_index
 
@@ -95,9 +92,9 @@ def prepare_blank_bin_plot_spec(good_scan_index, opened_blank_file, start_energy
 	return blank_pfy_sdd1_binned_array
 
 
-def prepare_bin_plot_spec(good_scan, opened_file, start_energy, end_energy, number_of_bins, start_region_of_interest, end_region_of_interest):
+def prepare_bin_plot_spec(good_scan, sgm_data, start_energy, end_energy, number_of_bins, start_region_of_interest, end_region_of_interest):
     
-	energy_array, mca_array, scaler_array = get_good_datapoint_spec(good_scan, opened_file)
+	energy_array, mca_array, scaler_array = get_good_datapoint_spec(good_scan, sgm_data)
 
 	edges_array, bins_mean_array = create_bins(start_energy, end_energy, number_of_bins)
 	# print "bins_mean_array:   ", bins_mean_array
@@ -122,7 +119,7 @@ def prepare_bin_plot_spec(good_scan, opened_file, start_energy, end_energy, numb
 
 
 # Eliminate bad scans and select good scans (data points)
-def get_good_datapoint_spec(good_scan_index, opened_file):
+def get_good_datapoint_spec(good_scan_index, sgm_data):
 	good_scan_index_length = len(good_scan_index)
 	print "Total good scan numbers:", good_scan_index_length
     
@@ -131,7 +128,11 @@ def get_good_datapoint_spec(good_scan_index, opened_file):
 	mca_array=[[[],[],[],[]] for i in range(good_scan_index_length)]
 
 	# open and read all data from the file and it could take a while
-	scan, mca1, mca2, mca3, mca4 = openAllSGMXAS(opened_file)
+	scan = sgm_data[0]
+	mca1 = sgm_data[1]
+	mca2 = sgm_data[2]
+	mca3 = sgm_data[3]
+	mca4 = sgm_data[4]
         
 	for i in range (0, good_scan_index_length):
 		# scan number is start from 1
@@ -161,7 +162,7 @@ def get_good_datapoint_sdd1_spec(good_scan_Array, opened_file):
 	sdd1_array=[]
 
 	# open and read all data from the file and it could take a while
-	scan, mca1, mca2, mca3, mca4 = openAllSGMXAS(opened_file)
+	scan, mca1, mca2, mca3, mca4 = open_all_sgm_xas(opened_file)
         
 	for i in range (0, len(good_scan_Array)):
 		# scan number is start from 1

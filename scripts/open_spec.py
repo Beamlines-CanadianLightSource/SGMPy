@@ -1,8 +1,8 @@
 import os
 from praxes.io import spec
 
-
-def openSGMSpec(sgmFile, scanNum):
+# open one scan of map
+def open_sgm_map(sgmFile, scanNum):
 
 	print "Opening scan", str(scanNum)
 	print "in", sgmFile
@@ -11,7 +11,7 @@ def openSGMSpec(sgmFile, scanNum):
 	scan=f[str(scanNum)]
 
 	hex_x = scan['Hex_XP']
-	mcadata=scan['@A1']
+	mcadata = scan['@A1']
 
 	print "Parsing MCAs"
 
@@ -29,17 +29,39 @@ def openSGMSpec(sgmFile, scanNum):
 	print "Done!"
 	return scan, mca1, mca2, mca3, mca4
 
+# 
+def open_all_sgm_map(opened_file):
+
+	cmesh_scan = get_cmesh_scan(opened_file)
+	total_scan_num = len(cmesh_scan)
+    
+	scan=[]
+	mca1=[[] for a in range(total_scan_num)]
+	mca2=[[] for a in range(total_scan_num)]
+	mca3=[[] for a in range(total_scan_num)]
+	mca4=[[] for a in range(total_scan_num)]    
+
+	for j in range (0, total_scan_num):
+		scan.append(opened_file[ cmesh_scan[j] ])
+
+		hex_x = scan[j]['Hex_XP']
+		mcadata = scan[j]['@A1']
+
+		for i in range(0,len(hex_x)):
+			mca1[j].append(mcadata[i*4])
+			mca2[j].append(mcadata[i*4 + 1])
+			mca3[j].append(mcadata[i*4 + 2])
+			mca4[j].append(mcadata[i*4 + 3])
+
+	print "Done!"
+	return scan, mca1, mca2, mca3, mca4
+
+
 
 # For Windows, Please use "/" instead of "\" in the file directory (URI)
 def open_spec_data_file(file_directory):
 	opened_file = spec.open(file_directory)
 	return opened_file
-
-def get_all_scan_num(opened_file):
-	scan_num_array = opened_file.keys()
-	# convert char(string) to integer
-	scan_num_array = map(float, scan_num_array)
-	return scan_num_array
 
 
 def get_abs_path(rel_path):
@@ -62,7 +84,7 @@ def get_scan_details(opened_file):
 		print 'Scan:', scan_details_list[i], '    The Command is: ',command, '    DateTime: ', date
 		print
 
-def check_scan_variety(opened_file):
+def get_diff_scan(opened_file):
 	cmesh_array = []
 	c_array = []
 	a_array = []
@@ -81,8 +103,34 @@ def check_scan_variety(opened_file):
 		elif temp_array[0] == "mesh":
 			mesh_array.append(i)
 	return c_array, a_array, cmesh_array, mesh_array
-        
-        
+
+
+def get_cmesh_scan(opened_file):
+	cmesh_array = []
+	for i in range (0, len(opened_file.keys())):
+		index = opened_file.keys()[i] 
+		# print "Scan No.", i
+		scan_commmand_str =  opened_file[index].attrs['command']
+		temp_array = scan_commmand_str.split( )
+		if temp_array[0] == "cmesh":
+			scan_num_str = str(index)
+			cmesh_array.append(scan_num_str)
+	return cmesh_array
+
+
+def get_c_scan(opened_file):
+	c_array = []
+	for i in range (0, len(opened_file.keys())):
+		index = opened_file.keys()[i] 
+		scan_commmand_str =  opened_file[index].attrs['command']
+		temp_array = scan_commmand_str.split( )
+		if temp_array[0] == "cscan" and len(opened_file[index]['Energy']) != 0 :
+			# print "Scan No.", i
+			c_array.append(index)
+	return c_array
+
+
+# open a specific scan of spectrum        
 def openSGMXAS(sgmFile, scanNum):
 
 	print "Opening scan", str(scanNum)
@@ -111,22 +159,27 @@ def openSGMXAS(sgmFile, scanNum):
 	print "Done!"
 	return scan, mca1, mca2, mca3, mca4
 
-
-def openAllSGMXAS(opened_file):
-	totalScanNum = len(opened_file.keys())
+# open all scans of spectra
+def open_all_sgm_xas(opened_file):
+	counter = 0
+	c_scan = get_c_scan(opened_file)
+	total_scan_num = len(c_scan)
+    
 	# print "OriginalTotal scan: ", totalScanNum
 	scan=[]
-	mca1=[[] for a in range(totalScanNum)]
-	mca2=[[] for a in range(totalScanNum)]
-	mca3=[[] for a in range(totalScanNum)]
-	mca4=[[] for a in range(totalScanNum)]
+	mca1=[[] for a in range(total_scan_num)]
+	mca2=[[] for a in range(total_scan_num)]
+	mca3=[[] for a in range(total_scan_num)]
+	mca4=[[] for a in range(total_scan_num)]
     
-	for j in range (0, totalScanNum):
+	for j in range (0, total_scan_num):
 		# print 'index of the for loop is: ', j
 		# print 'Scan No.', j+1
-		scan.append(opened_file[ opened_file.keys()[j] ])
-		energy = scan[j]['Energy']	
-		mcadata=scan[j]['@A1']
+		# print c_scan[j]
+
+		scan.append(opened_file[ c_scan[j] ])
+		energy = scan[j]['Energy']
+		mcadata = scan[j]['@A1']
 
 		# print "Parsing MCAs"
 
