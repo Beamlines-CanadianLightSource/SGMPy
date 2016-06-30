@@ -634,3 +634,4 @@ def plot_division(bins_mean_array, pfy_data, dividend, divisor, scaler_data = No
 	str_y_axis.write(divisor)
 	plt.ylabel(str_y_axis.getvalue())
 	plt.show()
+	return division_array
