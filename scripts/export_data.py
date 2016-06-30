@@ -62,23 +62,17 @@ def get_stripe(header_lines):
 def export_pfy(export_file_directory, headers, mean_energy_array, sub_pfy, name):
 	with open(export_file_directory, "w") as out_file:
 		# write header into the data file
-		out_file.write("# Beamline.file-content: binned and averaged")
-		out_file.write(name)
-		out_file.write("\n# Beamline.origin-filename: ")
-		str_origin_file_name = get_original_file_name(headers)
+		out_file.write("# Beamline.file-content: binned and averaged" + name + "\n")
+		str_origin_file_name = "# Beamline.origin-filename: " + get_original_file_name(headers)
 		out_file.write(str_origin_file_name)
 		out_file.write("# Beamline.name: SGM\n")
-		out_file.write("# Beamline.grating: ")
-		str_grating = get_grating(headers)
+		str_grating = "# Beamline.grating: " + get_grating(headers) + "\n"
 		out_file.write(str_grating)
-		out_file.write("\n# Beamline.stripe: ")
-		str_stripe = get_stripe(headers)
+		str_stripe = "# Beamline.stripe: " + get_stripe(headers) + "\n"
 		out_file.write(str_stripe)
-		out_file.write("\n# Beamline.exit-slit: ")
-		str_exit_slit = get_exit_slit(headers)
+		str_exit_slit = "# Beamline.exit-slit: " + get_exit_slit(headers) + "\n"
 		out_file.write(str_exit_slit)
-		out_file.write("\n# Time.start: ")
-		str_date_time = get_date_time(headers)
+		str_date_time = "# Time.start: " + get_date_time(headers)
 		out_file.write(str_date_time)
 		out_file.write("#-----------------------------------------------------------\n")
     
@@ -102,23 +96,17 @@ def export_pfy(export_file_directory, headers, mean_energy_array, sub_pfy, name)
 def export_scaler(export_file_directory, headers, mean_energy_array, sub_avg_scaler, name):
 	with open(export_file_directory, "w") as out_file:
 		# write header into the data file
-		out_file.write("# Beamline.file-content: binned and averaged")
-		out_file.write(name)
-		out_file.write("\n# Beamline.origin-filename: ")
-		str_origin_file_name = get_original_file_name(headers)
+		out_file.write("# Beamline.file-content: binned and averaged" + name + "\n")
+		str_origin_file_name = "# Beamline.origin-filename: " + get_original_file_name(headers)
 		out_file.write(str_origin_file_name)
 		out_file.write("# Beamline.name: SGM\n")
-		out_file.write("# Beamline.grating: ")
-		str_grating = get_grating(headers)
+		str_grating = "# Beamline.grating: " + get_grating(headers) + "\n"
 		out_file.write(str_grating)
-		out_file.write("\n# Beamline.stripe: ")
-		str_stripe = get_stripe(headers)
+		str_stripe = "# Beamline.stripe: " + get_stripe(headers) + "\n"
 		out_file.write(str_stripe)
-		out_file.write("\n# Beamline.exit-slit: ")
-		str_exit_slit = get_exit_slit(headers)
+		str_exit_slit = "# Beamline.exit-slit: " + get_exit_slit(headers) + "\n"
 		out_file.write(str_exit_slit)
-		out_file.write("\n# Time.start: ")
-		str_date_time = get_date_time(headers)
+		str_date_time = "# Time.start: " + get_date_time(headers)
 		out_file.write(str_date_time)
 		out_file.write("#-----------------------------------------------------------\n")
     
@@ -142,24 +130,17 @@ def export_scaler(export_file_directory, headers, mean_energy_array, sub_avg_sca
 def export_eem(export_file_directory, origin_file_directory, mean_energy_array, emission_energy, color_variable, name):
 	headers = get_header(origin_file_directory)
 	with open(export_file_directory, "w") as out_file:
-		out_file.write("# Beamline.file-content: ")
-		out_file.write(name)
-		out_file.write(" data from Excitation Emission Matrix\n")
-		out_file.write("\n# Beamline.origin-filename: ")
-		str_origin_file_name = get_original_file_name(headers)
+		out_file.write("# Beamline.file-content: " + name + " data from Excitation Emission Matrix\n")
+		str_origin_file_name = "# Beamline.origin-filename: " + get_original_file_name(headers)
 		out_file.write(str_origin_file_name)
 		out_file.write("# Beamline.name: SGM\n")
-		out_file.write("# Beamline.grating: ")
-		str_grating = get_grating(headers)
+		str_grating = "# Beamline.grating: " + get_grating(headers) + "\n"
 		out_file.write(str_grating)
-		out_file.write("\n# Beamline.stripe: ")
-		str_stripe = get_stripe(headers)
+		str_stripe = "# Beamline.stripe: " + get_stripe(headers) + "\n"
 		out_file.write(str_stripe)
-		out_file.write("\n# Beamline.exit-slit: ")
-		str_exit_slit = get_exit_slit(headers)
+		str_exit_slit = "# Beamline.exit-slit: " + get_exit_slit(headers) + "\n"
 		out_file.write(str_exit_slit)
-		out_file.write("\n# Time.start: ")
-		str_date_time = get_date_time(headers)
+		str_date_time = "# Time.start: " + get_date_time(headers)
 		out_file.write(str_date_time)
 		out_file.write("#-----------------------------------------------------------\n")
 
@@ -189,21 +170,16 @@ def export_all (export_file_directory, origin_file_directory, mean_energy_array,
 	headers = get_header(origin_file_directory)
 	with open(export_file_directory, "w") as out_file:
 		out_file.write("# Beamline.file-content: all data\n")
-		out_file.write("\n# Beamline.origin-filename: ")
-		str_origin_file_name = get_original_file_name(headers)
+		str_origin_file_name = "# Beamline.origin-filename: " + get_original_file_name(headers)
 		out_file.write(str_origin_file_name)
 		out_file.write("# Beamline.name: SGM\n")
-		out_file.write("# Beamline.grating: ")
-		str_grating = get_grating(headers)
+		str_grating = "# Beamline.grating: " + get_grating(headers) + "\n"
 		out_file.write(str_grating)
-		out_file.write("\n# Beamline.stripe: ")
-		str_stripe = get_stripe(headers)
+		str_stripe = "# Beamline.stripe: " + get_stripe(headers) + "\n"
 		out_file.write(str_stripe)
-		out_file.write("\n# Beamline.exit-slit: ")
-		str_exit_slit = get_exit_slit(headers)
+		str_exit_slit = "# Beamline.exit-slit: " + get_exit_slit(headers) + "\n"
 		out_file.write(str_exit_slit)
-		out_file.write("\n# Time.start: ")
-		str_date_time = get_date_time(headers)
+		str_date_time = "# Time.start: " + get_date_time(headers)
 		out_file.write(str_date_time)
 		out_file.write("#-----------------------------------------------------------\n")
 		# write table header into the data file
@@ -248,7 +224,7 @@ def export_normalized_data(export_file_directory, origin_file_directory, column1
 		out_file.write(str_stripe)
 		str_exit_slit = "# Beamline.exit-slit: " + get_exit_slit(headers) + "\n"
 		out_file.write(str_exit_slit)
-		str_date_time = "# Time.start: " + get_date_time(headers)+ "\n"
+		str_date_time = "# Time.start: " + get_date_time(headers)
 		out_file.write(str_date_time)
 		out_file.write("#-----------------------------------------------------------\n")
 		# write table header into the data file
