@@ -31,30 +31,6 @@ def generate_good_scan_index(scan_num_index, bad_scan_index_str):
 					print "removed", bad_scan_index_array[j]
 					good_scan_index.remove(i+1)
 	return good_scan_index
-
-
-
-def generate_good_scan_index_hdf5(scan_num_index, bad_scan_index_str):
-	length = len(scan_num_index)
-	# if badScanStr is null, then return original arrays
-	if bad_scan_index_str == '':
-		# print "In if"
-		good_scan_index = range(1, length+1, 1)
-	# to get good scan numbers
-	else:
-		# print "In else"
-		# split the array based on comma symbol
-		bad_scan_index_array = [x.strip() for x in bad_scan_index_str.split(',')]
-		good_scan_index = range(1, length+1, 1)
-		print "Original scan", scan_num_index
-		for i in range(0, length):
-			for j in range (0, len(bad_scan_index_array)):
-				# print "i=",i
-				# print "j=",j
-				if scan_num_index[i] == bad_scan_index_array[j]:
-					print "removed", bad_scan_index_array[j]
-					good_scan_index.remove(i+1)
-	return good_scan_index
     
 
 def prepare_bin_plot_hdf5 (good_scan_index, energy_data, mca_data, scaler_data, start_energy, end_energy, number_of_bins, start_region_of_interest, end_region_of_interest):
@@ -144,35 +120,7 @@ def prepare_bin_plot_spec(assigned_data_array, scaler_array, bin_mca, empty_bin_
     
 	bin_scaler = calculate_bin_scalers(assigned_data_array, scaler_array, empty_bin_front, empty_bin_back)
 	pfy_data = get_pfy_bin(bin_mca, start_region_of_interest, end_region_of_interest)
-	return bin_scaler, pfy_data
-
-
-    
-#def prepare_bin_plot_spec(good_scan, sgm_data, start_energy, end_energy, number_of_bins, start_region_of_interest, end_region_of_interest):
-#    
-#	energy_array, mca_array, scaler_array = get_good_datapoint_spec(good_scan, sgm_data)
-#
-#	edges_array, bins_mean_array = create_bins(start_energy, end_energy, number_of_bins)
-#	# print "bins_mean_array:   ", bins_mean_array
-#	assigned_data_array = assign_data(energy_array , edges_array)
-#	# calculate average
-#	calculate_bin_mca_result = calculate_bin_mca(assigned_data_array, mca_array)
-#	bin_mca = calculate_bin_mca_result[:-2]
-#	empty_bin_front = calculate_bin_mca_result[-2]
-#	empty_bin_back = calculate_bin_mca_result[-1]
-#	bin_scaler = calculate_bin_scalers(assigned_data_array, scaler_array, empty_bin_front, empty_bin_back)
-#	pfy_data = get_pfy_bin(bin_mca, start_region_of_interest, end_region_of_interest)
-#    
-#	#remove empty bins
-#	if empty_bin_front == 0 and empty_bin_back == 0:
-#		return bins_mean_array, bin_mca, bin_scaler, pfy_data
-#	elif empty_bin_front != 0 and empty_bin_back == 0:
-#		return bins_mean_array[empty_bin_front:], bin_mca, bin_scaler, pfy_data
-#	elif empty_bin_front == 0 and empty_bin_back != 0:
-#		return bins_mean_array[:-empty_bin_back], bin_mca, bin_scaler, pfy_data
-#	else:
-#		return bins_mean_array[empty_bin_front:number_of_bins-empty_bin_back], bin_mca, bin_scaler, pfy_data 
-    
+	return bin_scaler, pfy_data    
     
 
 # Eliminate bad scans and select good scans (data points)
