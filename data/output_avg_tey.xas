@@ -1,10 +1,10 @@
-# Beamline.file-content: binned and averagedTEY
-# Beamline.origin-filename: Fe2O3.dat
+# Beamline.file-content: binned and averaged TEY
+# Beamline.origin-filename: spectra_example
 # Beamline.name: SGM
-# Beamline.grating: Medium Energy.
-# Beamline.stripe: Silicon
+# Beamline.grating: Medium Energy
+# Beamline.stripe:  Silicon
 # Beamline.exit-slit: 10.0934
-# Time.start: Sun May 15 11:19:51 2016
+# Time.start: 2016-05-15T11:20:24
 #-----------------------------------------------------------
 # Energy	TEY
 690.05	1361.95652174
