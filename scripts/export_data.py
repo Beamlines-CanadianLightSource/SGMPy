@@ -5,7 +5,7 @@ from open_spec import *
 import h5py
 import numpy as np
 
-def export_data(export_file_directory, origin_file_directory, mean_energy_array, name, avg_scaler=None, pfy_data=None):
+def export_data(export_file_directory, origin_file_directory, energy_array, name, scaler_data=None, pfy_data=None, scan_number=None):
 
 	# MCA is SDD; after getting PFY of ROI then it becomes PFY_SDD
 	pfy_dict = {'PFY_SDD1': 0, 'PFY_SDD2': 1, 'PFY_SDD3': 2, 'PFY_SDD4': 3}
@@ -13,12 +13,12 @@ def export_data(export_file_directory, origin_file_directory, mean_energy_array,
     
 	if name == "PFY_SDD1" or name == "PFY_SDD2" or name == "PFY_SDD3" or name == "PFY_SDD4":
 		sub_pfy_index = int(pfy_dict[name])
-		export_pfy(export_file_directory, origin_file_directory, mean_energy_array, pfy_data[sub_pfy_index], name)
+		export_pfy(export_file_directory, origin_file_directory, energy_array, pfy_data[sub_pfy_index], name, scan_number)
 		print "Export data complete!"
 
 	elif name == "TEY" or name == "I0" or name == "Diode":
 		sub_scaler_index = scaler_dict[name]
-		export_scaler(export_file_directory, origin_file_directory, mean_energy_array, avg_scaler[sub_scaler_index], name)
+		export_scaler(export_file_directory, origin_file_directory, energy_array, scaler_data[sub_scaler_index], name, scan_number)
 		print "Export data complete!"
 
 	else:
@@ -95,7 +95,7 @@ def check_file_type(origin_file_directory):
 	return file_extension, file_name
 
     
-def export_pfy(export_file_directory, origin_file_directory, mean_energy_array, sub_pfy, name):
+def export_pfy(export_file_directory, origin_file_directory, energy_array, sub_pfy, name, scan_number=None):
 	file_extension, original_file_name = check_file_type(origin_file_directory)
 	if file_extension == "dat":
 		opened_file = open_spec_data_file(origin_file_directory)
@@ -110,7 +110,10 @@ def export_pfy(export_file_directory, origin_file_directory, mean_energy_array, 
 
 	with open(export_file_directory, "w") as out_file:
 		# write header into the data file
-		out_file.write("# Beamline.file-content: binned and averaged " + name + "\n")
+		if scan_number== None:
+			out_file.write("# Beamline.file-content: binned and averaged " + name + "\n")
+		else:
+			out_file.write("# Beamline.file-content: " + name + "of scan No." + scan_number + "\n")
 		str_origin_file_name = "# Beamline.origin-filename: " + original_file_name + "\n"
 		out_file.write(str_origin_file_name)
 		out_file.write("# Beamline.name: SGM\n")
@@ -129,10 +132,10 @@ def export_pfy(export_file_directory, origin_file_directory, mean_energy_array, 
 		out_file.write(name)
 		out_file.write("\n")
     
-		for i in range(0, len(mean_energy_array)):
+		for i in range(0, len(energy_array)):
 			out_string = ""
-			# print mean_energy_array[i]
-			out_string += str(mean_energy_array[i])
+			# print energy_array[i]
+			out_string += str(energy_array[i])
 			out_string += "\t"
 			out_string += str(sub_pfy[i])
 			# print sub_pfy[i]
@@ -141,7 +144,7 @@ def export_pfy(export_file_directory, origin_file_directory, mean_energy_array, 
 			out_file.write(out_string)
 
 
-def export_scaler(export_file_directory, origin_file_directory, mean_energy_array, sub_avg_scaler, name):
+def export_scaler(export_file_directory, origin_file_directory, energy_array, sub_scaler, name, scan_number=None):
 	file_extension, original_file_name = check_file_type(origin_file_directory)
 	if file_extension == "dat":
 		opened_file = open_spec_data_file(origin_file_directory)
@@ -156,7 +159,11 @@ def export_scaler(export_file_directory, origin_file_directory, mean_energy_arra
 
 	with open(export_file_directory, "w") as out_file:
 		# write header into the data file
-		out_file.write("# Beamline.file-content: binned and averaged " + name + "\n")
+		if scan_number== None:
+			out_file.write("# Beamline.file-content: binned and averaged " + name + "\n")
+		else:
+			out_file.write("# Beamline.file-content: " + name + "of scan No." + scan_number + "\n")
+		str_origin_file_name = "# Beamline.origin-filename: " + original_file_name + "\n"
 		str_origin_file_name = "# Beamline.origin-filename: " + original_file_name + "\n"
 		out_file.write(str_origin_file_name)
 		out_file.write("# Beamline.name: SGM\n")
@@ -175,19 +182,19 @@ def export_scaler(export_file_directory, origin_file_directory, mean_energy_arra
 		out_file.write(name)
 		out_file.write("\n")
     
-		for i in range(0, len(mean_energy_array)):
+		for i in range(0, len(energy_array)):
 			out_string = ""
-			# print mean_energy_array[i]
-			out_string += str(mean_energy_array[i])
+			# print energy_array[i]
+			out_string += str(energy_array[i])
 			out_string += "\t"
-			out_string += str(sub_avg_scaler[i])
-			# print sub_avg_scaler[i]
+			out_string += str(sub_scaler[i])
+			# print sub_scaler[i]
 			out_string += "\n"
 			# print out_string
 			out_file.write(out_string)
 
 
-#def export_eem(export_file_directory, origin_file_directory, mean_energy_array, emission_energy, color_variable, name):
+#def export_eem(export_file_directory, origin_file_directory, energy_array, emission_energy, color_variable, name):
 #	headers = get_header(origin_file_directory)
 #	with open(export_file_directory, "w") as out_file:
 #		out_file.write("# Beamline.file-content: " + name + " data from Excitation Emission Matrix\n")
@@ -210,23 +217,23 @@ def export_scaler(export_file_directory, origin_file_directory, mean_energy_arra
 #		out_file.write(name)
 #		out_file.write("\n")
 #
-#		for i in range(0, len(mean_energy_array)):
+#		for i in range(0, len(energy_array)):
 #			for j in range(0, len(emission_energy)):
 #				out_string = ""
-#				# print mean_energy_array[i]
-#				out_string += str(mean_energy_array[i])
+#				# print energy_array[i]
+#				out_string += str(energy_array[i])
 #				out_string += "\t"
 #				out_string += str(emission_energy[j])
 #				out_string += "\t"
 #				out_string += str(color_variable[i][j])
-#				# print sub_avg_scaler[i]
+#				# print sub_scaler[i]
 #				out_string += "\n"
 #				# print out_string
 #				out_file.write(out_string)
 #	print ("Export data complete.")
                 
                 
-def export_all (export_file_directory, origin_file_directory, mean_energy_array, avg_scaler, avg_pfy):
+def export_all (export_file_directory, origin_file_directory, energy_array, scaler_data, pfy_data, scan_number=None):
 	file_extension, original_file_name = check_file_type(origin_file_directory)
 	if file_extension == "dat":
 		opened_file = open_spec_data_file(origin_file_directory)
@@ -240,7 +247,10 @@ def export_all (export_file_directory, origin_file_directory, mean_energy_array,
 
 	with open(export_file_directory, "w") as out_file:
 		# write header into the data file
-		out_file.write("# Beamline.file-content: all data\n")
+		if scan_number== None:
+			out_file.write("# Beamline.file-content: all data\n")
+		else:
+			out_file.write("# Beamline.file-content: all data of scan No." + scan_number + "\n")
 		str_origin_file_name = "# Beamline.origin-filename: " + original_file_name + "\n"
 		out_file.write(str_origin_file_name)
 		out_file.write("# Beamline.name: SGM\n")
@@ -256,24 +266,24 @@ def export_all (export_file_directory, origin_file_directory, mean_energy_array,
 
         # write table header into the data file
 		out_file.write("# Energy\tTEY\tI0\tDiode\tPFY_SDD1\tPFY_SDD2\tPFY_SDD3\tPFY_SDD4\n")
-		for i in range(0, len(mean_energy_array)):
+		for i in range(0, len(energy_array)):
 			out_string = ""
-			# print mean_energy_array[i]
-			out_string += str(mean_energy_array[i])
+			# print energy_array[i]
+			out_string += str(energy_array[i])
 			out_string += "\t"
-			out_string += str(avg_scaler[0][i])
+			out_string += str(scaler_data[0][i])
 			out_string += "\t"
-			out_string += str(avg_scaler[1][i])
+			out_string += str(scaler_data[1][i])
 			out_string += "\t"
-			out_string += str(avg_scaler[2][i])
+			out_string += str(scaler_data[2][i])
 			out_string += "\t"
-			out_string += str(avg_pfy[0][i])
+			out_string += str(pfy_data[0][i])
 			out_string += "\t"
-			out_string += str(avg_pfy[1][i])
+			out_string += str(pfy_data[1][i])
 			out_string += "\t"
-			out_string += str(avg_pfy[2][i])
+			out_string += str(pfy_data[2][i])
 			out_string += "\t"
-			out_string += str(avg_pfy[3][i])
+			out_string += str(pfy_data[3][i])
 			# print sub_pfy[i]
 			out_string += "\n"
 			# print out_string
@@ -313,7 +323,7 @@ def export_normalized_data(export_file_directory, origin_file_directory, column1
 		out_file.write(string_table_header)
 		for i in range(0, len(column1)):
 			out_string = ""
-			# print mean_energy_array[i]
+			# print energy_array[i]
 			out_string += str(column1[i])
 			out_string += "\t"
 			out_string += str(column2[i])

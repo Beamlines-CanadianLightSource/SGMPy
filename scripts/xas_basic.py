@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def get_pfy(sgmData, enStart, enStop):
+def get_pfy(mca_array, enStart, enStop):
 
 	print "Getting PFY ROIs"
 
@@ -13,57 +13,59 @@ def get_pfy(sgmData, enStart, enStop):
 	pfy3=[]
 	pfy4=[]
 
-	for i in range(0, len(sgmData[1])):
-		pfy1.append(np.sum(sgmData[1][i][enStart:enStop]))
-		pfy2.append(np.sum(sgmData[2][i][enStart:enStop]))
-		pfy3.append(np.sum(sgmData[3][i][enStart:enStop]))
-		pfy4.append(np.sum(sgmData[4][i][enStart:enStop]))
+	for i in range(0, len(mca_array[0])):
+		pfy1.append(np.sum(mca_array[0][i][enStart:enStop]))
+		pfy2.append(np.sum(mca_array[1][i][enStart:enStop]))
+		pfy3.append(np.sum(mca_array[2][i][enStart:enStop]))
+		pfy4.append(np.sum(mca_array[3][i][enStart:enStop]))
 	
 	return pfy1, pfy2, pfy3, pfy4
 	print "Done!"
 
 
-def plot_xas(sgmData, name, pfy_data=None):
+def plot_xas(energy_data, name, scaler_data=None, pfy_data=None):
 	plt.close('all')
 	if name == "TEY" or name == "I0" or name == "Diode" or name == "SDD1_OCR" or name == "SDD1_ICR" or name == "SDD2_OCR" or name == "SDD2_ICR" or name == "SDD3_OCR" or name == "SDD3_ICR" or name == "SDD4_OCR" or name == "SDD4_ICR":
-		plot_xas_scaler(sgmData, name)
+		plot_xas_scaler(energy_data, scaler_data, name)
 	elif name == "PFY_SDD1" or name == "PFY_SDD2" or name == "PFY_SDD3" or name == "PFY_SDD4":
-		plot_xas_pfy(sgmData, pfy_data, name)
+		plot_xas_pfy(energy_data, pfy_data, name)
 	else:
 		print "Errors with the name input"
 
 
-def plot_xas_pfy(sgm_data, pfy_data, name):
+def plot_xas_pfy(energy_data, pfy_data, name):
+	plt.close('all')
 	print "Plotting", name, "Spectra"
 	pfy_dict = {'PFY_SDD1': 0, 'PFY_SDD2': 1, 'PFY_SDD3': 2, 'PFY_SDD4': 3}
 	pfy_index = pfy_dict[name]
 	sub_pfy_data = pfy_data[pfy_index]
-	en = sgm_data[0]['Energy']
-	data = sub_pfy_data
-	plt.plot(en, data)
+
+	plt.plot(energy_data, sub_pfy_data)
 	plt.xlabel("Energy (eV)")
 	plt.ylabel(name)
 	plt.show()
 
 
-def plot_xas_scaler(sgm_data, name):
+def plot_xas_scaler(energy_data, scaler_data, name):
+	plt.close('all')
 	print "Plotting", name, "Spectra"
-	en = sgm_data[0]['Energy']
-	data = sgm_data[0][name]
-	plt.plot(en, data)
+	scaler_dict = {'TEY': 0, 'I0': 1, 'Diode':2}
+	scaler_index = scaler_dict[name]
+	data = scaler_data[scaler_index]
+	plt.plot(energy_data, data)
 	plt.xlabel("Energy (eV)")
 	plt.ylabel(name)
 	plt.show()
 
 
-def plot_xas_all(sgm_data, pfy_data):
+def plot_xas_all(energy_data, scaler_data, pfy_data):
 	plt.close('all')
 	print "Plotting XAS."
 
-	en = sgm_data[0]['Energy']
-	tey = sgm_data[0]['TEY']
-	i0 = sgm_data[0]['I0']
-	diode = sgm_data[0]['Diode']
+	en = energy_data
+	tey = scaler_data[0]
+	i0 = scaler_data[1]
+	diode = scaler_data[2]
 
 	plt.figure(1)
 	plt.subplot(4, 2, 1)
