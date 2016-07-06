@@ -19,7 +19,7 @@ def check_scan_type(scan):
 	scan_name = temp_array[0]
 	return scan_name
 
-def read_hdf5(file_directory):
+def read_all_hdf5_xas(file_directory):
 	energy_array = []
 	scaler_array = []
 	mca_array = []
@@ -52,3 +52,30 @@ def read_hdf5(file_directory):
 	# print "..................."            
 	return energy_array, mca_array, scaler_array, scan_number
 
+def read_hdf5_xas(file_directory, scan_number):
+	energy_array = []
+	scaler_array = []
+	mca_array = []
+	with h5py.File(file_directory,'r') as hf: 
+		scaler_data = [[], [], []]
+		mca_data = [[], [], [], []]
+		# print hf.keys()[i]
+		scan = hf.get(scan_number)
+		scan_name = check_scan_type(scan)
+		print "scan ", scan_number, "is:", scan_name
+		# exclude empty scan
+		if scan_name == "cscan" and len(scan['data']) > 2:
+			#scan_number.append(hf.keys()[i])
+			energy_array = scan['data']['Energy'][0:]
+			scaler_data[0] = scan['data']['TEY'][0:]
+			scaler_data[1] = scan['data']['I0'][0:]
+			scaler_data[2] = scan['data']['Diode'][0:]
+			scaler_array = scaler_data
+			mca_data[0] = scan['data']['_mca1_'][0:]
+			mca_data[1] = scan['data']['_mca2_'][0:]
+			mca_data[2] = scan['data']['_mca3_'][0:]
+			mca_data[3] = scan['data']['_mca4_'][0:]
+			mca_array = mca_data
+			return energy_array, mca_array, scaler_array, scan_number
+		else:
+			return "It is not c mesh scan."

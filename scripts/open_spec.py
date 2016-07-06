@@ -2,13 +2,13 @@ import os
 from praxes.io import spec
 
 # open one scan of map
-def open_sgm_map(sgmFile, scanNum):
+def open_sgm_map(sgm_file, scan_num):
 
-	print "Opening scan", str(scanNum)
-	print "in", sgmFile
+	print "Opening scan", str(scan_num)
+	print "in", sgm_file
 
-	f = spec.open(sgmFile)
-	scan=f[str(scanNum)]
+	f = spec.open(sgm_file)
+	scan=f[str(scan_num)]
 
 	hex_x = scan['Hex_XP']
 	mcadata = scan['@A1']
@@ -131,33 +131,31 @@ def get_c_scan(opened_file):
 
 
 # open a specific scan of spectrum        
-def openSGMXAS(sgmFile, scanNum):
+def open_sgm_xas(sgm_file, scan_num):
 
-	print "Opening scan", str(scanNum)
-	print "in", sgmFile
+	print "Opening scan", str(scan_num)
+	print "in", sgm_file
 
-	f = spec.open(sgmFile)
-	scan=f[str(scanNum)]
+	f = spec.open(sgm_file)
+	scan=f[str(scan_num)]
 
-	energy = scan['Energy']	
-
-	mcadata=scan['@A1']
-
+	energy_array = scan['Energy']
+	scaler_array = [[],[],[]]
+	scaler_array[0] =  scan['TEY']
+	scaler_array[1] =  scan['I0']
+	scaler_array[2] =  scan['Diode']
+    
+	mcadata = scan['@A1']
 	print "Parsing MCAs"
-
-	mca1=[]
-	mca2=[]
-	mca3=[]
-	mca4=[]
-
-	for i in range(0,len(energy)):
-		mca1.append(mcadata[i*4])
-		mca2.append(mcadata[i*4 + 1])
-		mca3.append(mcadata[i*4 + 2])
-		mca4.append(mcadata[i*4 + 3])
+	mca_array = [[],[],[],[]]
+	for i in range(0,len(energy_array)):
+		mca_array[0].append(mcadata[i*4])
+		mca_array[1].append(mcadata[i*4 + 1])
+		mca_array[2].append(mcadata[i*4 + 2])
+		mca_array[3].append(mcadata[i*4 + 3])
 
 	print "Done!"
-	return scan, mca1, mca2, mca3, mca4
+	return energy_array, mca_array, scaler_array
 
 # open all scans of spectra
 def open_all_sgm_xas(opened_file):
@@ -165,7 +163,7 @@ def open_all_sgm_xas(opened_file):
 	c_scan = get_c_scan(opened_file)
 	total_scan_num = len(c_scan)
     
-	# print "OriginalTotal scan: ", totalScanNum
+	# print "OriginalTotal scan: ", total_scan_num
 	scan=[]
 	mca1=[[] for a in range(total_scan_num)]
 	mca2=[[] for a in range(total_scan_num)]
