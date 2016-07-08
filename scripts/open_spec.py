@@ -11,23 +11,25 @@ def open_sgm_map(sgm_file, scan_num):
 	scan=f[str(scan_num)]
 
 	hex_x = scan['Hex_XP']
-	mcadata = scan['@A1']
+	hex_y = scan['Hex_YP']
 
+	scaler_array = [[],[],[]]
+	scaler_array[0] =  scan['TEY']
+	scaler_array[1] =  scan['I0']
+	scaler_array[2] =  scan['Diode']
+    
 	print "Parsing MCAs"
-
-	mca1=[]
-	mca2=[]
-	mca3=[]
-	mca4=[]
+	mcadata = scan['@A1']
+	mca_array = [[],[],[],[]]
 
 	for i in range(0,len(hex_x)):
-		mca1.append(mcadata[i*4])
-		mca2.append(mcadata[i*4 + 1])
-		mca3.append(mcadata[i*4 + 2])
-		mca4.append(mcadata[i*4 + 3])
+		mca_array[0].append(mcadata[i*4])
+		mca_array[1].append(mcadata[i*4 + 1])
+		mca_array[2].append(mcadata[i*4 + 2])
+		mca_array[3].append(mcadata[i*4 + 3])
 
 	print "Done!"
-	return scan, mca1, mca2, mca3, mca4
+	return hex_x, hex_y, mca_array, scaler_array, scan_num
 
 # 
 def open_all_sgm_map(opened_file):
