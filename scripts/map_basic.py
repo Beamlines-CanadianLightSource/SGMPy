@@ -6,59 +6,51 @@ def getXRF(sgmData):
 
 	print "Summing all XRF spectra."
 
-        xrf1 = np.sum(sgmData[1], axis=0)
-        xrf2 = np.sum(sgmData[2], axis=0)
-        xrf3 = np.sum(sgmData[3], axis=0)
-        xrf4 = np.sum(sgmData[4], axis=0)
+	xrf1 = np.sum(sgmData[1], axis=0)
+	xrf2 = np.sum(sgmData[2], axis=0)
+	xrf3 = np.sum(sgmData[3], axis=0)
+	xrf4 = np.sum(sgmData[4], axis=0)
 
 	print "Plotting XRF."
 
-        plt.figure(1)
-        plt.subplot(221)
-        plt.plot(xrf1)
-        plt.subplot(222)
-        plt.plot(xrf2)
-        plt.subplot(223)
-        plt.plot(xrf3)
-        plt.subplot(224)
-        plt.plot(xrf4)
+	plt.figure(1)
+	plt.subplot(221)
+	plt.plot(xrf1)
+	plt.subplot(222)
+	plt.plot(xrf2)
+	plt.subplot(223)
+	plt.plot(xrf3)
+	plt.subplot(224)
+	plt.plot(xrf4)
 	plt.show()
 
-def plotpfyScatter(scan, pfyData):
-
+def plotpfyScatter(hex_x, hex_y, pfyData):
+	plt.close('all')
 	print "Making scatter plots."
 
-        hex_x = scan[0]['Hex_XP']
-        hex_y = scan[0]['Hex_YP']
-
-        plt.figure(1)
-        plt.subplot(221, aspect='auto')
-        plt.scatter(hex_x, hex_y, c=pfyData[0], s=2, linewidths=0)
+	plt.figure(1)
+	plt.subplot(221, aspect='auto')
+	plt.scatter(hex_x, hex_y, c=pfyData[0], s=20, linewidths=0)
 	print "Done MCA1."
-        plt.subplot(222, aspect='auto')
-        plt.scatter(hex_x, hex_y, c=pfyData[1], s=2, linewidths=0)
+	plt.subplot(222, aspect='auto')
+	plt.scatter(hex_x, hex_y, c=pfyData[1], s=20, linewidths=0)
 	print "Done MCA2."
-        plt.subplot(223, aspect='auto')
-        plt.scatter(hex_x, hex_y, c=pfyData[2], s=2, linewidths=0)
+	plt.subplot(223, aspect='auto')
+	plt.scatter(hex_x, hex_y, c=pfyData[2], s=20, linewidths=0)
 	print "Done MCA3."
-        plt.subplot(224, aspect='auto')
-        plt.scatter(hex_x, hex_y, c=pfyData[3], s=2, linewidths=0)
+	plt.subplot(224, aspect='auto')
+	plt.scatter(hex_x, hex_y, c=pfyData[3], s=20, linewidths=0)
 	print "Done MCA4."
-        plt.show()
+	plt.show()
 
-def plotCntScatter(scan, counter):
-        
-	hex_x = scan[0]['Hex_XP']
-        hex_y = scan[0]['Hex_YP']
+def plotCntScatter(hex_x, hex_y, counter):
+	plt.close('all')
+	color = counter
+	plt.scatter(hex_x, hex_y, c=color, s=20, linewidths=0)
 
-	color = scan[0][counter]
-	plt.scatter(hex_x, hex_y, c=color, s=2, linewidths=0)
-
-def plotpfyGrid(scan, pfyData, xpts, ypts, shift):
-
+def plotpfyGrid(hex_x, hex_y, pfyData, xpts, ypts, shift):
+	plt.close('all')
 	print "Plotting grids."
-	hex_x = scan[0]['Hex_XP']
-        hex_y = scan[0]['Hex_YP']
 
 	minX = min(hex_x)
 	maxX = max(hex_x)
@@ -98,28 +90,26 @@ def plotpfyGrid(scan, pfyData, xpts, ypts, shift):
 
 	return zi1, zi2, zi3, zi4
 
-def plotpfyGridc(scan, pfyData, depth, shift):
+def plotpfyGridc(hex_x, hex_y, pfy_data, depth, shift):
+	plt.close('all')
+	print "Plotting contours."
 
-        print "Plotting contours."
-        hex_x = scan[0]['Hex_XP']
-        hex_y = scan[0]['Hex_YP']
-
-        hex_x_ad = np.zeros((len(hex_x)))
+	hex_x_ad = np.zeros((len(hex_x)))
 
 	hex_x_ad[0] = hex_x[0]
         for i in range(1,len(hex_x)):
                 hex_x_ad[i] = hex_x[i] + shift*(hex_x[i] - hex_x[i-1])
 
 	plt.figure(1)
-        plt.subplot(221)
-        plt.tricontourf(hex_x_ad, hex_y, pfyData[0], depth)
-        plt.subplot(222)
-        plt.tricontourf(hex_x_ad, hex_y, pfyData[1], depth)
-        plt.subplot(223)
-        plt.tricontourf(hex_x_ad, hex_y, pfyData[2], depth)
-        plt.subplot(224)
-        plt.tricontourf(hex_x_ad, hex_y, pfyData[3], depth)
-        plt.show()
+	plt.subplot(221)
+	plt.tricontourf(hex_x_ad, hex_y, pfy_data[0], depth)
+	plt.subplot(222)
+	plt.tricontourf(hex_x_ad, hex_y, pfy_data[1], depth)
+	plt.subplot(223)
+	plt.tricontourf(hex_x_ad, hex_y, pfy_data[2], depth)
+	plt.subplot(224)
+	plt.tricontourf(hex_x_ad, hex_y, pfy_data[3], depth)
+	plt.show()
 
 
 def plotMap(filename,scanNum,pfylow,pfyhigh):
