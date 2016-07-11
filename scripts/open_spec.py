@@ -160,35 +160,37 @@ def open_sgm_xas(sgm_file, scan_num):
 	return energy_array, mca_array, scaler_array
 
 # open all scans of spectra
-def open_all_sgm_xas(opened_file):
+def open_all_sgm_xas(sgm_file):
 	counter = 0
-	c_scan = get_c_scan(opened_file)
+	c_scan = get_c_scan(sgm_file)
 	total_scan_num = len(c_scan)
     
 	# print "OriginalTotal scan: ", total_scan_num
 	scan=[]
-	mca1=[[] for a in range(total_scan_num)]
-	mca2=[[] for a in range(total_scan_num)]
-	mca3=[[] for a in range(total_scan_num)]
-	mca4=[[] for a in range(total_scan_num)]
-    
+	energy_array=[]
+	mca_array = [[[],[],[],[]] for a in range(total_scan_num)]
+
+	scaler_array = [[[],[],[]] for a in range(total_scan_num)]
 	for j in range (0, total_scan_num):
 		# print 'index of the for loop is: ', j
-		# print 'Scan No.', j+1
-		# print c_scan[j]
+		print 'Scan No.', j+1
+		print c_scan[j]
 
-		scan.append(opened_file[ c_scan[j] ])
-		energy = scan[j]['Energy']
+		scan.append(sgm_file[ c_scan[j] ])
+		energy_array.append( scan[j]['Energy'])
+		scaler_array[j][0] = scan[j]['TEY']
+		scaler_array[j][1] = scan[j]['I0']
+		scaler_array[j][2] = scan[j]['Diode']
 		mcadata = scan[j]['@A1']
 
 		# print "Parsing MCAs"
 
-		for i in range(0,len(energy)):
-			mca1[j].append(mcadata[i*4])
-			mca2[j].append(mcadata[i*4 + 1])
-			mca3[j].append(mcadata[i*4 + 2])
-			mca4[j].append(mcadata[i*4 + 3])
+		for i in range(0,len(scan[j]['Energy'])):
+			mca_array[j][0].append(mcadata[i*4])
+			mca_array[j][1].append(mcadata[i*4 + 1])
+			mca_array[j][2].append(mcadata[i*4 + 2])
+			mca_array[j][3].append(mcadata[i*4 + 3])
               
 		# print "Done!"
 	print "Opened all scans."
-	return scan, mca1, mca2, mca3, mca4
+	return energy_array, mca_array, scaler_array, c_scan

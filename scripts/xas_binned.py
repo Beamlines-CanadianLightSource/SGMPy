@@ -31,10 +31,9 @@ def generate_good_scan_index(scan_num_index, bad_scan_index_str):
 					print "removed", bad_scan_index_array[j]
 					good_scan_index.remove(i+1)
 	return good_scan_index
-    
 
-def prepare_bin_plot_hdf5 (good_scan_index, energy_data, mca_data, scaler_data, start_energy, end_energy, number_of_bins, start_region_of_interest, end_region_of_interest):
-	energy_array, mca_array, scaler_array = get_good_datapoint_hdf5(good_scan_index, energy_data, mca_data, scaler_data)
+def prepare_eem(good_scan_index, energy_data, mca_data, scaler_data, start_energy, end_energy, number_of_bins):
+	energy_array, mca_array, scaler_array = get_good_datapoint(good_scan_index, energy_data, mca_data, scaler_data)
 
 	edges_array, bins_mean_array = create_bins(start_energy, end_energy, number_of_bins)
 	assigned_data_array = assign_data(energy_array , edges_array)
@@ -43,21 +42,26 @@ def prepare_bin_plot_hdf5 (good_scan_index, energy_data, mca_data, scaler_data, 
 	bin_mca = calculate_bin_mca_result[:-2]
 	empty_bin_front = calculate_bin_mca_result[-2]
 	empty_bin_back = calculate_bin_mca_result[-1]
-	bin_scaler = calculate_bin_scalers(assigned_data_array, scaler_array, empty_bin_front, empty_bin_back)
-	pfy_data = get_pfy_bin(bin_mca, start_region_of_interest, end_region_of_interest)
     
 	#remove empty bins
 	if empty_bin_front == 0 and empty_bin_back == 0:
-		return bins_mean_array, bin_mca, bin_scaler, pfy_data
+		return bins_mean_array, assigned_data_array, scaler_array, empty_bin_front, empty_bin_back, bin_mca
 	elif empty_bin_front != 0 and empty_bin_back == 0:
-		return bins_mean_array[empty_bin_front:], bin_mca, bin_scaler, pfy_data
+		return bins_mean_array[empty_bin_front:], assigned_data_array, scaler_array, empty_bin_front, empty_bin_back, bin_mca
 	elif empty_bin_front == 0 and empty_bin_back != 0:
-		return bins_mean_array[:-empty_bin_back], bin_mca, bin_scaler, pfy_data
+		return bins_mean_array[:-empty_bin_back], assigned_data_array, scaler_array, empty_bin_front, empty_bin_back, bin_mca
 	else:
-		return bins_mean_array[empty_bin_front:number_of_bins-empty_bin_back], bin_mca, bin_scaler, pfy_data 
+		return bins_mean_array[empty_bin_front:number_of_bins-empty_bin_back], assigned_data_array, scaler_array, empty_bin_front, empty_bin_back, bin_mca
+
+
+def prepare_bin_plot (assigned_data_array, scaler_array, bin_mca, empty_bin_front, empty_bin_back, start_region_of_interest, end_region_of_interest):
+
+	bin_scaler = calculate_bin_scalers(assigned_data_array, scaler_array, empty_bin_front, empty_bin_back)
+	pfy_data = get_pfy_bin(bin_mca, start_region_of_interest, end_region_of_interest)
+	return bin_scaler, pfy_data  
     
     
-def get_good_datapoint_hdf5(good_scan_index, energy_data, mca_data, scaler_data):
+def get_good_datapoint(good_scan_index, energy_data, mca_data, scaler_data):
 	good_scan_index_length = len(good_scan_index)
 	print "Total good scan numbers:", good_scan_index_length
     
@@ -93,72 +97,72 @@ def prepare_blank_bin_plot_spec(good_scan_index, opened_blank_file, start_energy
 	return blank_pfy_sdd1_binned_array
 
 
-def prepare_eem_spec(good_scan_index, sgm_data, start_energy, end_energy, number_of_bins):
-	energy_array, mca_array, scaler_array = get_good_datapoint_spec(good_scan_index, sgm_data)
+#def prepare_eem_spec(good_scan_index, sgm_data, start_energy, end_energy, number_of_bins):
+#	energy_array, mca_array, scaler_array = get_good_datapoint_spec(good_scan_index, sgm_data)
+#
+#	edges_array, bins_mean_array = create_bins(start_energy, end_energy, number_of_bins)
+#	# print "bins_mean_array:   ", bins_mean_array
+#	assigned_data_array = assign_data(energy_array , edges_array)
+#	# calculate mca
+#	calculate_bin_mca_result = calculate_bin_mca(assigned_data_array, mca_array)
+#	bin_mca = calculate_bin_mca_result[:-2]
+#	empty_bin_front = calculate_bin_mca_result[-2]
+#	empty_bin_back = calculate_bin_mca_result[-1]
+#    
+#	#remove empty bins
+#	if empty_bin_front == 0 and empty_bin_back == 0:
+#		return bins_mean_array, assigned_data_array, scaler_array, empty_bin_front, empty_bin_back, bin_mca
+#	elif empty_bin_front != 0 and empty_bin_back == 0:
+#		return bins_mean_array[empty_bin_front:], assigned_data_array, scaler_array, empty_bin_front, empty_bin_back, bin_mca
+#	elif empty_bin_front == 0 and empty_bin_back != 0:
+#		return bins_mean_array[:-empty_bin_back], assigned_data_array, scaler_array, empty_bin_front, empty_bin_back, bin_mca
+#	else:
+#		return bins_mean_array[empty_bin_front:number_of_bins-empty_bin_back], assigned_data_array, scaler_array, empty_bin_front, empty_bin_back, bin_mca
 
-	edges_array, bins_mean_array = create_bins(start_energy, end_energy, number_of_bins)
-	# print "bins_mean_array:   ", bins_mean_array
-	assigned_data_array = assign_data(energy_array , edges_array)
-	# calculate mca
-	calculate_bin_mca_result = calculate_bin_mca(assigned_data_array, mca_array)
-	bin_mca = calculate_bin_mca_result[:-2]
-	empty_bin_front = calculate_bin_mca_result[-2]
-	empty_bin_back = calculate_bin_mca_result[-1]
-    
-	#remove empty bins
-	if empty_bin_front == 0 and empty_bin_back == 0:
-		return bins_mean_array, assigned_data_array, scaler_array, empty_bin_front, empty_bin_back, bin_mca
-	elif empty_bin_front != 0 and empty_bin_back == 0:
-		return bins_mean_array[empty_bin_front:], assigned_data_array, scaler_array, empty_bin_front, empty_bin_back, bin_mca
-	elif empty_bin_front == 0 and empty_bin_back != 0:
-		return bins_mean_array[:-empty_bin_back], assigned_data_array, scaler_array, empty_bin_front, empty_bin_back, bin_mca
-	else:
-		return bins_mean_array[empty_bin_front:number_of_bins-empty_bin_back], assigned_data_array, scaler_array, empty_bin_front, empty_bin_back, bin_mca
 
-
-def prepare_bin_plot_spec(assigned_data_array, scaler_array, bin_mca, empty_bin_front, empty_bin_back, start_region_of_interest, end_region_of_interest):
-    
-	bin_scaler = calculate_bin_scalers(assigned_data_array, scaler_array, empty_bin_front, empty_bin_back)
-	pfy_data = get_pfy_bin(bin_mca, start_region_of_interest, end_region_of_interest)
-	return bin_scaler, pfy_data    
+#def prepare_bin_plot_spec(assigned_data_array, scaler_array, bin_mca, empty_bin_front, empty_bin_back, start_region_of_interest, end_region_of_interest):
+#    
+#	bin_scaler = calculate_bin_scalers(assigned_data_array, scaler_array, empty_bin_front, empty_bin_back)
+#	pfy_data = get_pfy_bin(bin_mca, start_region_of_interest, end_region_of_interest)
+#	return bin_scaler, pfy_data    
     
 
 # Eliminate bad scans and select good scans (data points)
-def get_good_datapoint_spec(good_scan_index, sgm_data):
-	good_scan_index_length = len(good_scan_index)
-	print "Total good scan numbers:", good_scan_index_length
-    
-	energy_array = []
-	scaler_array = [[[],[],[]] for i in range(good_scan_index_length)]
-	mca_array=[[[],[],[],[]] for i in range(good_scan_index_length)]
-
-	# open and read all data from the file and it could take a while
-	scan = sgm_data[0]
-	mca1 = sgm_data[1]
-	mca2 = sgm_data[2]
-	mca3 = sgm_data[3]
-	mca4 = sgm_data[4]
-        
-	for i in range (0, good_scan_index_length):
-		# scan number is start from 1
-		# print "This is the scan number: ", goodScanArray[i]
-		# array index is start from 0
-		# get all scalers of good scans from original scans' array
-		good_scan_index_number = int(good_scan_index[i]-1)
-		# print good_scan_index_number
-		energy_array.append(scan[good_scan_index_number]['Energy'])
-		scaler_array[i][0] = scan[good_scan_index_number]['TEY']
-		scaler_array[i][1] = scan[good_scan_index_number]['I0']
-		scaler_array[i][2] = scan[good_scan_index_number]['Diode']
-		# get all MCA1 of good scans from original scans
-		mca_array[i][0] = mca1[good_scan_index_number]
-		# get all MCA2 of good scans from original scans
-		mca_array[i][1] = mca2[good_scan_index_number]
-		# get all MCA3 of good scans from original scans
-		mca_array[i][2] = mca3[good_scan_index_number]
-		# get all MCA4 of good scans from original scans
-		mca_array[i][3] = mca4[good_scan_index_number]
-	return energy_array, mca_array, scaler_array
+#def get_good_datapoint_spec(good_scan_index, sgm_data):
+#	good_scan_index_length = len(good_scan_index)
+#	print "Total good scan numbers:", good_scan_index_length
+#    
+#	energy_array = []
+#	scaler_array = [[[],[],[]] for i in range(good_scan_index_length)]
+#	mca_array=[[[],[],[],[]] for i in range(good_scan_index_length)]
+#
+#	# open and read all data from the file and it could take a while
+#	scan = sgm_data[0]
+#	mca1 = sgm_data[1]
+#	mca2 = sgm_data[2]
+#	mca3 = sgm_data[3]
+#	mca4 = sgm_data[4]
+#        
+#	for i in range (0, good_scan_index_length):
+#		# scan number is start from 1
+#		# print "This is the scan number: ", goodScanArray[i]
+#		# array index is start from 0
+#		# get all scalers of good scans from original scans' array
+#		good_scan_index_number = int(good_scan_index[i]-1)
+#		# print good_scan_index_number
+#		energy_array.append(scan[good_scan_index_number]['Energy'])
+#		scaler_array[i][0] = scan[good_scan_index_number]['TEY']
+#		scaler_array[i][1] = scan[good_scan_index_number]['I0']
+#		scaler_array[i][2] = scan[good_scan_index_number]['Diode']
+#		# get all MCA1 of good scans from original scans
+#		mca_array[i][0] = mca1[good_scan_index_number]
+#		# get all MCA2 of good scans from original scans
+#		mca_array[i][1] = mca2[good_scan_index_number]
+#		# get all MCA3 of good scans from original scans
+#		mca_array[i][2] = mca3[good_scan_index_number]
+#		# get all MCA4 of good scans from original scans
+#		mca_array[i][3] = mca4[good_scan_index_number]
+#	return energy_array, mca_array, scaler_array
 
 
 def get_good_datapoint_sdd1_spec(good_scan_Array, opened_file):
