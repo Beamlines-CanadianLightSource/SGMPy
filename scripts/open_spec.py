@@ -172,9 +172,8 @@ def open_all_sgm_xas(sgm_file):
 
 	scaler_array = [[[],[],[]] for a in range(total_scan_num)]
 	for j in range (0, total_scan_num):
-		# print 'index of the for loop is: ', j
-		print 'Scan No.', j+1
-		print c_scan[j]
+		# print 'Scan index.', j+1
+		print "Scan number:", c_scan[j]
 
 		scan.append(sgm_file[ c_scan[j] ])
 		energy_array.append( scan[j]['Energy'])
@@ -192,5 +191,5 @@ def open_all_sgm_xas(sgm_file):
 			mca_array[j][3].append(mcadata[i*4 + 3])
               
 		# print "Done!"
-	print "Opened all scans."
+	print "Opened all c scans."
 	return energy_array, mca_array, scaler_array, c_scan
