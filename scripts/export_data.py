@@ -80,11 +80,19 @@ def get_grating_hdf5(comments):
 
 def get_exit_slit_and_stripte(comments):
 	parsed_str = comments[0].split('\n')
-	temp_str = [x.strip() for x in parsed_str[2].split(",")]
-	print temp_str[-2]
-	temp_str_2 = [x.strip() for x in temp_str[-2].split(":")]
-	exit_slit_str = temp_str_2[-1]    
-	stripe_str = temp_str[-1][7:-1]
+	parsed_str_length = len(parsed_str)
+	if parsed_str_length == 2:
+		temp_str = [x.strip() for x in parsed_str[1].split(",")]
+		print temp_str[-2]
+		temp_str_2 = [x.strip() for x in temp_str[-2].split(":")]
+		exit_slit_str = temp_str_2[-1]    
+		stripe_str = temp_str[-1][7:-1]
+	else:
+		temp_str = [x.strip() for x in parsed_str[2].split(",")]
+		print temp_str[-2]
+		temp_str_2 = [x.strip() for x in temp_str[-2].split(":")]
+		exit_slit_str = temp_str_2[-1]    
+		stripe_str = temp_str[-1][7:-1]
     
 	return exit_slit_str, stripe_str
 
@@ -333,3 +341,59 @@ def export_normalized_data(export_file_directory, origin_file_directory, column1
 			out_file.write(out_string)
 	print ("Export data complete.")
 
+def export_map_all(export_file_directory, origin_file_directory, hex_xp_data, hex_yp_data, scaler_data, pfy_data, scan_number=None):
+	file_extension, original_file_name = check_file_type(origin_file_directory)
+	if file_extension == "dat":
+		opened_file = open_spec_data_file(origin_file_directory)
+		date = get_date_time(opened_file)
+		comments = get_comments(origin_file_directory)
+		grating, exit_slit, stripe = get_comment_details(comments)
+	else:
+		comments, date = get_header_hdf5(origin_file_directory)
+		grating = get_grating_hdf5(comments)
+		exit_slit, stripe = get_exit_slit_and_stripte(comments)
+	with open(export_file_directory, "w") as out_file:
+		# write header into the data file
+		out_file.write("# Beamline.name: SGM\n")
+		str_origin_file_name = "# Beamline.origin-filename: " + original_file_name + "\n"
+		if scan_number== None:
+			out_file.write("# Beamline.file-content: all data\n")
+		else:
+			out_file.write("# Beamline.file-content: all data of scan No." + scan_number + "\n")
+		out_file.write(str_origin_file_name)
+		str_grating = "# Beamline.grating: " + grating + "\n"
+		out_file.write(str_grating)
+		str_stripe = "# Beamline.stripe: " + stripe + "\n"
+		out_file.write(str_stripe)
+		str_exit_slit = "# Beamline.exit-slit: " + exit_slit + "\n"
+		out_file.write(str_exit_slit)
+		str_date_time = "# Time.start: " + date + "\n"
+		out_file.write(str_date_time)
+		out_file.write("#-----------------------------------------------------------\n")
+        # write table header into the data file
+		out_file.write("# Hex_XP\tHex_YP\tTEY\tI0\tDiode\tPFY_SDD1\tPFY_SDD2\tPFY_SDD3\tPFY_SDD4\n")
+		for i in range(0, len(hex_xp_data)):
+			out_string = ""
+			# print energy_array[i]
+			out_string += str(hex_xp_data[i]) + "\t"
+			# out_string += "\t"
+			out_string += str(hex_yp_data[i])
+			out_string += "\t"
+			out_string += str(scaler_data[0][i])
+			out_string += "\t"
+			out_string += str(scaler_data[1][i])
+			out_string += "\t"
+			out_string += str(scaler_data[2][i])
+			out_string += "\t"
+			out_string += str(pfy_data[0][i])
+			out_string += "\t"
+			out_string += str(pfy_data[1][i])
+			out_string += "\t"
+			out_string += str(pfy_data[2][i])
+			out_string += "\t"
+			out_string += str(pfy_data[3][i])
+			# print sub_pfy[i]
+			out_string += "\n"
+			# print out_string
+			out_file.write(out_string)
+	print ("Export data complete.")
