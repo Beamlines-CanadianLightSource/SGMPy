@@ -5,10 +5,10 @@ from scripts.open_spec import *
 
 class TestOpenSpec(unittest.TestCase):
     
-	def test_get_abs_path(self):
-		abs_file_path = get_abs_path("data/spectra_example.dat")
-		expect_abs_path =  "/home/travis/build/Beamlines-CanadianLightSource/SGM-Beamline/spectra_example.dat"
-		self.assertEqual(abs_file_path, expect_abs_path)
+#	def test_get_abs_path(self):
+#		abs_file_path = get_abs_path("data/spectra_example.dat")
+#		expect_abs_path =  "/home/travis/build/Beamlines-CanadianLightSource/SGM-Beamline/spectra_example.dat"
+#		self.assertEqual(abs_file_path, expect_abs_path)
 
 	def test_get_total_scannum(self):
 		expected_scan_num = 10

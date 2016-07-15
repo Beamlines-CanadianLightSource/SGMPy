@@ -27,12 +27,12 @@ def export_data(export_file_directory, origin_file_directory, energy_array, name
 
 def get_date_time(opened_file):
 	str_date_time = opened_file['1'].attrs['file_date']
-	return str_date_time[3:]
+	return str_date_time[4:]
 
 
-def get_original_file_name(opened_file):
-	str_file_name = opened_file['1'].attrs['file_origin']
-	return str_file_name[3:]
+#def get_original_file_name(opened_file):
+#	str_file_name = opened_file['1'].attrs['file_origin']
+#	return str_file_name[3:]
 
 
 def get_comments(file_directory):
@@ -78,7 +78,7 @@ def get_grating_hdf5(comments):
 	return grating_str[-1][9:-1]    
 
 
-def get_exit_slit_and_stripte(comments):
+def get_exit_slit_and_stripe(comments):
 	parsed_str = comments[0].split('\n')
 	parsed_str_length = len(parsed_str)
 	if parsed_str_length == 2:
