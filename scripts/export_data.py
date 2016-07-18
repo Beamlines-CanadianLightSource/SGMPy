@@ -113,7 +113,7 @@ def export_pfy(export_file_directory, origin_file_directory, energy_array, sub_p
 	else:
 		comments, date = get_header_hdf5(origin_file_directory)
 		grating = get_grating_hdf5(comments)
-		exit_slit, stripe = get_exit_slit_and_stripte(comments)
+		exit_slit, stripe = get_exit_slit_and_stripe(comments)
 		# date = date[0]
 
 	with open(export_file_directory, "w") as out_file:
@@ -162,7 +162,7 @@ def export_scaler(export_file_directory, origin_file_directory, energy_array, su
 	else:
 		comments, date = get_header_hdf5(origin_file_directory)
 		grating = get_grating_hdf5(comments)
-		exit_slit, stripe = get_exit_slit_and_stripte(comments)
+		exit_slit, stripe = get_exit_slit_and_stripe(comments)
 		# date = date[0]
 
 	with open(export_file_directory, "w") as out_file:
@@ -251,7 +251,7 @@ def export_all (export_file_directory, origin_file_directory, energy_array, scal
 	else:
 		comments, date = get_header_hdf5(origin_file_directory)
 		grating = get_grating_hdf5(comments)
-		exit_slit, stripe = get_exit_slit_and_stripte(comments)
+		exit_slit, stripe = get_exit_slit_and_stripe(comments)
 
 	with open(export_file_directory, "w") as out_file:
 		# write header into the data file
@@ -309,7 +309,7 @@ def export_normalized_data(export_file_directory, origin_file_directory, column1
 	else:
 		comments, date = get_header_hdf5(origin_file_directory)
 		grating = get_grating_hdf5(comments)
-		exit_slit, stripe = get_exit_slit_and_stripte(comments)
+		exit_slit, stripe = get_exit_slit_and_stripe(comments)
 
 	with open(export_file_directory, "w") as out_file:
 		# write header into the data file

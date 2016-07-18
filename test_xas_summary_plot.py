@@ -1,9 +1,9 @@
 import unittest
+# import os
+# import numpy as np
+# import matplotlib
 from scripts.xas_summary_plot import *
 from scripts.xas_binned import *
-#from mock import patch
-import os
-import numpy as np
 
 
 class TestXASSummaryPlot(unittest.TestCase):
@@ -21,7 +21,7 @@ class TestXASSummaryPlot(unittest.TestCase):
 		self.assertEqual(generate_good_scan_index(originalScanNum, badScanNum), expectedGoodScanNum)                   
      
 	# @patch is only for Travis CI automation testing
-	#@patch("matplotlib.pyplot.show")
+	# @patch("matplotlib.pyplot.show")
 	def test_summary_plot(self):
 		abs_file_path = get_abs_path = "data/spectra_example.dat"
 		opened_file = open_spec_data_file(abs_file_path)
