@@ -4,7 +4,7 @@
 # Beamline.grating: Medium Energy
 # Beamline.stripe: Silicon
 # Beamline.exit-slit: 10.0934
-# Time.start:  May 15 11:19:51 2016
+# Time.start: May 15 11:19:51 2016
 #-----------------------------------------------------------
 # Energy	TEY	I0	Diode	PFY_SDD1	PFY_SDD2	PFY_SDD3	PFY_SDD4
 690.02208	1664.0	5781.0	37.0	1675.0	2753.0	1787.0	2570.0
