@@ -351,7 +351,7 @@ def export_map_all(export_file_directory, origin_file_directory, hex_xp_data, he
 	else:
 		comments, date = get_header_hdf5(origin_file_directory)
 		grating = get_grating_hdf5(comments)
-		exit_slit, stripe = get_exit_slit_and_stripte(comments)
+		exit_slit, stripe = get_exit_slit_and_stripe(comments)
 	with open(export_file_directory, "w") as out_file:
 		# write header into the data file
 		out_file.write("# Beamline.name: SGM\n")
