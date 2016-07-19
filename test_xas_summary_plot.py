@@ -1,6 +1,5 @@
 import unittest
-# import os
-# import numpy as np
+import os
 import matplotlib
 from scripts.xas_summary_plot import *
 from scripts.xas_binned import *
