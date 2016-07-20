@@ -1,6 +1,6 @@
 from distutils.core import setup
 
-setup(name='SGMPython',
-      version='0.1 alpha',
+setup(name='SGMPy',
+      version='0.1.0 alpha',
       packages=['scripts', 'data'],
       )
