@@ -23,11 +23,15 @@ def get_pfy(mca_array, enStart, enStop):
 	print "Done!"
 
 
-def plot_xas(energy_data, name, scaler_data=None, pfy_data=None):
+def plot_xas(xas_data, name):
 	plt.close('all')
 	if name == "TEY" or name == "I0" or name == "Diode" or name == "SDD1_OCR" or name == "SDD1_ICR" or name == "SDD2_OCR" or name == "SDD2_ICR" or name == "SDD3_OCR" or name == "SDD3_ICR" or name == "SDD4_OCR" or name == "SDD4_ICR":
+		energy_data = xas_data.get_energy_array()
+		scaler_data = xas_data.get_scaler_array()
 		plot_xas_scaler(energy_data, scaler_data, name)
 	elif name == "PFY_SDD1" or name == "PFY_SDD2" or name == "PFY_SDD3" or name == "PFY_SDD4":
+		energy_data = xas_data.get_energy_array()
+		pfy_data = xas_data.get_pfy_sdd_array()
 		plot_xas_pfy(energy_data, pfy_data, name)
 	else:
 		print "Errors with the name input"
@@ -58,49 +62,53 @@ def plot_xas_scaler(energy_data, scaler_data, name):
 	plt.show()
 
 
-def plot_xas_all(energy_data, scaler_data, pfy_data):
-	plt.close('all')
-	print "Plotting XAS."
+def plot_xas_all(xas_data):
+    plt.close('all')
+    print "Plotting XAS."
 
-	en = energy_data
-	tey = scaler_data[0]
-	i0 = scaler_data[1]
-	diode = scaler_data[2]
+    energy_data = xas_data.get_energy_array()
+    scaler_data = xas_data.get_scaler_array()
+    pfy_data = xas_data.get_pfy_sdd_array()
+    
+    en = energy_data
+    tey = scaler_data[0]
+    i0 = scaler_data[1]
+    diode = scaler_data[2]
 
-	plt.figure(1)
-	plt.subplot(4, 2, 1)
-	plt.plot(en, tey)
-	plt.xlabel('Energy (eV)')
-	plt.ylabel('TEY')
+    plt.figure(1)
+    plt.subplot(4, 2, 1)
+    plt.plot(en, tey)
+    plt.xlabel('Energy (eV)')
+    plt.ylabel('TEY')
     
-	plt.subplot(4, 2, 2)
-	plt.plot(en, i0)
-	plt.xlabel('Energy (eV)')
-	plt.ylabel('I0')
+    plt.subplot(4, 2, 2)
+    plt.plot(en, i0)
+    plt.xlabel('Energy (eV)')
+    plt.ylabel('I0')
 
-	plt.subplot(4, 2, 3)
-	plt.plot(en, diode)
-	plt.xlabel('Energy (eV)')
-	plt.ylabel('Diode')
+    plt.subplot(4, 2, 3)
+    plt.plot(en, diode)
+    plt.xlabel('Energy (eV)')
+    plt.ylabel('Diode')
     
-	plt.subplot(4, 2, 5)
-	plt.plot(en, pfy_data[0])
-	plt.xlabel('Energy (eV)')
-	plt.ylabel('PFY_SDD1')
+    plt.subplot(4, 2, 5)
+    plt.plot(en, pfy_data[0])
+    plt.xlabel('Energy (eV)')
+    plt.ylabel('PFY_SDD1')
     
-	plt.subplot(4, 2, 6)
-	plt.plot(en, pfy_data[1])
-	plt.xlabel('Energy (eV)')
-	plt.ylabel('PFY_SDD2')
+    plt.subplot(4, 2, 6)
+    plt.plot(en, pfy_data[1])
+    plt.xlabel('Energy (eV)')
+    plt.ylabel('PFY_SDD2')
     
-	plt.subplot(4, 2, 7)
-	plt.plot(en, pfy_data[2])
-	plt.xlabel('Energy (eV)')
-	plt.ylabel('PFY_SDD3')
+    plt.subplot(4, 2, 7)
+    plt.plot(en, pfy_data[2])
+    plt.xlabel('Energy (eV)')
+    plt.ylabel('PFY_SDD3')
     
-	plt.subplot(4, 2, 8)
-	plt.plot(en, pfy_data[3])
-	plt.xlabel('Energy (eV)')
-	plt.ylabel('PFY_SDD4')
-	plt.show()
+    plt.subplot(4, 2, 8)
+    plt.plot(en, pfy_data[3])
+    plt.xlabel('Energy (eV)')
+    plt.ylabel('PFY_SDD4')
+    plt.show()
 

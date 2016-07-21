@@ -160,7 +160,8 @@ def open_sgm_xas(sgm_file, scan_num):
 	return energy_array, mca_array, scaler_array
 
 # open all scans of spectra
-def open_all_sgm_xas(sgm_file):
+def open_all_sgm_xas(file_directory):
+	sgm_file = open_spec_data_file(file_directory)
 	counter = 0
 	c_scan = get_c_scan(sgm_file)
 	total_scan_num = len(c_scan)

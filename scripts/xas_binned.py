@@ -54,10 +54,15 @@ def prepare_eem(good_scan_index, energy_data, mca_data, scaler_data, start_energ
 		return bins_mean_array[empty_bin_front:number_of_bins-empty_bin_back], assigned_data_array, scaler_array, empty_bin_front, empty_bin_back, bin_mca
 
 
-def prepare_bin_plot (assigned_data_array, scaler_array, bin_mca, empty_bin_front, empty_bin_back, start_region_of_interest, end_region_of_interest):
+def prepare_bin_plot (xas_data, roi_start, roi_end):
 
+	assigned_data_array = xas_data.get_assigned_data_array()
+	scaler_array = xas_data.get_scaler_raw_array()
+	bin_mca = xas_data.get_sdd_binned_array()
+	empty_bin_front = xas_data.get_empty_bin_front()
+	empty_bin_back = xas_data.get_empty_bin_back()
 	bin_scaler = calculate_bin_scalers(assigned_data_array, scaler_array, empty_bin_front, empty_bin_back)
-	pfy_data = get_pfy_bin(bin_mca, start_region_of_interest, end_region_of_interest)
+	pfy_data = get_pfy_bin(bin_mca, roi_start, roi_end)
 	return bin_scaler, pfy_data  
     
     
@@ -342,9 +347,11 @@ def calculate_bin_scalers(arrayOfBins, scaler_array, empty_bin_front, empty_bin_
 		return tey_bin_array[empty_bin_front:last_bin], i0_bin_array[empty_bin_front:last_bin], diode_bin_array[empty_bin_front:last_bin]
 
 
-def plot_excitation_emission_matrix(bins_mean_array, bin_mca, name):
+def plot_excitation_emission_matrix(xas_data, name):
     
-	print "Plotting incident v emission energy coordinate based on average of SDD(MCA)"    
+	print "Plotting incident v emission energy coordinate based on average of SDD(MCA)"
+	bins_mean_array = xas_data.get_energy_array()
+	bin_mca = xas_data.get_sdd_binned_array()
 	plt.close('all')
 	# MCA is SDD and SDD is MCA
 	mca_dict = {'SDD1': 0, 'SDD2': 1, 'SDD3': 2, 'SDD4': 3}
@@ -402,11 +409,15 @@ def get_one_pfy_bin(mca_bin_array, start_energy, stop_energy):
 
 
 # plot a kind of average scaler
-def plot_bin_xas(mean_energy_array, name, scaler_data=None, pfy_data=None):
+def plot_bin_xas(xas_data, name):
 	plt.close('all')
 	if name == "TEY" or name == "I0" or name == "Diode":
+		mean_energy_array = xas_data.get_energy_array()
+		scaler_data = xas_data.get_scaler_array()
 		plot_bin_xas_scaler(mean_energy_array, scaler_data, name)
 	elif name == "PFY_SDD1" or name == "PFY_SDD2" or name == "PFY_SDD3" or name == "PFY_SDD4":
+		mean_energy_array = xas_data.get_energy_array()
+		pfy_data = xas_data.get_pfy_sdd_array()
 		plot_bin_xas_pfy(mean_energy_array, pfy_data, name)
 	else:
 		print "Errors with the name input"
@@ -432,11 +443,13 @@ def plot_bin_xas_pfy(mean_energy_array, pfy_data, name):
 	plt.show()
 
 
-def plot_bin_xas_all(energy_array, scaler_array, pfy_data):
-	
+def plot_bin_xas_all(xas_data):
+
 	print "Plotting average XAS."    
 	plt.close('all')
-
+	energy_array = xas_data.get_energy_array()
+	scaler_array = xas_data.get_scaler_array()
+	pfy_data = xas_data.get_pfy_sdd_array()
 	en = energy_array
 	tey = scaler_array[0]
 	i0 = scaler_array[1]
@@ -507,17 +520,20 @@ def division(pfy_data, dividend, divisor, scaler_data = None):
 		return division_array
 
 
-def plot_division(bins_mean_array, pfy_data, dividend, divisor, scaler_data = None):
+def plot_division(xas_data, dividend, divisor):
 
-	print "Plotting disivion SDD."    
-	plt.close('all')
-	division_array = division(pfy_data, dividend, divisor, scaler_data)
-	plt.plot(bins_mean_array, division_array)
-	plt.xlabel('Energy (eV)')
-	str_y_axis = StringIO()
-	str_y_axis.write(dividend)
-	str_y_axis.write('/')
-	str_y_axis.write(divisor)
-	plt.ylabel(str_y_axis.getvalue())
-	plt.show()
-	return division_array
+    print "Plotting disivion SDD."
+    bins_mean_array = xas_data.get_energy_array()
+    pfy_data = xas_data.get_pfy_sdd_array()
+    scaler_data = xas_data.get_scaler_array()
+    plt.close('all')
+    division_array = division(pfy_data, dividend, divisor, scaler_data)
+    plt.plot(bins_mean_array, division_array)
+    plt.xlabel('Energy (eV)')
+    str_y_axis = StringIO()
+    str_y_axis.write(dividend)
+    str_y_axis.write('/')
+    str_y_axis.write(divisor)
+    plt.ylabel(str_y_axis.getvalue())
+    plt.show()
+    return division_array

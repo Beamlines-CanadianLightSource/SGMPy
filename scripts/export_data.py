@@ -5,24 +5,29 @@ from open_spec import *
 import h5py
 import numpy as np
 
-def export_data(export_file_directory, origin_file_directory, energy_array, name, scaler_data=None, pfy_data=None, scan_number=None):
+def export_data(export_file_directory, origin_file_directory, xas_data, name, scan_number=None):
 
-	# MCA is SDD; after getting PFY of ROI then it becomes PFY_SDD
-	pfy_dict = {'PFY_SDD1': 0, 'PFY_SDD2': 1, 'PFY_SDD3': 2, 'PFY_SDD4': 3}
-	scaler_dict = {'TEY': 0, 'I0': 1, 'Diode': 2}
+    # MCA is SDD; after getting PFY of ROI then it becomes PFY_SDD
+    pfy_dict = {'PFY_SDD1': 0, 'PFY_SDD2': 1, 'PFY_SDD3': 2, 'PFY_SDD4': 3}
+    scaler_dict = {'TEY': 0, 'I0': 1, 'Diode': 2}
     
-	if name == "PFY_SDD1" or name == "PFY_SDD2" or name == "PFY_SDD3" or name == "PFY_SDD4":
-		sub_pfy_index = int(pfy_dict[name])
-		export_pfy(export_file_directory, origin_file_directory, energy_array, pfy_data[sub_pfy_index], name, scan_number)
-		print "Export data complete!"
+    if name == "PFY_SDD1" or name == "PFY_SDD2" or name == "PFY_SDD3" or name == "PFY_SDD4":
+        energy_array = xas_data.get_energy_array()
+        sub_pfy_index = pfy_dict[name]
+        pfy_data = xas_data.get_pfy_sdd_array()
+        export_pfy(export_file_directory, origin_file_directory, energy_array, pfy_data[sub_pfy_index], name, scan_number)
+        print "Export data complete!"
 
-	elif name == "TEY" or name == "I0" or name == "Diode":
-		sub_scaler_index = scaler_dict[name]
-		export_scaler(export_file_directory, origin_file_directory, energy_array, scaler_data[sub_scaler_index], name, scan_number)
-		print "Export data complete!"
+    elif name == "TEY" or name == "I0" or name == "Diode":
 
-	else:
-		print "Unable to export data."
+        energy_array = xas_data.get_energy_array()
+        sub_scaler_index = scaler_dict[name]
+        scaler_data = xas_data.get_scaler_array()
+        export_scaler(export_file_directory, origin_file_directory, energy_array, scaler_data[sub_scaler_index], name, scan_number)
+        print "Export data complete!"
+
+    else:
+        print "Unable to export data."
 
 
 def get_date_time(opened_file):
@@ -241,62 +246,66 @@ def export_scaler(export_file_directory, origin_file_directory, energy_array, su
 #	print ("Export data complete.")
                 
                 
-def export_all (export_file_directory, origin_file_directory, energy_array, scaler_data, pfy_data, scan_number=None):
-	file_extension, original_file_name = check_file_type(origin_file_directory)
-	if file_extension == "dat":
-		opened_file = open_spec_data_file(origin_file_directory)
-		date = get_date_time(opened_file)
-		comments = get_comments(origin_file_directory)
-		grating, exit_slit, stripe = get_comment_details(comments)
-	else:
-		comments, date = get_header_hdf5(origin_file_directory)
-		grating = get_grating_hdf5(comments)
-		exit_slit, stripe = get_exit_slit_and_stripe(comments)
+def export_all (export_file_directory, origin_file_directory, xas_data, scan_number=None):
+    file_extension, original_file_name = check_file_type(origin_file_directory)
+    if file_extension == "dat":
+        opened_file = open_spec_data_file(origin_file_directory)
+        date = get_date_time(opened_file)
+        comments = get_comments(origin_file_directory)
+        grating, exit_slit, stripe = get_comment_details(comments)
+    else:
+        comments, date = get_header_hdf5(origin_file_directory)
+        grating = get_grating_hdf5(comments)
+        exit_slit, stripe = get_exit_slit_and_stripe(comments)
 
-	with open(export_file_directory, "w") as out_file:
-		# write header into the data file
-		if scan_number== None:
-			out_file.write("# Beamline.file-content: all data\n")
-		else:
-			out_file.write("# Beamline.file-content: all data of scan No." + scan_number + "\n")
-		str_origin_file_name = "# Beamline.origin-filename: " + original_file_name + "\n"
-		out_file.write(str_origin_file_name)
-		out_file.write("# Beamline.name: SGM\n")
-		str_grating = "# Beamline.grating: " + grating + "\n"
-		out_file.write(str_grating)
-		str_stripe = "# Beamline.stripe: " + stripe + "\n"
-		out_file.write(str_stripe)
-		str_exit_slit = "# Beamline.exit-slit: " + exit_slit + "\n"
-		out_file.write(str_exit_slit)
-		str_date_time = "# Time.start: " + date + "\n"
-		out_file.write(str_date_time)
-		out_file.write("#-----------------------------------------------------------\n")
+    energy_array = xas_data.get_energy_array()
+    pfy_data = xas_data.get_pfy_sdd_array()
+    scaler_data = xas_data.get_scaler_array()
+        
+    with open(export_file_directory, "w") as out_file:
+        # write header into the data file
+        if scan_number== None:
+            out_file.write("# Beamline.file-content: all data\n")
+        else:
+            out_file.write("# Beamline.file-content: all data of scan No." + scan_number + "\n")
+        str_origin_file_name = "# Beamline.origin-filename: " + original_file_name + "\n"
+        out_file.write(str_origin_file_name)
+        out_file.write("# Beamline.name: SGM\n")
+        str_grating = "# Beamline.grating: " + grating + "\n"
+        out_file.write(str_grating)
+        str_stripe = "# Beamline.stripe: " + stripe + "\n"
+        out_file.write(str_stripe)
+        str_exit_slit = "# Beamline.exit-slit: " + exit_slit + "\n"
+        out_file.write(str_exit_slit)
+        str_date_time = "# Time.start: " + date + "\n"
+        out_file.write(str_date_time)
+        out_file.write("#-----------------------------------------------------------\n")
 
         # write table header into the data file
-		out_file.write("# Energy\tTEY\tI0\tDiode\tPFY_SDD1\tPFY_SDD2\tPFY_SDD3\tPFY_SDD4\n")
-		for i in range(0, len(energy_array)):
-			out_string = ""
-			# print energy_array[i]
-			out_string += str(energy_array[i])
-			out_string += "\t"
-			out_string += str(scaler_data[0][i])
-			out_string += "\t"
-			out_string += str(scaler_data[1][i])
-			out_string += "\t"
-			out_string += str(scaler_data[2][i])
-			out_string += "\t"
-			out_string += str(pfy_data[0][i])
-			out_string += "\t"
-			out_string += str(pfy_data[1][i])
-			out_string += "\t"
-			out_string += str(pfy_data[2][i])
-			out_string += "\t"
-			out_string += str(pfy_data[3][i])
-			# print sub_pfy[i]
-			out_string += "\n"
-			# print out_string
-			out_file.write(out_string)
-	print ("Export data complete.")
+        out_file.write("# Energy\tTEY\tI0\tDiode\tPFY_SDD1\tPFY_SDD2\tPFY_SDD3\tPFY_SDD4\n")
+        for i in range(0, len(energy_array)):
+            out_string = ""
+            # print energy_array[i]
+            out_string += str(energy_array[i])
+            out_string += "\t"
+            out_string += str(scaler_data[0][i])
+            out_string += "\t"
+            out_string += str(scaler_data[1][i])
+            out_string += "\t"
+            out_string += str(scaler_data[2][i])
+            out_string += "\t"
+            out_string += str(pfy_data[0][i])
+            out_string += "\t"
+            out_string += str(pfy_data[1][i])
+            out_string += "\t"
+            out_string += str(pfy_data[2][i])
+            out_string += "\t"
+            out_string += str(pfy_data[3][i])
+            # print sub_pfy[i]
+            out_string += "\n"
+            # print out_string
+            out_file.write(out_string)
+    print ("Export data complete.")
             
         
 def export_normalized_data(export_file_directory, origin_file_directory, column1, column2, column1_name, column2_name):
