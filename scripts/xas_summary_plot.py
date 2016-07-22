@@ -8,18 +8,18 @@ import numpy as np
 from open_spec import *
 
 
-def summary_plot(energy_data, data, scan_num, name, start_energy=None, stop_energy=None):
+def summary_plot(energy_data, data, scan_num, name, start_roi = None, stop_roi = None):
 	plt.close('all')
 	if name == "TEY" or name == "I0" or name == "Diode" or name == "SDD1_OCR" or name == "SDD1_ICR" or name == "SDD2_OCR" or name == "SDD2_ICR" or name == "SDD3_OCR" or name == "SDD3_ICR" or name == "SDD4_OCR" or name == "SDD4_ICR":
 		index_of_scan_num = generate_summary_plot_with_scaler(energy_data, data, scan_num, name)
 	elif name == "PFY_SDD1" or name == "PFY_SDD2" or name == "PFY_SDD3" or name == "PFY_SDD4":
-		index_of_scan_num = generate_summary_plot_with_pfy(energy_data, data, scan_num, name, start_energy, stop_energy)
+		index_of_scan_num = generate_summary_plot_with_pfy(energy_data, data, scan_num, name, start_roi, stop_roi)
 	else:
 		return "Errors with the name input"
 	return index_of_scan_num
 
 
-def generate_summary_plot_with_pfy(energy_data, mca_data, scan_nums, pfy_name, start_energy, stop_energy):
+def generate_summary_plot_with_pfy(energy_data, mca_data, scan_nums, pfy_name, start_roi, stop_roi):
         
 	# MCA is SDD; after getting PFY of ROI then it becomes PFY_SDD
 	pfy_dict = {'PFY_SDD1': 'MCA1', 'PFY_SDD2': 'MCA2', 'PFY_SDD3': 'MCA3', 'PFY_SDD4': 'MCA4'}
@@ -33,7 +33,7 @@ def generate_summary_plot_with_pfy(energy_data, mca_data, scan_nums, pfy_name, s
 
 		scan_num_list = np.empty(len(energy_data[index]))
 		scan_num_list.fill(index+1)
-		total_pfy = get_one_pfy_from_all_scan(mca_data, mca_name, start_energy, stop_energy)
+		total_pfy = get_one_pfy_from_all_scan(mca_data, mca_name, start_roi, stop_roi)
 		# total_pfy = np.array(total_pfy) / 10
         
 		# real scan number from the data file
@@ -132,5 +132,5 @@ def get_one_pfy_from_all_scan(mca_data, mca_name, enStart, enStop):
 		# print "Length of PFY:", len(pfy[i])
 	# print "Done!"
 	# print "pfy length: ", len(pfy)
-	return pfy    
+	return pfy
     
