@@ -11,12 +11,11 @@ from open_spec import *
 def summary_plot(energy_data, data, scan_num, name, start_roi = None, stop_roi = None):
 	plt.close('all')
 	if name == "TEY" or name == "I0" or name == "Diode" or name == "SDD1_OCR" or name == "SDD1_ICR" or name == "SDD2_OCR" or name == "SDD2_ICR" or name == "SDD3_OCR" or name == "SDD3_ICR" or name == "SDD4_OCR" or name == "SDD4_ICR":
-		index_of_scan_num = generate_summary_plot_with_scaler(energy_data, data, scan_num, name)
+		generate_summary_plot_with_scaler(energy_data, data, scan_num, name)
 	elif name == "PFY_SDD1" or name == "PFY_SDD2" or name == "PFY_SDD3" or name == "PFY_SDD4":
-		index_of_scan_num = generate_summary_plot_with_pfy(energy_data, data, scan_num, name, start_roi, stop_roi)
+		 generate_summary_plot_with_pfy(energy_data, data, scan_num, name, start_roi, stop_roi)
 	else:
-		return "Errors with the name input"
-	return index_of_scan_num
+		print "Errors with the name input"
 
 
 def generate_summary_plot_with_pfy(energy_data, mca_data, scan_nums, pfy_name, start_roi, stop_roi):
@@ -26,7 +25,6 @@ def generate_summary_plot_with_pfy(energy_data, mca_data, scan_nums, pfy_name, s
 	mca_dict = {'MCA1': 0, 'MCA2': 1, 'MCA3': 2, 'MCA4': 3}
 	mca_name = pfy_dict[pfy_name]
 	mca = mca_dict[mca_name]
-	index_of_scan_num = []
 	total_cscan_num = len(scan_nums)
 
 	for index in range (0, total_cscan_num):
@@ -46,7 +44,6 @@ def generate_summary_plot_with_pfy(energy_data, mca_data, scan_nums, pfy_name, s
 		# print "Generating plot for scan No.", cscan_number, "real scan number:", real_cscan_number
 		plt.scatter(energy_data[index], scan_num_list, c=total_pfy[index],  s=140, linewidths=0, marker='s')
 		print "Generated plot for No.", index+1, "in c scan array.  Real scan number is:", cscan_number
-		index_of_scan_num.append(cscan_number)
         
 	# setup the y-axis ticks
 	# plt.ylim(0, total_cscan_num+1)
@@ -63,14 +60,12 @@ def generate_summary_plot_with_pfy(energy_data, mca_data, scan_nums, pfy_name, s
 	plt.grid()
 	# show the plot
 	plt.show()
-	return index_of_scan_num
 
 
 def generate_summary_plot_with_scaler(energy_data, scaler_data, scan_nums, scaler_name):
 	scaler_dict = {'TEY': 0, 'I0': 1, 'Diode':2}
 	scaler_index = scaler_dict[scaler_name]
     
-	index_of_scan_num = []
 	str_scaler_name = scaler_name
 	total_cscan_num = len(scan_nums)
 	for index in range (0, total_cscan_num):
@@ -89,7 +84,6 @@ def generate_summary_plot_with_scaler(energy_data, scaler_data, scan_nums, scale
 		# print "Generating plot for scan No.", cscan_number
 		plt.scatter(energy_data[index], scan_num_list, c=scaler_data[index][scaler_index],  s=140, linewidths=0, marker='s')
 		print "Generated plot for No.", index+1, "in c scan array.  Real scan number is:", cscan_number
-		index_of_scan_num.append(cscan_number)
         
 	# setup the y-axis ticks
 	# plt.ylim(0, total_cscan_num+1)
@@ -106,7 +100,6 @@ def generate_summary_plot_with_scaler(energy_data, scaler_data, scan_nums, scale
 	plt.grid()
 	# show the plot
 	plt.show()
-	return index_of_scan_num
 
 
 def get_one_pfy_from_all_scan(mca_data, mca_name, enStart, enStop):
