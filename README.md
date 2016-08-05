@@ -1,12 +1,10 @@
-# SGM-Beamline
-Data Analysis &amp; Visualization Tools for SGM Beamline
+# SGMPy
+Data Analysis &amp; Visualization Tools for SGM Beamline, called **SGMπ**
 
----
 
-## How to run our Python scripts?
-Please check our wiki:  https://github.com/Beamlines-CanadianLightSource/SGM-Beamline/wiki/Installation-and-Getting-Start
+## Run SGMPy?
+SGMPy are running on Jupyter notebook, a tool to run Python methods directly inside web browser locally. Please check our wiki for setup and installation:  https://github.com/Beamlines-CanadianLightSource/SGM-Beamline/wiki/Installation-and-Getting-Start
 
----
 
 ## Developer's Guide
 
