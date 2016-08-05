@@ -22,7 +22,6 @@ def get_scan_details(file_directory):
         command = opened_file[scan_details_list[i]].attrs['command']
         date = opened_file[scan_details_list[i]].attrs['date']
         print 'Scan:', scan_details_list[i], '    The Command is: ', command, '    DateTime: ', date
-        print
 
 def get_diff_scan(file_directory):
     opened_file = open_spec_data_file(file_directory)
@@ -47,6 +46,7 @@ def get_diff_scan(file_directory):
     print "A Scan: ", a_array, "\n"
     print "C Mesh Scan: ", cmesh_array, "\n"
     print "Mesh Scan: ", mesh_array, "\n"
+    return c_array, a_array, cmesh_array, mesh_array
 
 def get_c_scan(opened_file):
     c_array = []
@@ -59,7 +59,7 @@ def get_c_scan(opened_file):
             c_array.append(index)
     return c_array
 
-def get_cmesh_scan(self, opened_file):
+def get_cmesh_scan(opened_file):
     cmesh_array = []
     for i in range(0, len(opened_file.keys())):
         index = opened_file.keys()[i]
