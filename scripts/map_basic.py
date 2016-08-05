@@ -123,13 +123,14 @@ class SingleMap(object):
         plt.show()
         # return zi1, zi2, zi3, zi4
 
-    def plotpfyGridc(self, depth, shift):
+    def plotpfyGridc(self, original_file_dictory, depth, shift):
         plt.close('all')
         print "Plotting contours."
 
         hex_x = self.get_hex_x()
         hex_y = self.get_hex_y()
         pfy_data = self.get_pfy_sdd_array()
+        scan_num = str(self.get_scan_num())
 
         hex_x_ad = np.zeros((len(hex_x)))
 
@@ -153,10 +154,16 @@ class SingleMap(object):
         fig.show()
 
         extent1 = ax1.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-        fig.savefig('ax1_figure.tiff', bbox_inches=extent1, dpi=500)
+        fig.savefig("data/"+original_file_dictory+"_"+scan_num+"pfy_sdd1.tiff", bbox_inches=extent1, dpi=500)
 
         extent2 = ax2.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-        fig.savefig('ax2_figure.tiff', bbox_inches=extent2, dpi=500)
+        fig.savefig("data/"+original_file_dictory+"_"+scan_num+"pfy_sdd2.tiff", bbox_inches=extent2, dpi=500)
+
+        extent3 = ax3.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
+        fig.savefig("data/"+original_file_dictory+"_"+scan_num+"pfy_sdd3.tiff", bbox_inches=extent3, dpi=500)
+
+        extent4 = ax4.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
+        fig.savefig("data/"+original_file_dictory+"_"+scan_num+"pfy_sdd4.tiff", bbox_inches=extent4, dpi=500)
 
 
     # def plotMap(self, filename,scanNum, pfylow, pfyhigh):
