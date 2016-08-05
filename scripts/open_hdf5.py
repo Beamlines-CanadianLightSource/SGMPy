@@ -167,20 +167,42 @@ class HDF5SingleCScan(object):
 
 class HDF5SingleCmesh(object):
 
-    def read_hdf5_map(self, file_directory, scan_number):
-        xp_array = []
-        yp_array = []
+    def __init__(self):
+        self.hex_x = None
+        self.hex_y = None
+        self.mca_array = None
+        self.scaler_array = None
+        self.scan_num = None
+
+    def get_hex_x(self):
+        return self.hex_x
+
+    def get_hex_y(self):
+        return self.hex_y
+
+    def get_mca_array(self):
+        return self.mca_array
+
+    def get_scaler_array(self):
+        return self.scaler_array
+
+    def get_scan_num(self):
+        return self.scan_num
+
+    def read_hdf5_map(self, file_directory, scan_num):
+        hex_x_array = []
+        hex_y_array = []
         scaler_array = []
         mca_array = []
         with h5py.File(file_directory,'r') as hf:
             print hf.keys()
             scaler_data = [[], [], []]
             mca_data = [[], [], [], []]
-            scan = hf.get(scan_number)
+            scan = hf.get(scan_num)
             scan_name = check_scan_type(scan)
             if scan_name == "cmesh" and len(scan['data']) > 2:
-                xp_array = scan['data']['Hex_XP'][0:]
-                yp_array = scan['data']['Hex_YP'][0:]
+                hex_x_array = scan['data']['Hex_XP'][0:]
+                hex_y_array = scan['data']['Hex_YP'][0:]
                 scaler_data[0] = scan['data']['TEY'][0:]
                 scaler_data[1] = scan['data']['I0'][0:]
                 scaler_data[2] = scan['data']['Diode'][0:]
@@ -190,4 +212,8 @@ class HDF5SingleCmesh(object):
                 mca_data[2] = scan['data']['_mca3_'][0:]
                 mca_data[3] = scan['data']['_mca4_'][0:]
                 mca_array = mca_data
-        return xp_array, yp_array, mca_array, scaler_array, scan_number
+        self.hex_x = hex_x_array
+        self.hex_y = hex_y_array
+        self.mca_array = mca_array
+        self.scaler_array = scaler_array
+        self.scan_num = scan_num
