@@ -3,7 +3,7 @@ Data Analysis &amp; Visualization Tools for SGM Beamline, called **SGMπ**
 
 
 ## Run SGMPy?
-SGMPy is running on Jupyter notebook, a tool to run Python methods directly inside web browser locally. Please check our [Wiki](https://github.com/Beamlines-CanadianLightSource/SGMPy/wiki) for [setup and installation](https://github.com/Beamlines-CanadianLightSource/SGM-Beamline/wiki/Installation-and-Getting-Start)
+SGMPy is running on Jupyter notebook, a tool to execute SGMPy methods directly inside web browser. Please check our [Wiki](https://github.com/Beamlines-CanadianLightSource/SGMPy/wiki) for [setup and installation](https://github.com/Beamlines-CanadianLightSource/SGM-Beamline/wiki/Installation-and-Getting-Start)
 
 
 ## Developer's Guide
