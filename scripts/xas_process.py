@@ -366,8 +366,16 @@ class XASProcess(object):
 
         # generate a list of number to present 1 - 256 bins for emission energy
         bin_num_for_y = np.arange(10, (num_of_emission_bins+1)*10, 10)
+
+        v_max = max(sub_mca_array[0])
+        for i in range(1, num_of_bin):
+            temp_max = max(sub_mca_array[i])
+            if temp_max > v_max:
+                v_max = temp_max
+        print "v_max: ", v_max
+
         for x in range (0, num_of_bin):
-            plt.scatter(bin_num_for_x[x], bin_num_for_y, c= sub_mca_array[x], s=7, linewidths=0)
+            plt.scatter(bin_num_for_x[x], bin_num_for_y, c= sub_mca_array[x], s=7, linewidths=0, vmax=v_max, vmin=0)
 
         plt.yticks(np.arange(100, 2560, 100.0))
         plt.xlabel('Incident Energy (eV)')
