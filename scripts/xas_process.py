@@ -148,27 +148,6 @@ class XASProcess(object):
             mca_array[i][3] = mca_data[good_scan_index[i]-1][3]
         return energy_array, mca_array, scaler_array
 
-    # def get_good_datapoint_sdd1_spec(self, good_scan_index, energy_data, mca_data):
-    #
-    #     # print "Total good scan numbers:", len(good_scan_array)
-    #
-    #     energy_array = []
-    #     sdd1_array=[]
-    #
-    #     # open and read all data from the file and it could take a while
-    #     # energy_array, mca_array, scaler_array, scan_num = open_all_sgm_xas(opened_file)
-    #
-    #     for i in range (0, len(good_scan_index)):
-    #         # scan number is start from 1
-    #         # print "This is the scan number: ", goodScanArray[i]
-    #         # array index is start from 0
-    #         # get all scalers of good scans from original scans' array
-    #         # print "good_scan_index[i]-1   ", good_scan_index[i]-1
-    #         energy_array.append(energy_data[good_scan_index[i]-1])
-    #
-    #         # get all MCA1 of good scans from original scans
-    #         sdd1_array.append( mca_data[good_scan_index[i]-1][0] )
-    #     return energy_array, sdd1_array
 
     # create bins (startEnergy = 690, endEnergy = 750, numberOfBins = 600)
     def create_bins(self, start_energy, end_energy, num_of_bins):
