@@ -7,7 +7,7 @@ class TestOpenSpec(unittest.TestCase):
     
 #	def test_get_abs_path(self):
 #		abs_file_path = get_abs_path("data/spectra_example.dat")
-#		expect_abs_path =  "/home/travis/build/Beamlines-CanadianLightSource/SGM-Beamline/spectra_example.dat"
+#		expect_abs_path =  "/home/travis/build/Beamlines-CanadianLightSource/SGMPy/spectra_example.dat"
 #		self.assertEqual(abs_file_path, expect_abs_path)
 
         
@@ -45,9 +45,9 @@ class TestOpenSpec(unittest.TestCase):
     def test_get_c_scan(self):
         abs_file_path = get_abs_path("data/diffscan_example.dat")
         opened_file = open_spec_data_file(abs_file_path)
-        cmesh_scan = get_c_scan(opened_file)
-        expect_cmesh_scan = [u'5', u'6', u'8', u'9', u'10']
-        self.assertEqual(cmesh_scan, expect_cmesh_scan)
+        cscan = get_c_scan(opened_file)
+        expect_cscan = [u'5', u'6', u'8', u'9', u'10']
+        self.assertEqual(cscan, expect_cscan)
 
 
 if __name__ == '__main__':
