@@ -19,7 +19,7 @@ class TestExportData(unittest.TestCase):
         data_set = None
         export = ExportData('user/data', data_set)
 
-        abs_file_path = get_abs_path("data/diffscan_example.dat")
+        abs_file_path = get_abs_path("data/diff_scan_example.dat")
         actual_comments = export.get_comments(abs_file_path)
         
         expected_comments = []
