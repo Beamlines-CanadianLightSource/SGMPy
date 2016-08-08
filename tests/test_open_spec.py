@@ -12,7 +12,7 @@ class TestOpenSpec(unittest.TestCase):
 
         
     def test_get_diff_scan_case1(self):
-        abs_file_path = get_abs_path("SGMPy/data/spectra_example.dat")
+        abs_file_path = get_abs_path("data/spectra_example.dat")
         scan_array = get_diff_scan(abs_file_path)
         expected_cscan_array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         expected_ascan_array = []
@@ -24,7 +24,7 @@ class TestOpenSpec(unittest.TestCase):
         self.assertEqual(scan_array[3], expected_mesh_scan_array)
         
     def test_get_diff_scan_case2(self):
-        abs_file_path = get_abs_path("SGMPy/data/diffscan_example.dat")
+        abs_file_path = get_abs_path("data/diffscan_example.dat")
         scan_array = get_diff_scan(abs_file_path)
         expected_cscan_array = [4, 5, 6, 8, 9, 10]
         expected_ascan_array = [7]
@@ -36,14 +36,14 @@ class TestOpenSpec(unittest.TestCase):
         self.assertEqual(scan_array[3], expected_mesh_scan_array)
         
     def test_get_cmesh_scan(self):
-        abs_file_path = get_abs_path("SGMPy/data/diffscan_example.dat")
+        abs_file_path = get_abs_path("data/diffscan_example.dat")
         opened_file = open_spec_data_file(abs_file_path)
         cmesh_scan = get_cmesh_scan(opened_file)
         expect_cmesh_scan = ['1', '2', '3']
         self.assertEqual(cmesh_scan, expect_cmesh_scan)
         
     def test_get_c_scan(self):
-        abs_file_path = get_abs_path("SGMPy/data/diffscan_example.dat")
+        abs_file_path = get_abs_path("data/diffscan_example.dat")
         opened_file = open_spec_data_file(abs_file_path)
         cmesh_scan = get_c_scan(opened_file)
         expect_cmesh_scan = [u'5', u'6', u'8', u'9', u'10']
