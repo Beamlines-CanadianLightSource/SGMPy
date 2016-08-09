@@ -104,21 +104,25 @@ class SingleMap(object):
         print "Interpolating MCA1"
         zi1 = griddata(hex_x_ad, hex_y, pfy_data[0], xi, yi, interp='linear')
         print "Done."
+        plt.title("PYF_SDD1")
         plt.imshow(zi1)
         plt.subplot(222)
         print "Interpolating MCA2"
         zi2 = griddata(hex_x_ad, hex_y, pfy_data[1], xi, yi, interp='linear')
         print "Done."
+        plt.title("PYF_SDD2")
         plt.imshow(zi2)
         plt.subplot(223)
         print "Interpolating MCA3"
         zi3 = griddata(hex_x_ad, hex_y, pfy_data[2], xi, yi, interp='linear')
         print "Done."
+        plt.title("PYF_SDD3")
         plt.imshow(zi3)
         plt.subplot(224)
         print "Interpolating MCA4"
         zi4 = griddata(hex_x_ad, hex_y, pfy_data[3], xi, yi, interp='linear')
         print "Done."
+        plt.title("PYF_SDD4")
         plt.imshow(zi4)
         plt.show()
         # return zi1, zi2, zi3, zi4
@@ -141,29 +145,33 @@ class SingleMap(object):
         fig = plt.figure()
         ax1 = fig.add_subplot(221)
         ax1.tricontourf(hex_x_ad, hex_y, pfy_data[0], depth)
+        ax1.set_title("PFY_SDD1")
 
         ax2 = fig.add_subplot(222)
         ax2.tricontourf(hex_x_ad, hex_y, pfy_data[1], depth)
+        ax2.set_title("PFY_SDD2")
 
         ax3 = fig.add_subplot(223)
         ax3.tricontourf(hex_x_ad, hex_y, pfy_data[2], depth)
+        ax3.set_title("PFY_SDD3")
 
         ax4 = fig.add_subplot(224)
         ax4.tricontourf(hex_x_ad, hex_y, pfy_data[3], depth)
+        ax4.set_title("PFY_SDD4")
 
         fig.show()
 
         extent1 = ax1.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-        fig.savefig("data/"+original_file_dictory+"_"+scan_num+"pfy_sdd1.tiff", bbox_inches=extent1, dpi=500)
+        fig.savefig("data/"+original_file_dictory+"_"+scan_num+"_"+"pfy_sdd1.tiff", bbox_inches=extent1, dpi=500)
 
         extent2 = ax2.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-        fig.savefig("data/"+original_file_dictory+"_"+scan_num+"pfy_sdd2.tiff", bbox_inches=extent2, dpi=500)
+        fig.savefig("data/"+original_file_dictory+"_"+scan_num+"_"+"pfy_sdd2.tiff", bbox_inches=extent2, dpi=500)
 
         extent3 = ax3.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-        fig.savefig("data/"+original_file_dictory+"_"+scan_num+"pfy_sdd3.tiff", bbox_inches=extent3, dpi=500)
+        fig.savefig("data/"+original_file_dictory+"_"+scan_num+"_"+"pfy_sdd3.tiff", bbox_inches=extent3, dpi=500)
 
         extent4 = ax4.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-        fig.savefig("data/"+original_file_dictory+"_"+scan_num+"pfy_sdd4.tiff", bbox_inches=extent4, dpi=500)
+        fig.savefig("data/"+original_file_dictory+"_"+scan_num+"_"+"pfy_sdd4.tiff", bbox_inches=extent4, dpi=500)
 
 
     # def plotMap(self, filename,scanNum, pfylow, pfyhigh):
@@ -172,6 +180,37 @@ class SingleMap(object):
     #     g=getPFY(f,pfylow,pfyhigh)
     #     plotpfyGridc(f, g, 500, 0.75)
 
+    def plot_xrf(self):
+        mca_array = self.get_mca_array()
+        sum_mca1_array = np.zeros(255)
+        sum_mca2_array = np.zeros(255)
+        sum_mca3_array = np.zeros(255)
+        sum_mca4_array = np.zeros(255)
+        for i in range(0, len(mca_array[0])):
+            sum_mca1_array = sum_mca1_array + mca_array[0][i][0:255]
+            sum_mca2_array = sum_mca2_array + mca_array[1][i][0:255]
+            sum_mca3_array = sum_mca3_array + mca_array[2][i][0:255]
+            sum_mca4_array = sum_mca4_array + mca_array[3][i][0:255]
+
+        fig = plt.figure()
+        ax1 = fig.add_subplot(221)
+        ax1.plot(sum_mca1_array)
+        ax1.set_title("PFY_SDD1")
+        ax1.set_xlim([0, 260])
+        ax2 = fig.add_subplot(222)
+        ax2.plot(sum_mca2_array)
+        ax2.set_title("PFY_SDD2")
+        ax2.set_xlim([0, 260])
+        ax3 = fig.add_subplot(223)
+        ax3.plot(sum_mca3_array)
+        ax3.set_title("PFY_SDD3")
+        ax3.set_xlim([0, 260])
+        ax4 = fig.add_subplot(224)
+        ax4.plot(sum_mca4_array)
+        ax4.set_title("PFY_SDD4")
+        ax4.set_xlim([0, 260])
+
+        fig.show()
 
     def calculate_pfy(self, enStart, enStop):
         # print "Getting PFY ROIs"
