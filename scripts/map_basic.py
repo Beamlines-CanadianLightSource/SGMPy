@@ -10,6 +10,7 @@ class SingleMap(object):
         self.mca_array = open_one_cmesh.get_mca_array()
         self.scaler_array = open_one_cmesh.get_scaler_array()
         self.scan_num = open_one_cmesh.get_scan_num()
+        self.header_info = open_one_cmesh.get_header_info()
         self.pfy_sdd_array = None
 
     def get_hex_x(self):
@@ -32,6 +33,36 @@ class SingleMap(object):
 
     def get_scan_num(self):
         return self.scan_num
+
+    def get_header_command(self):
+        return self.header_info[0]
+
+    def get_header_date(self):
+        return self.header_info[1]
+
+    def get_header_clock(self):
+        return self.header_info[2]
+
+    def get_header_g0(self):
+        return self.header_info[3]
+
+    def get_header_g1(self):
+        return self.header_info[4]
+
+    def get_header_g3(self):
+        return self.header_info[5]
+
+    def get_header_g4(self):
+        return self.header_info[6]
+
+    def get_header_q(self):
+        return self.header_info[7]
+
+    def get_header_p0(self):
+        return self.header_info[8]
+
+    def get_header_p1(self):
+        return self.header_info[9]
 
     def getXRF(self, sgmData):
 

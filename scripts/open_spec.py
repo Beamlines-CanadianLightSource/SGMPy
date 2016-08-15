@@ -222,6 +222,7 @@ class OpenSingleCMesh(object):
         self.mca_array = None
         self.scaler_array = None
         self.scan_num = None
+        self.header_info = [None] * 10
 
     def get_hex_x(self):
         return self.hex_x
@@ -238,6 +239,9 @@ class OpenSingleCMesh(object):
     def get_scan_num(self):
         return self.scan_num
 
+    def get_header_info(self):
+        return self.header_info
+
     # open one scan of map
     def open_sgm_map(self, sgm_file, scan_num):
 
@@ -246,6 +250,33 @@ class OpenSingleCMesh(object):
 
         f = spec.open(sgm_file)
         scan=f[str(scan_num)]
+
+        self.header_info[0] = scan.attrs["command"]
+        self.header_info[1] = scan.attrs["date"]
+        duration = scan.attrs["duration"]
+        self.header_info[2] = str(duration[1]) + "  (" + str(duration[0]) + ")"
+        orientations = scan.attrs["orientations"]
+        self.header_info[3] = str(orientations[0][0])
+        self.header_info[4] = str(orientations[1][0])
+        self.header_info[5] = str(orientations[2][0])
+        self.header_info[6] = str(orientations[3][0])
+        hkl = scan.attrs["hkl"]
+        self.header_info[7] = str(hkl[0]) + " " + str(hkl[1]) + " " + str(hkl[2])
+        positions = scan.attrs["positions"]
+
+        self.header_info[8] = str(positions['Hex_X']) + " " + str(positions['Hex_Y']) + " " + str(positions['Hex_Z']) + " " + str(
+            positions['Hex_XP']) + " " + str(positions['Hex_YP']) + " " + str(positions['Hex_ZP']) + " " + str(
+            positions['Energy']) + " " + str(positions['Energy']) + " " + str(positions['XPS_Y'])
+
+        self.header_info[9] = str(positions['XPS_X']) + " " + str(positions['XPS_Z']) + " " + str(positions['XPS_R'])
+
+
+        print scan.attrs["command"]
+        print scan.attrs["date"]
+        print scan.attrs["duration"]
+        print scan.attrs["user"]
+        print scan.attrs["hkl"]
+        print scan.attrs["orientations"]
 
         hex_x = scan['Hex_XP']
         hex_y = scan['Hex_YP']
@@ -273,29 +304,29 @@ class OpenSingleCMesh(object):
         self.scan_num = scan_num
 
 
-# open all c mesh scan in a data file
-def open_all_sgm_map(opened_file):
-
-    cmesh_scan = get_cmesh_scan(opened_file)
-    total_scan_num = len(cmesh_scan)
-
-    scan=[]
-    mca1=[[] for a in range(total_scan_num)]
-    mca2=[[] for a in range(total_scan_num)]
-    mca3=[[] for a in range(total_scan_num)]
-    mca4=[[] for a in range(total_scan_num)]
-
-    for j in range (0, total_scan_num):
-        scan.append(opened_file[ cmesh_scan[j] ])
-
-        hex_x = scan[j]['Hex_XP']
-        mcadata = scan[j]['@A1']
-
-        for i in range(0,len(hex_x)):
-            mca1[j].append(mcadata[i*4])
-            mca2[j].append(mcadata[i*4 + 1])
-            mca3[j].append(mcadata[i*4 + 2])
-            mca4[j].append(mcadata[i*4 + 3])
-
-    print "Done!"
-    return scan, mca1, mca2, mca3, mca4
+# # open all c mesh scan in a data file
+# def open_all_sgm_map(opened_file):
+#
+#     cmesh_scan = get_cmesh_scan(opened_file)
+#     total_scan_num = len(cmesh_scan)
+#
+#     scan=[]
+#     mca1=[[] for a in range(total_scan_num)]
+#     mca2=[[] for a in range(total_scan_num)]
+#     mca3=[[] for a in range(total_scan_num)]
+#     mca4=[[] for a in range(total_scan_num)]
+#
+#     for j in range (0, total_scan_num):
+#         scan.append(opened_file[ cmesh_scan[j] ])
+#
+#         hex_x = scan[j]['Hex_XP']
+#         mcadata = scan[j]['@A1']
+#
+#         for i in range(0,len(hex_x)):
+#             mca1[j].append(mcadata[i*4])
+#             mca2[j].append(mcadata[i*4 + 1])
+#             mca3[j].append(mcadata[i*4 + 2])
+#             mca4[j].append(mcadata[i*4 + 3])
+#
+#     print "Done!"
+#     return scan, mca1, mca2, mca3, mca4
