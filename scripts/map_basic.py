@@ -10,7 +10,8 @@ class SingleMap(object):
         self.mca_array = open_one_cmesh.get_mca_array()
         self.scaler_array = open_one_cmesh.get_scaler_array()
         self.scan_num = open_one_cmesh.get_scan_num()
-        self.header_info = open_one_cmesh.get_header_info()
+        self.scan_header = open_one_cmesh.get_scan_header()
+        self.file_header = open_one_cmesh.get_file_header()
         self.pfy_sdd_array = None
 
     def get_hex_x(self):
@@ -35,34 +36,49 @@ class SingleMap(object):
         return self.scan_num
 
     def get_header_command(self):
-        return self.header_info[0]
+        return self.scan_header[0]
 
     def get_header_date(self):
-        return self.header_info[1]
+        return self.scan_header[1]
 
     def get_header_clock(self):
-        return self.header_info[2]
+        return self.scan_header[2]
 
     def get_header_g0(self):
-        return self.header_info[3]
+        return self.scan_header[3]
 
     def get_header_g1(self):
-        return self.header_info[4]
+        return self.scan_header[4]
 
     def get_header_g3(self):
-        return self.header_info[5]
+        return self.scan_header[5]
 
     def get_header_g4(self):
-        return self.header_info[6]
+        return self.scan_header[6]
 
     def get_header_q(self):
-        return self.header_info[7]
+        return self.scan_header[7]
 
     def get_header_p0(self):
-        return self.header_info[8]
+        return self.scan_header[8]
 
     def get_header_p1(self):
-        return self.header_info[9]
+        return self.scan_header[9]
+
+    def get_header_file_origin(self):
+        return self.file_header[0]
+
+    def get_header_epoch(self):
+        return self.file_header[1]
+
+    def get_header_file_date(self):
+        return self.file_header[2]
+
+    def get_header_program(self):
+        return self.file_header[3]
+
+    def get_header_user(self):
+        return self.file_header[4]
 
     def getXRF(self, sgmData):
 
