@@ -447,22 +447,22 @@ class XASProcess(object):
         plt.subplot(4, 2, 5)
         plt.plot(en, pfy_data[0])
         plt.xlabel('Energy (eV)')
-        plt.ylabel('SDD1')
+        plt.ylabel('PFY_SDD1')
 
         plt.subplot(4, 2, 6)
         plt.plot(en, pfy_data[1])
         plt.xlabel('Energy (eV)')
-        plt.ylabel('SDD2')
+        plt.ylabel('PFY_SDD2')
 
         plt.subplot(4, 2, 7)
         plt.plot(en, pfy_data[2])
         plt.xlabel('Energy (eV)')
-        plt.ylabel('SDD3')
+        plt.ylabel('PFY_SDD3')
 
         plt.subplot(4, 2, 8)
         plt.plot(en, pfy_data[3])
         plt.xlabel('Energy (eV)')
-        plt.ylabel('SDD4')
+        plt.ylabel('PFY_SDD4')
 
         plt.show()
 
@@ -498,7 +498,7 @@ class XASProcess(object):
         plt.xlabel('Energy (eV)')
         str_y_axis = StringIO()
         str_y_axis.write(dividend)
-        str_y_axis.write('/')
+        str_y_axis.write(' / ')
         str_y_axis.write(divisor)
         plt.ylabel(str_y_axis.getvalue())
         plt.show()
