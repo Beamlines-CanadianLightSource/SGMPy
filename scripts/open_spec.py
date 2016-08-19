@@ -240,11 +240,11 @@ class OpenSingleCMesh(object):
     def get_scan_num(self):
         return self.scan_num
 
-    def get_scan_header(self):
-        return self.scan_header
-
-    def get_file_header(self):
-        return self.file_header
+    # def get_scan_header(self):
+    #     return self.scan_header
+    #
+    # def get_file_header(self):
+    #     return self.file_header
 
     # open one scan of map
     def open_sgm_map(self, sgm_file, scan_num):
@@ -255,37 +255,37 @@ class OpenSingleCMesh(object):
         f = spec.open(sgm_file)
         scan=f[str(scan_num)]
 
-        self.scan_header[0] = scan.attrs["command"]
-        self.scan_header[1] = scan.attrs["date"]
-        duration = scan.attrs["duration"]
-        self.scan_header[2] = str(duration[1]) + "  (" + str(duration[0]) + ")"
-        orientations = scan.attrs["orientations"]
-        self.scan_header[3] = str(orientations[0][0])
-        self.scan_header[4] = str(orientations[1][0])
-        self.scan_header[5] = str(orientations[2][0])
-        self.scan_header[6] = str(orientations[3][0])
-        hkl = scan.attrs["hkl"]
-        self.scan_header[7] = str(hkl[0]) + " " + str(hkl[1]) + " " + str(hkl[2])
-        positions = scan.attrs["positions"]
-        print positions
+        # self.scan_header[0] = scan.attrs["command"]
+        # self.scan_header[1] = scan.attrs["date"]
+        # duration = scan.attrs["duration"]
+        # self.scan_header[2] = str(duration[1]) + "  (" + str(duration[0]) + ")"
+        # orientations = scan.attrs["orientations"]
+        # self.scan_header[3] = str(orientations[0][0])
+        # self.scan_header[4] = str(orientations[1][0])
+        # self.scan_header[5] = str(orientations[2][0])
+        # self.scan_header[6] = str(orientations[3][0])
+        # hkl = scan.attrs["hkl"]
+        # self.scan_header[7] = str(hkl[0]) + " " + str(hkl[1]) + " " + str(hkl[2])
+        # positions = scan.attrs["positions"]
+        # print positions
 
-        self.file_header[0] = scan.attrs["file_origin"]
-        self.file_header[1] = str(scan.attrs["epoch_offset"])
-        self.file_header[2] = scan.attrs["file_date"]
-        self.file_header[3] = scan.attrs["program"]
-        self.file_header[4] = scan.attrs["user"]
+        # self.file_header[0] = scan.attrs["file_origin"]
+        # self.file_header[1] = str(scan.attrs["epoch_offset"])
+        # self.file_header[2] = scan.attrs["file_date"]
+        # self.file_header[3] = scan.attrs["program"]
+        # self.file_header[4] = scan.attrs["user"]
+        #
+        # self.scan_header[8] = str(positions['Hex_X']) + " " + str(positions['Hex_Y']) + " " + str(positions['Hex_Z']) + " " + str(positions['Hex_XP']) + " " + str(positions['Hex_YP']) + " " + str(positions['Hex_ZP']) + " " + str(positions['Energy']) + " " + " " + str(positions['XPS_Y'])
+        #
+        # self.scan_header[9] = str(positions['XPS_X']) + " " + str(positions['XPS_Z']) + " " + str(positions['XPS_R'])
 
-        self.scan_header[8] = str(positions['Hex_X']) + " " + str(positions['Hex_Y']) + " " + str(positions['Hex_Z']) + " " + str(positions['Hex_XP']) + " " + str(positions['Hex_YP']) + " " + str(positions['Hex_ZP']) + " " + str(positions['Energy']) + " " + " " + str(positions['XPS_Y'])
 
-        self.scan_header[9] = str(positions['XPS_X']) + " " + str(positions['XPS_Z']) + " " + str(positions['XPS_R'])
-
-
-        print scan.attrs["command"]
-        print scan.attrs["date"]
-        print scan.attrs["duration"]
-        print scan.attrs["user"]
-        print scan.attrs["hkl"]
-        print scan.attrs["orientations"]
+        # print scan.attrs["command"]
+        # print scan.attrs["date"]
+        # print scan.attrs["duration"]
+        # print scan.attrs["user"]
+        # print scan.attrs["hkl"]
+        # print scan.attrs["orientations"]
 
         hex_x = scan['Hex_XP']
         hex_y = scan['Hex_YP']

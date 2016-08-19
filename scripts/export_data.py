@@ -387,3 +387,71 @@ class ExportData:
                 # print out_string
                 out_file.write(out_string)
         print ("Export data complete.")
+
+
+class ExportMapData:
+
+    def __init__(self, data_set):
+        #self.file_directory = file_directory
+        self.data_set = data_set
+
+    def export_binned_data(self):
+
+        mean_energy_array = self.data_set.get_mean_energy_array()
+        averaged_tey = self.data_set.get_averaged_tey()
+        averaged_i0 = self.data_set.get_averaged_i0()
+        averaged_diode = self.data_set.get_averaged_diode()
+        averaged_mca1 = self.data_set.get_averaged_mca()[0]
+        averaged_mca2 = self.data_set.get_averaged_mca()[1]
+        averaged_mca3 = self.data_set.get_averaged_mca()[2]
+        averaged_mca4 = self.data_set.get_averaged_mca()[3]
+
+        x_bin_num = self.data_set.map_process_para.get_x_bin_num()
+        y_bin_num = self.data_set.map_process_para.get_y_bin_num()
+
+        with open("data/test_export.mca", "w") as out_file:
+            # out_file.write("#C "+single_map.get_header_program()+"  User = "+single_map.get_header_user()+"\n")
+            # out_file.write("\t\n")
+            # out_file.write("#S 23  "+single_map.get_header_command()+"\n")
+            # out_file.write("#D "+ single_map.get_header_date()+"\n")
+            # out_file.write("#T "+ single_map.get_header_clock() + "\n")
+            # out_file.write("#G0 "+ single_map.get_header_g0() + "\n")
+            # out_file.write("#G1 "+ single_map.get_header_g1() + "\n")
+            # out_file.write("#G3 "+ single_map.get_header_g3() + "\n")
+            # out_file.write("#G4 "+ single_map.get_header_g4() + "\n")
+            # out_file.write("#Q "+ single_map.get_header_q() + "\n")
+            # out_file.write("#P0 "+ single_map.get_header_p0() + "\n")
+            # out_file.write("#P1 "+ single_map.get_header_p1() + "\n")
+            out_file.write("#S 023\n")
+            out_file.write("#N 23\n")
+            out_file.write("#L Hex_XP  Hex_YP  Diode  TEY  I0\n")
+            for i in range(0, x_bin_num):
+                for j in range(0, y_bin_num):
+                    out_file.write(str(mean_energy_array[i][j][0][0]) + " " + str(mean_energy_array[i][j][0][1]) + " "
+                                   + str(averaged_diode[i][j]) + " " + str(averaged_i0[i][j]) + " " + str(
+                        averaged_tey[i][j]) + "\n")
+                    mca1_str = str(averaged_mca1[i][j][0:256].tolist())
+                    mca1_list = mca1_str[1:-1].split(", ")
+                    mca2_str = str(averaged_mca2[i][j][0:256].tolist())
+                    mca2_list = mca2_str[1:-1].split(", ")
+                    mca3_str = str(averaged_mca3[i][j][0:256].tolist())
+                    mca3_list = mca3_str[1:-1].split(", ")
+                    mca4_str = str(averaged_mca4[i][j][0:256].tolist())
+                    mca4_list = mca4_str[1:-1].split(", ")
+
+                    out_file.write("@A1 ")
+                    for k in range(0, len(mca1_list)):
+                        out_file.write(mca1_list[k] + " ")
+                    out_file.write("\n")
+                    out_file.write("@A2 ")
+                    for k in range(0, len(mca2_list)):
+                        out_file.write(mca1_list[k] + " ")
+                    out_file.write("\n")
+                    out_file.write("@A3 ")
+                    for k in range(0, len(mca3_list)):
+                        out_file.write(mca1_list[k] + " ")
+                    out_file.write("\n")
+                    out_file.write("@A4 ")
+                    for k in range(0, len(mca4_list)):
+                        out_file.write(mca1_list[k] + " ")
+                    out_file.write("\n")

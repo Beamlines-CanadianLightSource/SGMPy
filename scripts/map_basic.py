@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 from matplotlib.mlab import griddata
 import numpy as np
+import os.path
 
 class SingleMap(object):
 
@@ -10,8 +11,8 @@ class SingleMap(object):
         self.mca_array = open_one_cmesh.get_mca_array()
         self.scaler_array = open_one_cmesh.get_scaler_array()
         self.scan_num = open_one_cmesh.get_scan_num()
-        self.scan_header = open_one_cmesh.get_scan_header()
-        self.file_header = open_one_cmesh.get_file_header()
+        # self.scan_header = open_one_cmesh.get_scan_header()
+        # self.file_header = open_one_cmesh.get_file_header()
         self.pfy_sdd_array = None
 
     def get_hex_x(self):
@@ -35,50 +36,50 @@ class SingleMap(object):
     def get_scan_num(self):
         return self.scan_num
 
-    def get_header_command(self):
-        return self.scan_header[0]
-
-    def get_header_date(self):
-        return self.scan_header[1]
-
-    def get_header_clock(self):
-        return self.scan_header[2]
-
-    def get_header_g0(self):
-        return self.scan_header[3]
-
-    def get_header_g1(self):
-        return self.scan_header[4]
-
-    def get_header_g3(self):
-        return self.scan_header[5]
-
-    def get_header_g4(self):
-        return self.scan_header[6]
-
-    def get_header_q(self):
-        return self.scan_header[7]
-
-    def get_header_p0(self):
-        return self.scan_header[8]
-
-    def get_header_p1(self):
-        return self.scan_header[9]
-
-    def get_header_file_origin(self):
-        return self.file_header[0]
-
-    def get_header_epoch(self):
-        return self.file_header[1]
-
-    def get_header_file_date(self):
-        return self.file_header[2]
-
-    def get_header_program(self):
-        return self.file_header[3]
-
-    def get_header_user(self):
-        return self.file_header[4]
+    # def get_header_command(self):
+    #     return self.scan_header[0]
+    #
+    # def get_header_date(self):
+    #     return self.scan_header[1]
+    #
+    # def get_header_clock(self):
+    #     return self.scan_header[2]
+    #
+    # def get_header_g0(self):
+    #     return self.scan_header[3]
+    #
+    # def get_header_g1(self):
+    #     return self.scan_header[4]
+    #
+    # def get_header_g3(self):
+    #     return self.scan_header[5]
+    #
+    # def get_header_g4(self):
+    #     return self.scan_header[6]
+    #
+    # def get_header_q(self):
+    #     return self.scan_header[7]
+    #
+    # def get_header_p0(self):
+    #     return self.scan_header[8]
+    #
+    # def get_header_p1(self):
+    #     return self.scan_header[9]
+    #
+    # def get_header_file_origin(self):
+    #     return self.file_header[0]
+    #
+    # def get_header_epoch(self):
+    #     return self.file_header[1]
+    #
+    # def get_header_file_date(self):
+    #     return self.file_header[2]
+    #
+    # def get_header_program(self):
+    #     return self.file_header[3]
+    #
+    # def get_header_user(self):
+    #     return self.file_header[4]
 
     def getXRF(self, sgmData):
 
@@ -174,9 +175,12 @@ class SingleMap(object):
         plt.show()
         # return zi1, zi2, zi3, zi4
 
-    def plotpfyGridc(self, original_file_dictory, depth, shift):
+    def plotpfyGridc(self, original_file_directory, depth, shift):
         plt.close('all')
         print "Plotting contours."
+
+        temp_list = original_file_directory.split(".")
+        export_directory = temp_list[0]
 
         hex_x = self.get_hex_x()
         hex_y = self.get_hex_y()
@@ -208,17 +212,25 @@ class SingleMap(object):
 
         fig.show()
 
+        #check file existence
+        num = 1
+        fname = export_directory + "_" + scan_num + "_" + "pfy_sdd1_" + str(num) + ".tiff"
+        while os.path.isfile(fname) == True:
+            num=num+1
+            fname = export_directory + "_" + scan_num + "_" + "pfy_sdd1_" + str(num) + ".tiff"
+            print fname
+
         extent1 = ax1.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-        fig.savefig("data/"+original_file_dictory+"_"+scan_num+"_"+"pfy_sdd1.tiff", bbox_inches=extent1, dpi=500)
+        fig.savefig(export_directory+"_"+scan_num+"_"+"pfy_sdd1_" + str(num) + ".tiff" , bbox_inches=extent1, dpi=500)
 
         extent2 = ax2.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-        fig.savefig("data/"+original_file_dictory+"_"+scan_num+"_"+"pfy_sdd2.tiff", bbox_inches=extent2, dpi=500)
+        fig.savefig(export_directory+"_"+scan_num+"_"+"pfy_sdd2_"+ str(num) + ".tiff", bbox_inches=extent2, dpi=500)
 
         extent3 = ax3.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-        fig.savefig("data/"+original_file_dictory+"_"+scan_num+"_"+"pfy_sdd3.tiff", bbox_inches=extent3, dpi=500)
+        fig.savefig(export_directory+"_"+scan_num+"_"+"pfy_sdd3_"+ str(num) + ".tiff", bbox_inches=extent3, dpi=500)
 
         extent4 = ax4.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-        fig.savefig("data/"+original_file_dictory+"_"+scan_num+"_"+"pfy_sdd4.tiff", bbox_inches=extent4, dpi=500)
+        fig.savefig(export_directory+"_"+scan_num+"_"+"pfy_sdd4_" + str(num) + ".tiff", bbox_inches=extent4, dpi=500)
 
 
     # def plotMap(self, filename,scanNum, pfylow, pfyhigh):
