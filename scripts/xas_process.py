@@ -325,6 +325,8 @@ class XASProcess(object):
 
     def plot_excitation_emission_matrix(self, name):
 
+        matplotlib.rcParams['figure.figsize'] = (12, 10)
+
         print "Plotting incident v emission energy coordinate based on average of SDD(MCA)"
         bins_mean_array = self.get_mean_energy_array()
         bin_mca = self.get_sdd_binned_array()
@@ -419,6 +421,9 @@ class XASProcess(object):
 
         print "Plotting average XAS."    
         plt.close('all')
+
+        matplotlib.rcParams['figure.figsize'] = (14, 20)
+
         en = self.get_mean_energy_array()
         scaler_array = self.get_scaler_averaged_array()
         pfy_data = self.get_pfy_sdd_averaged_array()
@@ -489,10 +494,13 @@ class XASProcess(object):
     def plot_division(self, dividend, divisor):
 
         print "Plotting disivion SDD."
+        plt.close('all')
+        matplotlib.rcParams['figure.figsize'] = (13, 10)
+
         bins_mean_array = self.get_mean_energy_array()
         pfy_data = self.get_pfy_sdd_averaged_array()
         scaler_data = self.get_scaler_averaged_array()
-        plt.close('all')
+
         division_array = self.division(pfy_data, dividend, divisor, scaler_data)
         plt.plot(bins_mean_array, division_array)
         plt.xlabel('Energy (eV)')
@@ -518,6 +526,9 @@ class XASProcessCarbon(object):
         return self.blank_xas_process_data
 
     def carbon_normalize(self):
+        plt.close("all")
+        matplotlib.rcParams['figure.figsize'] = (12, 10)
+
         xas_process_data = self.get_xas_process_data()
         blank_xas_process_data = self.get_blank_xas_process_data()
         pfy_sdd_normalized = np.array(xas_process_data.get_pfy_sdd_averaged_array()[2]) / np.array(blank_xas_process_data.get_pfy_sdd_averaged_array()[0])
