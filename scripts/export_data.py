@@ -422,7 +422,7 @@ class ExportMapData:
             # out_file.write("#Q "+ single_map.get_header_q() + "\n")
             # out_file.write("#P0 "+ single_map.get_header_p0() + "\n")
             # out_file.write("#P1 "+ single_map.get_header_p1() + "\n")
-            out_file.write("#S 023\n")
+            out_file.write("#S 23 mesh hex_xp 1.3 1.8 50 hex_yp 2.4 2.9 50 0.1\n")
             out_file.write("#N 23\n")
             out_file.write("#L Hex_XP  Hex_YP  Diode  TEY  I0\n")
             for i in range(0, x_bin_num):
@@ -445,13 +445,16 @@ class ExportMapData:
                     out_file.write("\n")
                     out_file.write("@A2 ")
                     for k in range(0, len(mca2_list)):
-                        out_file.write(mca1_list[k] + " ")
+                        out_file.write(mca2_list[k] + " ")
                     out_file.write("\n")
                     out_file.write("@A3 ")
                     for k in range(0, len(mca3_list)):
-                        out_file.write(mca1_list[k] + " ")
+                        out_file.write(mca3_list[k] + " ")
                     out_file.write("\n")
                     out_file.write("@A4 ")
                     for k in range(0, len(mca4_list)):
-                        out_file.write(mca1_list[k] + " ")
+                        out_file.write(mca4_list[k] + " ")
                     out_file.write("\n")
+
+    # def export_abridge_data(self):
+    #     with open("data/test_export.mca", "w") as out_file:

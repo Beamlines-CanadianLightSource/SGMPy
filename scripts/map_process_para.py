@@ -25,3 +25,9 @@ class MapProcessPara:
 
     def get_y_bin_num(self):
         return self.y_bin_num
+
+    def set_x_bin_num(self, x_bin_num):
+        self.x_bin_num = x_bin_num
+
+    def set_y_bin_num(self, y_bin_num):
+        self.y_bin_num = y_bin_num

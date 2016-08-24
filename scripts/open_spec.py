@@ -1,6 +1,7 @@
 import os
-from xas_process_para import XASProcessPara
 from praxes.io import spec
+from xas_process_para import XASProcessPara
+from map_process_para import MapProcessPara
 
 
 # For Windows, Please use "/" instead of "\" in the file directory (URI)
@@ -148,8 +149,14 @@ class OpenMultiCScan(object):
         opened_file = open_spec_data_file(file_directory)
         string = opened_file[scan_num[0]].attrs['command']
         split_str = string.split(" ")
-        start_energy = int(split_str[2])
-        end_energy = int(split_str[3])
+
+        # find min and max of scan energy
+        if int(split_str[2]) > int(split_str[3]):
+            start_energy = int(split_str[3])
+            end_energy = int(split_str[2])
+        else:
+            start_energy = int(split_str[2])
+            end_energy = int(split_str[3])
         medium_energy = (start_energy + end_energy) / 2
         medium_roi = medium_energy / 10
         roi_start = medium_roi - 8
@@ -254,88 +261,59 @@ class OpenSingleCMesh(object):
 
         f = spec.open(sgm_file)
         scan=f[str(scan_num)]
+        print scan.attrs['command']
+        # command is like: mesh hex_xp 1.3 1.8 50 hex_yp 2.4 2.9 50 0.1
+        temp = scan.attrs['command'].split(" ")
 
-        # self.scan_header[0] = scan.attrs["command"]
-        # self.scan_header[1] = scan.attrs["date"]
-        # duration = scan.attrs["duration"]
-        # self.scan_header[2] = str(duration[1]) + "  (" + str(duration[0]) + ")"
-        # orientations = scan.attrs["orientations"]
-        # self.scan_header[3] = str(orientations[0][0])
-        # self.scan_header[4] = str(orientations[1][0])
-        # self.scan_header[5] = str(orientations[2][0])
-        # self.scan_header[6] = str(orientations[3][0])
-        # hkl = scan.attrs["hkl"]
-        # self.scan_header[7] = str(hkl[0]) + " " + str(hkl[1]) + " " + str(hkl[2])
-        # positions = scan.attrs["positions"]
-        # print positions
+        if temp[0] == "cscan":
+            print "Cannot open a cscan to plot map and this may cause the following error."
+        elif temp[0] == "ascan":
+            print "Cannot open a ascan to plot map and this may cause the following error."
+        else:
 
-        # self.file_header[0] = scan.attrs["file_origin"]
-        # self.file_header[1] = str(scan.attrs["epoch_offset"])
-        # self.file_header[2] = scan.attrs["file_date"]
-        # self.file_header[3] = scan.attrs["program"]
-        # self.file_header[4] = scan.attrs["user"]
-        #
-        # self.scan_header[8] = str(positions['Hex_X']) + " " + str(positions['Hex_Y']) + " " + str(positions['Hex_Z']) + " " + str(positions['Hex_XP']) + " " + str(positions['Hex_YP']) + " " + str(positions['Hex_ZP']) + " " + str(positions['Energy']) + " " + " " + str(positions['XPS_Y'])
-        #
-        # self.scan_header[9] = str(positions['XPS_X']) + " " + str(positions['XPS_Z']) + " " + str(positions['XPS_R'])
+            # find min and max of hex_xp and hex_yp
+            if float(temp[2]) > float(temp[3]):
+                x_start_energy = float(temp[3]) - 0.01
+                x_end_energy = float(temp[2])  +0.01
+            else:
+                x_start_energy = float(temp[2]) - 0.01
+                x_end_energy = float(temp[3])  +0.01
 
+            if float(temp[6]) > float(temp[7]):
+                y_start_energy =  float(temp[7]) - 0.01
+                y_end_energy = float(temp[6]) + 0.01
+            else:
+                y_start_energy =  float(temp[6]) - 0.01
+                y_end_energy = float(temp[7]) + 0.01
 
-        # print scan.attrs["command"]
-        # print scan.attrs["date"]
-        # print scan.attrs["duration"]
-        # print scan.attrs["user"]
-        # print scan.attrs["hkl"]
-        # print scan.attrs["orientations"]
+            hex_x = scan['Hex_XP']
+            hex_y = scan['Hex_YP']
 
-        hex_x = scan['Hex_XP']
-        hex_y = scan['Hex_YP']
+            scaler_array = [[],[],[]]
+            scaler_array[0] =  scan['TEY']
+            scaler_array[1] =  scan['I0']
+            scaler_array[2] =  scan['Diode']
 
-        scaler_array = [[],[],[]]
-        scaler_array[0] =  scan['TEY']
-        scaler_array[1] =  scan['I0']
-        scaler_array[2] =  scan['Diode']
+            print "Parsing MCAs"
+            try:
+                mcadata = scan['@A1']
 
-        print "Parsing MCAs"
-        mcadata = scan['@A1']
-        mca_array = [[],[],[],[]]
+                mca_array = [[],[],[],[]]
 
-        for i in range(0,len(hex_x)):
-            mca_array[0].append(mcadata[i*4])
-            mca_array[1].append(mcadata[i*4 + 1])
-            mca_array[2].append(mcadata[i*4 + 2])
-            mca_array[3].append(mcadata[i*4 + 3])
+                for i in range(0,len(hex_x)):
+                    mca_array[0].append(mcadata[i*4])
+                    mca_array[1].append(mcadata[i*4 + 1])
+                    mca_array[2].append(mcadata[i*4 + 2])
+                    mca_array[3].append(mcadata[i*4 + 3])
 
-        print "Done!"
-        self.hex_x = hex_x
-        self.hex_y = hex_y
-        self.mca_array = mca_array
-        self.scaler_array = scaler_array
-        self.scan_num = scan_num
+                print "Done!"
+                self.hex_x = hex_x
+                self.hex_y = hex_y
+                self.mca_array = mca_array
+                self.scaler_array = scaler_array
+                self.scan_num = scan_num
 
-
-# # open all c mesh scan in a data file
-# def open_all_sgm_map(opened_file):
-#
-#     cmesh_scan = get_cmesh_scan(opened_file)
-#     total_scan_num = len(cmesh_scan)
-#
-#     scan=[]
-#     mca1=[[] for a in range(total_scan_num)]
-#     mca2=[[] for a in range(total_scan_num)]
-#     mca3=[[] for a in range(total_scan_num)]
-#     mca4=[[] for a in range(total_scan_num)]
-#
-#     for j in range (0, total_scan_num):
-#         scan.append(opened_file[ cmesh_scan[j] ])
-#
-#         hex_x = scan[j]['Hex_XP']
-#         mcadata = scan[j]['@A1']
-#
-#         for i in range(0,len(hex_x)):
-#             mca1[j].append(mcadata[i*4])
-#             mca2[j].append(mcadata[i*4 + 1])
-#             mca3[j].append(mcadata[i*4 + 2])
-#             mca4[j].append(mcadata[i*4 + 3])
-#
-#     print "Done!"
-#     return scan, mca1, mca2, mca3, mca4
+                estimate_xas_process_para = MapProcessPara(x_start_energy, x_end_energy, 0, y_start_energy, y_end_energy, 0)
+                return estimate_xas_process_para
+            except KeyError:
+                print "This is an empty cmesh or mesh scan and this may cause the following error."

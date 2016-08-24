@@ -1,3 +1,4 @@
+import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.mlab import griddata
 import numpy as np
@@ -11,8 +12,6 @@ class SingleMap(object):
         self.mca_array = open_one_cmesh.get_mca_array()
         self.scaler_array = open_one_cmesh.get_scaler_array()
         self.scan_num = open_one_cmesh.get_scan_num()
-        # self.scan_header = open_one_cmesh.get_scan_header()
-        # self.file_header = open_one_cmesh.get_file_header()
         self.pfy_sdd_array = None
 
     def get_hex_x(self):
@@ -36,50 +35,6 @@ class SingleMap(object):
     def get_scan_num(self):
         return self.scan_num
 
-    # def get_header_command(self):
-    #     return self.scan_header[0]
-    #
-    # def get_header_date(self):
-    #     return self.scan_header[1]
-    #
-    # def get_header_clock(self):
-    #     return self.scan_header[2]
-    #
-    # def get_header_g0(self):
-    #     return self.scan_header[3]
-    #
-    # def get_header_g1(self):
-    #     return self.scan_header[4]
-    #
-    # def get_header_g3(self):
-    #     return self.scan_header[5]
-    #
-    # def get_header_g4(self):
-    #     return self.scan_header[6]
-    #
-    # def get_header_q(self):
-    #     return self.scan_header[7]
-    #
-    # def get_header_p0(self):
-    #     return self.scan_header[8]
-    #
-    # def get_header_p1(self):
-    #     return self.scan_header[9]
-    #
-    # def get_header_file_origin(self):
-    #     return self.file_header[0]
-    #
-    # def get_header_epoch(self):
-    #     return self.file_header[1]
-    #
-    # def get_header_file_date(self):
-    #     return self.file_header[2]
-    #
-    # def get_header_program(self):
-    #     return self.file_header[3]
-    #
-    # def get_header_user(self):
-    #     return self.file_header[4]
 
     def getXRF(self, sgmData):
 
@@ -122,17 +77,22 @@ class SingleMap(object):
         print "Done MCA4."
         plt.show()
 
-    def plotCntScatter(self, hex_x, hex_y, counter):
-        plt.close('all')
-        color = counter
-        plt.scatter(hex_x, hex_y, c=color, s=20, linewidths=0)
+    # def plotCntScatter(self, hex_x, hex_y, counter):
+    #     plt.close('all')
+    #     color = counter
+    #     plt.scatter(hex_x, hex_y, c=color, s=20, linewidths=0)
 
-    def plotpfyGrid(self, xpts, ypts, shift):
+    def plotpfyGrid(self, original_file_directory, xpts, ypts, shift):
+
+        temp_list = original_file_directory.split(".")
+        export_directory = temp_list[0]
+
         plt.close('all')
         # print "Plotting grids."
         hex_x = self.get_hex_x()
         hex_y = self.get_hex_y()
         pfy_data = self.get_pfy_sdd_array()
+        scan_num = str(self.get_scan_num())
 
         minX = min(hex_x)
         maxX = max(hex_x)
@@ -147,33 +107,53 @@ class SingleMap(object):
         for i in range(1,len(hex_x)):
             hex_x_ad[i] = hex_x[i] + shift*(hex_x[i] - hex_x[i-1])
 
-        plt.figure(1)
-        plt.subplot(221)
+        fig = plt.figure()
+        ax1 = fig.add_subplot(221)
         print "Interpolating MCA1"
         zi1 = griddata(hex_x_ad, hex_y, pfy_data[0], xi, yi, interp='linear')
         print "Done."
-        plt.title("PYF_SDD1")
-        plt.imshow(zi1)
-        plt.subplot(222)
+        ax1.set_title("PYF_SDD1")
+        ax1.imshow(zi1)
+
+        ax2 = fig.add_subplot(222)
         print "Interpolating MCA2"
         zi2 = griddata(hex_x_ad, hex_y, pfy_data[1], xi, yi, interp='linear')
         print "Done."
-        plt.title("PYF_SDD2")
-        plt.imshow(zi2)
-        plt.subplot(223)
+        ax2.set_title("PYF_SDD2")
+        ax2.imshow(zi2)
+
+        ax3 = fig.add_subplot(223)
         print "Interpolating MCA3"
         zi3 = griddata(hex_x_ad, hex_y, pfy_data[2], xi, yi, interp='linear')
         print "Done."
-        plt.title("PYF_SDD3")
-        plt.imshow(zi3)
-        plt.subplot(224)
+        ax3.set_title("PYF_SDD3")
+        ax3.imshow(zi3)
+
+        ax4 = fig.add_subplot(224)
         print "Interpolating MCA4"
         zi4 = griddata(hex_x_ad, hex_y, pfy_data[3], xi, yi, interp='linear')
         print "Done."
-        plt.title("PYF_SDD4")
-        plt.imshow(zi4)
-        plt.show()
-        # return zi1, zi2, zi3, zi4
+        ax4.set_title("PYF_SDD4")
+        ax4.imshow(zi4)
+
+        num = 1
+        fname = export_directory + "_" + scan_num + "_" + str(num) + "_" + "pfy_sdd1.tiff"
+        while os.path.isfile(fname) == True:
+            num=num+1
+            fname = export_directory + "_" + scan_num + "_" + str(num) + "_" + "pfy_sdd1.tiff"
+            print fname
+
+        extent1 = ax1.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
+        fig.savefig(export_directory + "_" + scan_num + "_" + str(num) + "_" + "pfy_sdd1.tiff" , bbox_inches=extent1, dpi=500)
+
+        extent2 = ax2.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
+        fig.savefig(export_directory + "_" + scan_num + "_" + str(num) + "_" + "pfy_sdd2.tiff", bbox_inches=extent2, dpi=500)
+
+        extent3 = ax3.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
+        fig.savefig(export_directory + "_" + scan_num + "_" + str(num) + "_" + "pfy_sdd3.tiff", bbox_inches=extent3, dpi=500)
+
+        extent4 = ax4.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
+        fig.savefig(export_directory + "_" + scan_num + "_" + str(num) + "_" +"pfy_sdd4.tiff", bbox_inches=extent4, dpi=500)
 
     def plotpfyGridc(self, original_file_directory, depth, shift):
         plt.close('all')
@@ -210,8 +190,6 @@ class SingleMap(object):
         ax4.tricontourf(hex_x_ad, hex_y, pfy_data[3], depth)
         ax4.set_title("PFY_SDD4")
 
-        fig.show()
-
         #check file existence
         num = 1
         fname = export_directory + "_" + scan_num + "_" + "pfy_sdd1_" + str(num) + ".tiff"
@@ -240,6 +218,8 @@ class SingleMap(object):
     #     plotpfyGridc(f, g, 500, 0.75)
 
     def plot_xrf(self):
+        plt.close("all")
+        matplotlib.rcParams['figure.figsize'] = (12, 8)
         mca_array = self.get_mca_array()
         sum_mca1_array = np.zeros(255)
         sum_mca2_array = np.zeros(255)
@@ -252,23 +232,35 @@ class SingleMap(object):
             sum_mca4_array = sum_mca4_array + mca_array[3][i][0:255]
 
         fig = plt.figure()
+
         ax1 = fig.add_subplot(221)
         ax1.plot(sum_mca1_array)
         ax1.set_title("PFY_SDD1")
         ax1.set_xlim([0, 260])
+        ax1.set_xlabel('Energy (eV)')
+        ax1.set_ylabel('???')
+
         ax2 = fig.add_subplot(222)
         ax2.plot(sum_mca2_array)
         ax2.set_title("PFY_SDD2")
         ax2.set_xlim([0, 260])
+        ax2.set_xlabel('Energy (eV)')
+        ax2.set_ylabel('???')
+
         ax3 = fig.add_subplot(223)
         ax3.plot(sum_mca3_array)
         ax3.set_title("PFY_SDD3")
         ax3.set_xlim([0, 260])
+        ax3.set_xlabel('Energy (eV)')
+        ax3.set_ylabel('???')
+
         ax4 = fig.add_subplot(224)
         ax4.plot(sum_mca4_array)
         ax4.set_title("PFY_SDD4")
         ax4.set_xlim([0, 260])
-
+        ax4.set_xlabel('Energy (eV)')
+        ax4.set_ylabel('???')
+        fig.tight_layout()
         fig.show()
 
     def calculate_pfy(self, enStart, enStop):

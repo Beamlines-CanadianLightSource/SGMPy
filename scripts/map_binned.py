@@ -30,6 +30,9 @@ class MapProcess(object):
     def get_pfy_sdd(self):
         return self.pfy_sdd
 
+    def set_pfy_sdd(self, pfy_sdd):
+        self.pfy_sdd = pfy_sdd
+
     def process_map(self):
         map_process_para = self.map_process_para
         single_map = self.single_map
@@ -43,7 +46,7 @@ class MapProcess(object):
         y_energy_array = single_map.get_hex_y()
 
         x_edges_array, y_edges_array, mean_energy_array = self.create_grid(x_start_energy, x_end_energy, x_bin_num, y_start_energy, y_end_energy, y_bin_num)
-        grid_array = self.assign_data(x_edges_array, y_edges_array, x_energy_array, y_energy_array)
+        grid_array = self.assign_data(x_edges_array, y_edges_array, x_energy_array, y_energy_array, x_bin_num, y_bin_num)
         averaged_tey, averaged_i0, averaged_diode, averaged_mca1, averaged_mca2, averaged_mca3, averaged_mca4 = self.calculation(single_map, x_bin_num, y_bin_num, grid_array)
         self.mean_energy_array = mean_energy_array
         self.averaged_tey = averaged_tey
@@ -71,11 +74,11 @@ class MapProcess(object):
             for j in range(0, y_num_of_bins):
                 mean_energy_array[i][j].append([x_first_mean + x_bin_width * i, y_first_mean + y_bin_width * j])
 
+        print "Creating grid completed"
         return x_edges_array, y_edges_array, mean_energy_array
 
-    def assign_data(self, x_edges_array, y_edges_array, x_energy_array, y_energy_array):
-        x_bin_num = 50
-        y_bin_num = 50
+    def assign_data(self, x_edges_array, y_edges_array, x_energy_array, y_energy_array, x_bin_num, y_bin_num):
+
         x_bin_width = x_edges_array[1] - x_edges_array[0]
         y_bin_width = y_edges_array[1] - y_edges_array[0]
         grid_array = [[[] for j in range(y_bin_num)] for i in range(x_bin_num)]
@@ -128,8 +131,11 @@ class MapProcess(object):
 
         for i in range(0, x_bin_num):
             for j in range(0, y_bin_num):
-                if grid_array[i][j] != []:
-                    print i, j, "is not empty"
+                if grid_array[i][j] == []:
+                    print (i, j, "is empty")
+
+                elif grid_array[i][j] != []:
+                    # print (i, j, "is not empty")
 
                     counter = len(grid_array[i][j])
                     # print mca_array[0][grid_array[i][j][0:]]
@@ -137,7 +143,6 @@ class MapProcess(object):
                         # print "grid_array[i][j] ", grid_array[i][j]
                         # print averaged_mca1[i][j]
 
-                        print averaged_tey[i][j]
                         averaged_tey[i][j] = averaged_tey[i][j] + scaler_array[0][grid_array[i][j][k]]
                         averaged_tey[i][j] = averaged_tey[i][j] / counter
 
@@ -164,7 +169,7 @@ class MapProcess(object):
 
     def calculate_pfy(self, enStart, enStop):
         # print "Getting PFY ROIs"
-        mca_array = self.get_mca_array()
+        mca_array = self.get_averaged_mca()
 
         pfy1 = []
         pfy2 = []
@@ -182,4 +187,4 @@ class MapProcess(object):
         pfy[1] = pfy2
         pfy[2] = pfy3
         pfy[3] = pfy4
-        self.set_pfy_sdd_array(pfy)
+        self.set_pfy_sdd(pfy)
