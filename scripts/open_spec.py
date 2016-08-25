@@ -238,8 +238,6 @@ class OpenSingleCMesh(object):
         self.scaler_array = None
         self.scan_num = None
         self.file_direct = None
-        # self.scan_header = [None] * 10
-        # self.file_header = [None] * 5
 
     def get_hex_x(self):
         return self.hex_x
@@ -258,12 +256,6 @@ class OpenSingleCMesh(object):
 
     def get_file_direct(self):
         return self.file_direct
-
-    # def get_scan_header(self):
-    #     return self.scan_header
-    #
-    # def get_file_header(self):
-    #     return self.file_header
 
     # open one scan of map
     def open_sgm_map(self, file_directory, scan_num):

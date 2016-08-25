@@ -386,14 +386,16 @@ class ExportData:
 class ExportMapData:
 
     def __init__(self, data_set):
-        #self.file_directory = file_directory
         self.data_set = data_set
 
-    #get_header_command()
+    def get_header_command(self):
+        opened_file = open_spec_data_file(self.data_set.get_file_direct())
+        scan_num = str(self.data_set.get_scan_num())
+        str_command = opened_file[scan_num].attrs['command']
+        print str_command
+        return str_command
 
     def export_binned_data(self):
-
-        opened_file = open_spec_data_file(self.data_set.get_file_direct())
 
         mean_energy_array = self.data_set.get_mean_energy_array()
         averaged_tey = self.data_set.get_averaged_tey()
@@ -408,20 +410,8 @@ class ExportMapData:
         y_bin_num = self.data_set.map_process_para.get_y_bin_num()
 
         with open("data/test_export.mca", "w") as out_file:
-            # out_file.write("#C "+single_map.get_header_program()+"  User = "+single_map.get_header_user()+"\n")
-            # out_file.write("\t\n")
-            # out_file.write("#S 23  "+single_map.get_header_command()+"\n")
-            # out_file.write("#D "+ single_map.get_header_date()+"\n")
-            # out_file.write("#T "+ single_map.get_header_clock() + "\n")
-            # out_file.write("#G0 "+ single_map.get_header_g0() + "\n")
-            # out_file.write("#G1 "+ single_map.get_header_g1() + "\n")
-            # out_file.write("#G3 "+ single_map.get_header_g3() + "\n")
-            # out_file.write("#G4 "+ single_map.get_header_g4() + "\n")
-            # out_file.write("#Q "+ single_map.get_header_q() + "\n")
-            # out_file.write("#P0 "+ single_map.get_header_p0() + "\n")
-            # out_file.write("#P1 "+ single_map.get_header_p1() + "\n")
-            out_file.write("#S 23 mesh hex_xp 1.3 1.8 50 hex_yp 2.4 2.9 50 0.1\n")
-            out_file.write("#N 23\n")
+            out_file.write("#S "+str(self.data_set.get_scan_num())+" "+ self.get_header_command() +"\n")
+            out_file.write("#N 1\n")
             out_file.write("#L Hex_XP  Hex_YP  Diode  TEY  I0\n")
             for i in range(0, x_bin_num):
                 for j in range(0, y_bin_num):
