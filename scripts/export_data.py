@@ -8,8 +8,7 @@ import numpy as np
 
 class ExportData:
     
-    def __init__(self, file_directory, data_set):
-        self.file_directory = file_directory
+    def __init__(self, data_set):
         self.data_set = data_set
 
     def export_data(self, export_file_directory, name, scan_number=None):
@@ -17,30 +16,27 @@ class ExportData:
         # MCA is SDD; after getting PFY of ROI then it becomes PFY_SDD
         pfy_dict = {'PFY_SDD1': 0, 'PFY_SDD2': 1, 'PFY_SDD3': 2, 'PFY_SDD4': 3}
         scaler_dict = {'TEY': 0, 'I0': 1, 'Diode': 2}
+        energy_array = self.data_set.get_mean_energy_array()
+        origin_file_direct = self.data_set.get_file_direct()
 
         if name == "PFY_SDD1" or name == "PFY_SDD2" or name == "PFY_SDD3" or name == "PFY_SDD4":
-            energy_array = self.data_set.get_mean_energy_array()
             sub_pfy_index = pfy_dict[name]
             pfy_data = self.data_set.get_pfy_sdd_averaged_array()
-            self.export_pfy(export_file_directory, self.file_directory, energy_array, pfy_data[sub_pfy_index], name, scan_number)
+            self.export_pfy(export_file_directory, origin_file_direct, energy_array, pfy_data[sub_pfy_index], name, scan_number)
             print "Export data complete!"
 
         elif name == "TEY" or name == "I0" or name == "Diode":
-
-            energy_array = self.data_set.get_mean_energy_array()
             sub_scaler_index = scaler_dict[name]
             scaler_data = self.data_set.get_scaler_averaged_array()
-            self.export_scaler(export_file_directory, self.file_directory, energy_array, scaler_data[sub_scaler_index], name, scan_number)
+            self.export_scaler(export_file_directory, origin_file_direct, energy_array, scaler_data[sub_scaler_index], name, scan_number)
             print "Export data complete!"
 
         else:
             print "Unable to export data."
 
-
     def get_date_time(self, opened_file):
         str_date_time = opened_file['1'].attrs['file_date']
         return str_date_time[4:]
-
 
     def get_comments(self, file_directory):
         with open(file_directory) as content:
@@ -51,7 +47,6 @@ class ExportData:
                 if temp[i][:2] == '#C':
                     comments.append(temp[i])
         return comments
-
 
     def get_comment_details(self, comments):
         split_comma = []
@@ -69,7 +64,6 @@ class ExportData:
                 stripe = split_dot[i+2][-1].strip()
         return grating[:-1], exit_slit, stripe[:-1]
 
-
     def get_header_hdf5(self, file_directory):
         with h5py.File(file_directory,'r') as hf:
             comments = hf.get('S1/comments')
@@ -78,13 +72,11 @@ class ExportData:
             date = np.array(date)[0]
         return comments, date
 
-    
     def get_grating_hdf5(self, comments):
         parsed_str = comments[0].split('\n')
         grating_str = [x.strip() for x in parsed_str[1].split(",")]
         print grating_str[-1]
         return grating_str[-1][9:-1]    
-
 
     def get_exit_slit_and_stripe(self, comments):
         parsed_str = comments[0].split('\n')
@@ -211,7 +203,7 @@ class ExportData:
                 
                 
     def export_all (self, export_file_directory):
-        origin_file_directory = self.file_directory
+        origin_file_directory = self.data_set.get_file_direct()
         file_extension, original_file_name = self.check_file_type(origin_file_directory)
         if file_extension == "dat":
             opened_file = open_spec_data_file(origin_file_directory)
@@ -280,8 +272,10 @@ class ExportData:
         print ("Export data complete.")
             
         
-    def export_normalized_data(self, export_file_directory, column1, column2, column1_name, column2_name):
-        origin_file_directory = self.file_directory
+    def export_normalized_data(self, export_file_directory, column1_name, column2_name):
+        origin_file_directory = self.data_set.get_file_direct()
+        column1 = self.data_set.get_mean_energy_array()
+        column2 = self.data_set.get_normalized_array()
         file_extension, original_file_name = self.check_file_type(origin_file_directory)
 
         if file_extension == "dat":
@@ -324,69 +318,69 @@ class ExportData:
                 out_file.write(out_string)
         print ("Export data complete.")
 
-    def export_map_all(self, export_file_directory):
-        origin_file_directory = self.file_directory
-        hex_xp_data = self.data_set.get_hex_x()
-        hex_yp_data = self.data_set.get_hex_y()
-        scaler_data = self.data_set.get_scaler_array()
-        pfy_data = self.data_set.get_pfy_sdd_array()
-        scan_num = str(self.data_set.get_scan_num())
-
-        file_extension, original_file_name = self.check_file_type(origin_file_directory)
-        if file_extension == "dat":
-            opened_file = open_spec_data_file(origin_file_directory)
-            date = self.get_date_time(opened_file)
-            comments = self.get_comments(origin_file_directory)
-            grating, exit_slit, stripe = self.get_comment_details(comments)
-        else:
-            comments, date = self.get_header_hdf5(origin_file_directory)
-            grating = self.get_grating_hdf5(comments)
-            exit_slit, stripe = self.get_exit_slit_and_stripe(comments)
-        with open(export_file_directory, "w") as out_file:
-            # write header into the data file
-            out_file.write("# Beamline.name: SGM\n")
-            str_origin_file_name = "# Beamline.origin-filename: " + original_file_name + "\n"
-            if scan_num== None:
-                out_file.write("# Beamline.file-content: all data\n")
-            else:
-                out_file.write("# Beamline.file-content: all data of scan No." +  scan_num  + "\n")
-            out_file.write(str_origin_file_name)
-            str_grating = "# Beamline.grating: " + grating + "\n"
-            out_file.write(str_grating)
-            str_stripe = "# Beamline.stripe: " + stripe + "\n"
-            out_file.write(str_stripe)
-            str_exit_slit = "# Beamline.exit-slit: " + exit_slit + "\n"
-            out_file.write(str_exit_slit)
-            str_date_time = "# Time.start: " + date + "\n"
-            out_file.write(str_date_time)
-            out_file.write("#-----------------------------------------------------------\n")
-            # write table header into the data file
-            out_file.write("# Hex_XP\tHex_YP\tTEY\tI0\tDiode\tPFY_SDD1\tPFY_SDD2\tPFY_SDD3\tPFY_SDD4\n")
-            for i in range(0, len(hex_xp_data)):
-                out_string = ""
-                # print energy_array[i]
-                out_string += str(hex_xp_data[i]) + "\t"
-                # out_string += "\t"
-                out_string += str(hex_yp_data[i])
-                out_string += "\t"
-                out_string += str(scaler_data[0][i])
-                out_string += "\t"
-                out_string += str(scaler_data[1][i])
-                out_string += "\t"
-                out_string += str(scaler_data[2][i])
-                out_string += "\t"
-                out_string += str(pfy_data[0][i])
-                out_string += "\t"
-                out_string += str(pfy_data[1][i])
-                out_string += "\t"
-                out_string += str(pfy_data[2][i])
-                out_string += "\t"
-                out_string += str(pfy_data[3][i])
-                # print sub_pfy[i]
-                out_string += "\n"
-                # print out_string
-                out_file.write(out_string)
-        print ("Export data complete.")
+    # def export_map_all(self, export_file_directory):
+    #     origin_file_directory = self.file_directory
+    #     hex_xp_data = self.data_set.get_hex_x()
+    #     hex_yp_data = self.data_set.get_hex_y()
+    #     scaler_data = self.data_set.get_scaler_array()
+    #     pfy_data = self.data_set.get_pfy_sdd_array()
+    #     scan_num = str(self.data_set.get_scan_num())
+    #
+    #     file_extension, original_file_name = self.check_file_type(origin_file_directory)
+    #     if file_extension == "dat":
+    #         opened_file = open_spec_data_file(origin_file_directory)
+    #         date = self.get_date_time(opened_file)
+    #         comments = self.get_comments(origin_file_directory)
+    #         grating, exit_slit, stripe = self.get_comment_details(comments)
+    #     else:
+    #         comments, date = self.get_header_hdf5(origin_file_directory)
+    #         grating = self.get_grating_hdf5(comments)
+    #         exit_slit, stripe = self.get_exit_slit_and_stripe(comments)
+    #     with open(export_file_directory, "w") as out_file:
+    #         # write header into the data file
+    #         out_file.write("# Beamline.name: SGM\n")
+    #         str_origin_file_name = "# Beamline.origin-filename: " + original_file_name + "\n"
+    #         if scan_num== None:
+    #             out_file.write("# Beamline.file-content: all data\n")
+    #         else:
+    #             out_file.write("# Beamline.file-content: all data of scan No." +  scan_num  + "\n")
+    #         out_file.write(str_origin_file_name)
+    #         str_grating = "# Beamline.grating: " + grating + "\n"
+    #         out_file.write(str_grating)
+    #         str_stripe = "# Beamline.stripe: " + stripe + "\n"
+    #         out_file.write(str_stripe)
+    #         str_exit_slit = "# Beamline.exit-slit: " + exit_slit + "\n"
+    #         out_file.write(str_exit_slit)
+    #         str_date_time = "# Time.start: " + date + "\n"
+    #         out_file.write(str_date_time)
+    #         out_file.write("#-----------------------------------------------------------\n")
+    #         # write table header into the data file
+    #         out_file.write("# Hex_XP\tHex_YP\tTEY\tI0\tDiode\tPFY_SDD1\tPFY_SDD2\tPFY_SDD3\tPFY_SDD4\n")
+    #         for i in range(0, len(hex_xp_data)):
+    #             out_string = ""
+    #             # print energy_array[i]
+    #             out_string += str(hex_xp_data[i]) + "\t"
+    #             # out_string += "\t"
+    #             out_string += str(hex_yp_data[i])
+    #             out_string += "\t"
+    #             out_string += str(scaler_data[0][i])
+    #             out_string += "\t"
+    #             out_string += str(scaler_data[1][i])
+    #             out_string += "\t"
+    #             out_string += str(scaler_data[2][i])
+    #             out_string += "\t"
+    #             out_string += str(pfy_data[0][i])
+    #             out_string += "\t"
+    #             out_string += str(pfy_data[1][i])
+    #             out_string += "\t"
+    #             out_string += str(pfy_data[2][i])
+    #             out_string += "\t"
+    #             out_string += str(pfy_data[3][i])
+    #             # print sub_pfy[i]
+    #             out_string += "\n"
+    #             # print out_string
+    #             out_file.write(out_string)
+    #     print ("Export data complete.")
 
 
 class ExportMapData:
@@ -395,7 +389,11 @@ class ExportMapData:
         #self.file_directory = file_directory
         self.data_set = data_set
 
+    #get_header_command()
+
     def export_binned_data(self):
+
+        opened_file = open_spec_data_file(self.data_set.get_file_direct())
 
         mean_energy_array = self.data_set.get_mean_energy_array()
         averaged_tey = self.data_set.get_averaged_tey()
@@ -455,6 +453,3 @@ class ExportMapData:
                     for k in range(0, len(mca4_list)):
                         out_file.write(mca4_list[k] + " ")
                     out_file.write("\n")
-
-    # def export_abridge_data(self):
-    #     with open("data/test_export.mca", "w") as out_file:

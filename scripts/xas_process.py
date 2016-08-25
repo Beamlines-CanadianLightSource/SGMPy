@@ -15,6 +15,7 @@ class XASProcess(object):
         self.scaler_averaged_array = None
         self.pfy_sdd_averaged_array = None
         self.normalized_array = None
+        self.file_direct = None
         self.data_type = data_type
 
     def set_mean_energy_array(self, mean_energy_array):
@@ -43,6 +44,12 @@ class XASProcess(object):
 
     def set_normalized_array(self, normalized_array):
         self.normalized_array = normalized_array
+
+    def get_file_direct(self):
+        return self.file_direct
+
+    def set_file_direct(self, file_direct):
+        self.file_direct = file_direct
 
     def get_normalized_array(self):
         return self.normalized_array
@@ -81,6 +88,7 @@ class XASProcess(object):
         energy_data = opened_xas_data.get_energy_array()
         mca_data = opened_xas_data.get_mca_array()
         scaler_data = opened_xas_data.get_scaler_array()
+        file_direct = opened_xas_data.get_file_direct()
 
         start_energy = xas_process_para.get_energy_start()
         end_energy = xas_process_para.get_energy_end()
@@ -121,6 +129,7 @@ class XASProcess(object):
         self.set_sdd_binned_array(bin_mca)
         self.set_scaler_averaged_array(averaged_scaler)
         self.set_pfy_sdd_averaged_array(averaged_pfy_sdd)
+        self.set_file_direct(file_direct)
 
     def get_good_datapoint(self, good_scan_index, energy_data, mca_data, scaler_data):
         good_scan_index_length = len(good_scan_index)

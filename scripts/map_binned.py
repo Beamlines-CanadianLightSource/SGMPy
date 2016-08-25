@@ -11,6 +11,7 @@ class MapProcess(object):
         self.averaged_diode = None
         self.averaged_mca = None
         self.pfy_sdd = None
+        self.file_direct = single_map.get_file_direct()
 
     def get_mean_energy_array(self):
         return self.mean_energy_array
@@ -32,6 +33,9 @@ class MapProcess(object):
 
     def set_pfy_sdd(self, pfy_sdd):
         self.pfy_sdd = pfy_sdd
+
+    def get_file_direct(self):
+        return self.file_direct
 
     def process_map(self):
         map_process_para = self.map_process_para

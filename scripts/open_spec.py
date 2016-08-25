@@ -79,6 +79,7 @@ class OpenMultiCScan(object):
         self.mca_array = None
         self.scaler_array = None
         self.c_scan_num = None
+        self.file_direct = None
 
     def get_energy_array(self):
         return self.energy_array
@@ -103,6 +104,12 @@ class OpenMultiCScan(object):
 
     def set_c_scan(self, c_scan_num):
         self.c_scan_num = c_scan_num
+
+    def get_file_direct(self):
+        return self.file_direct
+
+    def set_file_direct(self, file_direct):
+        self.file_direct = file_direct
 
     # open all scans of spectra
     def open_all_xas(self, file_directory):
@@ -142,6 +149,7 @@ class OpenMultiCScan(object):
         self.set_mca_array(mca_array)
         self.set_scaler_array(scaler_array)
         self.set_c_scan(c_scan_num)
+        self.set_file_direct(file_directory)
         estimate_xas_process_para = self.estimate_roi(file_directory, c_scan_num)
         return estimate_xas_process_para
 
@@ -229,8 +237,9 @@ class OpenSingleCMesh(object):
         self.mca_array = None
         self.scaler_array = None
         self.scan_num = None
-        self.scan_header = [None] * 10
-        self.file_header = [None] * 5
+        self.file_direct = None
+        # self.scan_header = [None] * 10
+        # self.file_header = [None] * 5
 
     def get_hex_x(self):
         return self.hex_x
@@ -247,6 +256,9 @@ class OpenSingleCMesh(object):
     def get_scan_num(self):
         return self.scan_num
 
+    def get_file_direct(self):
+        return self.file_direct
+
     # def get_scan_header(self):
     #     return self.scan_header
     #
@@ -254,12 +266,12 @@ class OpenSingleCMesh(object):
     #     return self.file_header
 
     # open one scan of map
-    def open_sgm_map(self, sgm_file, scan_num):
+    def open_sgm_map(self, file_directory, scan_num):
 
-        print "Opening scan", str(scan_num)
-        print "in", sgm_file
+        print ("Opening scan", str(scan_num))
+        # print ("in", file_directory)
 
-        f = spec.open(sgm_file)
+        f = spec.open(file_directory)
         scan=f[str(scan_num)]
         print scan.attrs['command']
         # command is like: mesh hex_xp 1.3 1.8 50 hex_yp 2.4 2.9 50 0.1
@@ -312,6 +324,7 @@ class OpenSingleCMesh(object):
                 self.mca_array = mca_array
                 self.scaler_array = scaler_array
                 self.scan_num = scan_num
+                self.file_direct = file_directory
 
                 estimate_xas_process_para = MapProcessPara(x_start_energy, x_end_energy, 0, y_start_energy, y_end_energy, 0)
                 return estimate_xas_process_para
