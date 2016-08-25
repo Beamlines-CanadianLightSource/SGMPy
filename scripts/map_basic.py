@@ -136,24 +136,7 @@ class SingleMap(object):
         ax4.set_title("PYF_SDD4")
         ax4.imshow(zi4)
 
-        num = 1
-        fname = export_directory + "_" + scan_num + "_" + str(num) + "_" + "pfy_sdd1.tiff"
-        while os.path.isfile(fname) == True:
-            num=num+1
-            fname = export_directory + "_" + scan_num + "_" + str(num) + "_" + "pfy_sdd1.tiff"
-            print fname
-
-        extent1 = ax1.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-        fig.savefig(export_directory + "_" + scan_num + "_" + str(num) + "_" + "pfy_sdd1.tiff" , bbox_inches=extent1, dpi=500)
-
-        extent2 = ax2.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-        fig.savefig(export_directory + "_" + scan_num + "_" + str(num) + "_" + "pfy_sdd2.tiff", bbox_inches=extent2, dpi=500)
-
-        extent3 = ax3.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-        fig.savefig(export_directory + "_" + scan_num + "_" + str(num) + "_" + "pfy_sdd3.tiff", bbox_inches=extent3, dpi=500)
-
-        extent4 = ax4.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-        fig.savefig(export_directory + "_" + scan_num + "_" + str(num) + "_" +"pfy_sdd4.tiff", bbox_inches=extent4, dpi=500)
+        return ax1, ax2, ax3, ax4, fig, export_directory, scan_num
 
     def plotpfyGridc(self, original_file_directory, depth, shift):
         plt.close('all')
@@ -190,25 +173,7 @@ class SingleMap(object):
         ax4.tricontourf(hex_x_ad, hex_y, pfy_data[3], depth)
         ax4.set_title("PFY_SDD4")
 
-        #check file existence
-        num = 1
-        fname = export_directory + "_" + scan_num + "_" + "pfy_sdd1_" + str(num) + ".tiff"
-        while os.path.isfile(fname) == True:
-            num=num+1
-            fname = export_directory + "_" + scan_num + "_" + "pfy_sdd1_" + str(num) + ".tiff"
-            print fname
-
-        extent1 = ax1.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-        fig.savefig(export_directory+"_"+scan_num+"_"+"pfy_sdd1_" + str(num) + ".tiff" , bbox_inches=extent1, dpi=500)
-
-        extent2 = ax2.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-        fig.savefig(export_directory+"_"+scan_num+"_"+"pfy_sdd2_"+ str(num) + ".tiff", bbox_inches=extent2, dpi=500)
-
-        extent3 = ax3.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-        fig.savefig(export_directory+"_"+scan_num+"_"+"pfy_sdd3_"+ str(num) + ".tiff", bbox_inches=extent3, dpi=500)
-
-        extent4 = ax4.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-        fig.savefig(export_directory+"_"+scan_num+"_"+"pfy_sdd4_" + str(num) + ".tiff", bbox_inches=extent4, dpi=500)
+        return ax1, ax2, ax3, ax4, fig, export_directory, scan_num
 
 
     # def plotMap(self, filename,scanNum, pfylow, pfyhigh):

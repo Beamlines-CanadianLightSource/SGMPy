@@ -443,3 +443,44 @@ class ExportMapData:
                     for k in range(0, len(mca4_list)):
                         out_file.write(mca4_list[k] + " ")
                     out_file.write("\n")
+
+class ExportMap():
+
+    def __init__(self, export_info):
+
+        self.ax1 = export_info[0]
+        self.ax2 = export_info[1]
+        self.ax3 = export_info[2]
+        self.ax4 = export_info[3]
+        self.fig = export_info[4]
+        self.export_directory = export_info[5]
+        self.scan_num = export_info[6]
+
+    def save_image(self):
+        ax1 = self.ax1
+        ax2 = self.ax2
+        ax3 = self.ax3
+        ax4 = self.ax4
+        fig = self.fig
+        export_directory = self.export_directory
+        scan_num = self.scan_num
+
+        #check file existence
+        num = 1
+        fname = export_directory + "_" + scan_num + "_" + str(num) + "_" + "pfy_sdd1.tiff"
+        while os.path.isfile(fname) == True:
+            num=num+1
+            fname = export_directory + "_" + scan_num + "_" + str(num) + "_" + "pfy_sdd1.tiff"
+            print fname
+
+        extent1 = ax1.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
+        fig.savefig(export_directory + "_" + scan_num + "_" + str(num) + "_" + "pfy_sdd1.tiff" , bbox_inches=extent1, dpi=500)
+
+        extent2 = ax2.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
+        fig.savefig(export_directory + "_" + scan_num + "_" + str(num) + "_" + "pfy_sdd2.tiff", bbox_inches=extent2, dpi=500)
+
+        extent3 = ax3.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
+        fig.savefig(export_directory + "_" + scan_num + "_" + str(num) + "_" + "pfy_sdd3.tiff", bbox_inches=extent3, dpi=500)
+
+        extent4 = ax4.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
+        fig.savefig(export_directory + "_" + scan_num + "_" + str(num) + "_" +"pfy_sdd4.tiff", bbox_inches=extent4, dpi=500)
