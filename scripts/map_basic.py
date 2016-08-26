@@ -84,6 +84,9 @@ class SingleMap(object):
 
     def plotpfyGrid(self, original_file_directory, xpts, ypts, shift):
 
+        plt.close('all')
+        matplotlib.rcParams['figure.figsize'] = (12, 11)
+
         temp_list = original_file_directory.split(".")
         export_directory = temp_list[0]
 
@@ -141,6 +144,8 @@ class SingleMap(object):
     def plotpfyGridc(self, original_file_directory, depth, shift):
         plt.close('all')
         print "Plotting contours."
+
+        matplotlib.rcParams['figure.figsize'] = (12, 11)
 
         temp_list = original_file_directory.split(".")
         export_directory = temp_list[0]

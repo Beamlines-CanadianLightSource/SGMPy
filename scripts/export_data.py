@@ -393,7 +393,7 @@ class ExportMapData:
         print str_command
         return str_command
 
-    def export_binned_data(self):
+    def export_binned_data(self, export_file_directory):
 
         mean_energy_array = self.data_set.get_mean_energy_array()
         averaged_tey = self.data_set.get_averaged_tey()
@@ -407,7 +407,7 @@ class ExportMapData:
         x_bin_num = self.data_set.map_process_para.get_x_bin_num()
         y_bin_num = self.data_set.map_process_para.get_y_bin_num()
 
-        with open("data/test_export.mca", "w") as out_file:
+        with open(export_file_directory, "w") as out_file:
             out_file.write("#S "+str(self.data_set.get_scan_num())+" "+ self.get_header_command() +"\n")
             out_file.write("#N 1\n")
             out_file.write("#L Hex_XP  Hex_YP  Diode  TEY  I0\n")
