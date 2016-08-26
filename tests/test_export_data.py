@@ -6,7 +6,7 @@ class TestExportData(unittest.TestCase):
 
     def test_get_date_time(self):
         data_set = None
-        export = ExportData('user/data', data_set)
+        export = ExportData(data_set)
 
         abs_file_path = get_abs_path("data/spectra_example.dat")
         opened_file = open_spec_data_file(abs_file_path)
@@ -17,7 +17,7 @@ class TestExportData(unittest.TestCase):
         
     def test_get_comments(self):
         data_set = None
-        export = ExportData('user/data', data_set)
+        export = ExportData(data_set)
 
         abs_file_path = get_abs_path("data/diff_scan_example.dat")
         actual_comments = export.get_comments(abs_file_path)
@@ -39,7 +39,7 @@ class TestExportData(unittest.TestCase):
         
     def test_get_grating_hdf5(self):
         data_set = None
-        export = ExportData('user/data', data_set)
+        export = ExportData(data_set)
 
         comments = [ 'Fri May 20 14:03:45 2016.  Scan done. Turning off beam..\nFri May 20 14:27:39 2016.  Photon Energy: 1999.94, Grating: High Energy.\nFri May 20 14:27:39 2016.  Exit Slit: 30.0191, Stripe: Silicon.\nFri May 20 14:27:39 2016.  Gain PD: 20 uA/V.\nFri May 20 14:27:39 2016.  Gain TEY: 20 pA/V.\nFri May 20 14:27:39 2016.  Gain I0: 1 nA/V.\nFri May 20 14:27:39 2016.  ROI1: 165 to 185.\nFri May 20 14:27:39 2016.  ROI2: 190 to 220.']
         actual_grating = export.get_grating_hdf5(comments)
@@ -49,7 +49,7 @@ class TestExportData(unittest.TestCase):
         
     def test_get_exit_slit_and_stripe(self):
         data_set = None
-        export = ExportData('user/data', data_set)
+        export = ExportData(data_set)
 
         comments = [ 'Fri May 20 14:03:45 2016.  Scan done. Turning off beam..\nFri May 20 14:27:39 2016.  Photon Energy: 1999.94, Grating: High Energy.\nFri May 20 14:27:39 2016.  Exit Slit: 30.0191, Stripe: Silicon.\nFri May 20 14:27:39 2016.  Gain PD: 20 uA/V.\nFri May 20 14:27:39 2016.  Gain TEY: 20 pA/V.\nFri May 20 14:27:39 2016.  Gain I0: 1 nA/V.\nFri May 20 14:27:39 2016.  ROI1: 165 to 185.\nFri May 20 14:27:39 2016.  ROI2: 190 to 220.']
         actual_exit_slit, actual_stripe = export.get_exit_slit_and_stripe(comments)

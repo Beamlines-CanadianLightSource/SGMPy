@@ -1,6 +1,7 @@
 import os
-from xas_process_para import XASProcessPara
 from praxes.io import spec
+from xas_process_para import XASProcessPara
+from map_process_para import MapProcessPara
 
 
 # For Windows, Please use "/" instead of "\" in the file directory (URI)
@@ -78,6 +79,7 @@ class OpenMultiCScan(object):
         self.mca_array = None
         self.scaler_array = None
         self.c_scan_num = None
+        self.file_direct = None
 
     def get_energy_array(self):
         return self.energy_array
@@ -102,6 +104,12 @@ class OpenMultiCScan(object):
 
     def set_c_scan(self, c_scan_num):
         self.c_scan_num = c_scan_num
+
+    def get_file_direct(self):
+        return self.file_direct
+
+    def set_file_direct(self, file_direct):
+        self.file_direct = file_direct
 
     # open all scans of spectra
     def open_all_xas(self, file_directory):
@@ -141,6 +149,7 @@ class OpenMultiCScan(object):
         self.set_mca_array(mca_array)
         self.set_scaler_array(scaler_array)
         self.set_c_scan(c_scan_num)
+        self.set_file_direct(file_directory)
         estimate_xas_process_para = self.estimate_roi(file_directory, c_scan_num)
         return estimate_xas_process_para
 
@@ -148,8 +157,14 @@ class OpenMultiCScan(object):
         opened_file = open_spec_data_file(file_directory)
         string = opened_file[scan_num[0]].attrs['command']
         split_str = string.split(" ")
-        start_energy = int(split_str[2])
-        end_energy = int(split_str[3])
+
+        # find min and max of scan energy
+        if int(split_str[2]) > int(split_str[3]):
+            start_energy = int(split_str[3])
+            end_energy = int(split_str[2])
+        else:
+            start_energy = int(split_str[2])
+            end_energy = int(split_str[3])
         medium_energy = (start_energy + end_energy) / 2
         medium_roi = medium_energy / 10
         roi_start = medium_roi - 8
@@ -170,6 +185,7 @@ class OpenSingleCScan(object):
         self.mca_array = None
         self.scaler_array = None
         self.scan_num = None
+        self.file_direct = None
 
     def get_energy_array(self):
         return self.energy_array
@@ -183,13 +199,16 @@ class OpenSingleCScan(object):
     def get_scan_num(self):
         return self.scan_num
 
+    def get_file_direct(self):
+        return self.file_direct
+
     # open a single scan of spectrum
-    def open_single_xas(self, sgm_file, scan_num):
+    def open_single_xas(self, file_directory, scan_num):
 
         print "Opening scan", str(scan_num)
-        print "in", sgm_file
+        #print "in", file_directory
 
-        f = spec.open(sgm_file)
+        f = spec.open(file_directory)
         scan=f[str(scan_num)]
 
         energy_array = scan['Energy']
@@ -212,6 +231,7 @@ class OpenSingleCScan(object):
         self.mca_array = mca_array
         self.scaler_array = scaler_array
         self.scan_num = scan_num
+        self.file_direct = file_directory
 
 
 class OpenSingleCMesh(object):
@@ -222,6 +242,7 @@ class OpenSingleCMesh(object):
         self.mca_array = None
         self.scaler_array = None
         self.scan_num = None
+        self.file_direct = None
 
     def get_hex_x(self):
         return self.hex_x
@@ -238,64 +259,71 @@ class OpenSingleCMesh(object):
     def get_scan_num(self):
         return self.scan_num
 
+    def get_file_direct(self):
+        return self.file_direct
+
     # open one scan of map
-    def open_sgm_map(self, sgm_file, scan_num):
+    def open_sgm_map(self, file_directory, scan_num):
 
-        print "Opening scan", str(scan_num)
-        print "in", sgm_file
+        print ("Opening scan", str(scan_num))
+        # print ("in", file_directory)
 
-        f = spec.open(sgm_file)
+        f = spec.open(file_directory)
         scan=f[str(scan_num)]
+        print scan.attrs['command']
+        # command is like: mesh hex_xp 1.3 1.8 50 hex_yp 2.4 2.9 50 0.1
+        temp = scan.attrs['command'].split(" ")
 
-        hex_x = scan['Hex_XP']
-        hex_y = scan['Hex_YP']
+        if temp[0] == "cscan":
+            print "Cannot open a cscan to plot map and this may cause the following error."
+        elif temp[0] == "ascan":
+            print "Cannot open a ascan to plot map and this may cause the following error."
+        else:
 
-        scaler_array = [[],[],[]]
-        scaler_array[0] =  scan['TEY']
-        scaler_array[1] =  scan['I0']
-        scaler_array[2] =  scan['Diode']
+            # find min and max of hex_xp and hex_yp
+            if float(temp[2]) > float(temp[3]):
+                x_start_energy = float(temp[3]) - 0.01
+                x_end_energy = float(temp[2])  +0.01
+            else:
+                x_start_energy = float(temp[2]) - 0.01
+                x_end_energy = float(temp[3])  +0.01
 
-        print "Parsing MCAs"
-        mcadata = scan['@A1']
-        mca_array = [[],[],[],[]]
+            if float(temp[6]) > float(temp[7]):
+                y_start_energy =  float(temp[7]) - 0.01
+                y_end_energy = float(temp[6]) + 0.01
+            else:
+                y_start_energy =  float(temp[6]) - 0.01
+                y_end_energy = float(temp[7]) + 0.01
 
-        for i in range(0,len(hex_x)):
-            mca_array[0].append(mcadata[i*4])
-            mca_array[1].append(mcadata[i*4 + 1])
-            mca_array[2].append(mcadata[i*4 + 2])
-            mca_array[3].append(mcadata[i*4 + 3])
+            hex_x = scan['Hex_XP']
+            hex_y = scan['Hex_YP']
 
-        print "Done!"
-        self.hex_x = hex_x
-        self.hex_y = hex_y
-        self.mca_array = mca_array
-        self.scaler_array = scaler_array
-        self.scan_num = scan_num
+            scaler_array = [[],[],[]]
+            scaler_array[0] =  scan['TEY']
+            scaler_array[1] =  scan['I0']
+            scaler_array[2] =  scan['Diode']
 
+            print "Parsing MCAs"
+            try:
+                mcadata = scan['@A1']
 
-# open all c mesh scan in a data file
-def open_all_sgm_map(opened_file):
+                mca_array = [[],[],[],[]]
 
-    cmesh_scan = get_cmesh_scan(opened_file)
-    total_scan_num = len(cmesh_scan)
+                for i in range(0,len(hex_x)):
+                    mca_array[0].append(mcadata[i*4])
+                    mca_array[1].append(mcadata[i*4 + 1])
+                    mca_array[2].append(mcadata[i*4 + 2])
+                    mca_array[3].append(mcadata[i*4 + 3])
 
-    scan=[]
-    mca1=[[] for a in range(total_scan_num)]
-    mca2=[[] for a in range(total_scan_num)]
-    mca3=[[] for a in range(total_scan_num)]
-    mca4=[[] for a in range(total_scan_num)]
+                print "Done!"
+                self.hex_x = hex_x
+                self.hex_y = hex_y
+                self.mca_array = mca_array
+                self.scaler_array = scaler_array
+                self.scan_num = scan_num
+                self.file_direct = file_directory
 
-    for j in range (0, total_scan_num):
-        scan.append(opened_file[ cmesh_scan[j] ])
-
-        hex_x = scan[j]['Hex_XP']
-        mcadata = scan[j]['@A1']
-
-        for i in range(0,len(hex_x)):
-            mca1[j].append(mcadata[i*4])
-            mca2[j].append(mcadata[i*4 + 1])
-            mca3[j].append(mcadata[i*4 + 2])
-            mca4[j].append(mcadata[i*4 + 3])
-
-    print "Done!"
-    return scan, mca1, mca2, mca3, mca4
+                estimate_xas_process_para = MapProcessPara(x_start_energy, x_end_energy, 0, y_start_energy, y_end_energy, 0)
+                return estimate_xas_process_para
+            except KeyError:
+                print "This is an empty cmesh or mesh scan and this may cause the following error."

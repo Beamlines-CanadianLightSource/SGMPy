@@ -1,6 +1,8 @@
+import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.mlab import griddata
 import numpy as np
+import os.path
 
 class SingleMap(object):
 
@@ -32,6 +34,7 @@ class SingleMap(object):
 
     def get_scan_num(self):
         return self.scan_num
+
 
     def getXRF(self, sgmData):
 
@@ -74,17 +77,25 @@ class SingleMap(object):
         print "Done MCA4."
         plt.show()
 
-    def plotCntScatter(self, hex_x, hex_y, counter):
-        plt.close('all')
-        color = counter
-        plt.scatter(hex_x, hex_y, c=color, s=20, linewidths=0)
+    # def plotCntScatter(self, hex_x, hex_y, counter):
+    #     plt.close('all')
+    #     color = counter
+    #     plt.scatter(hex_x, hex_y, c=color, s=20, linewidths=0)
 
-    def plotpfyGrid(self, xpts, ypts, shift):
+    def plotpfyGrid(self, original_file_directory, xpts, ypts, shift):
+
+        plt.close('all')
+        matplotlib.rcParams['figure.figsize'] = (12, 11)
+
+        temp_list = original_file_directory.split(".")
+        export_directory = temp_list[0]
+
         plt.close('all')
         # print "Plotting grids."
         hex_x = self.get_hex_x()
         hex_y = self.get_hex_y()
         pfy_data = self.get_pfy_sdd_array()
+        scan_num = str(self.get_scan_num())
 
         minX = min(hex_x)
         maxX = max(hex_x)
@@ -99,37 +110,53 @@ class SingleMap(object):
         for i in range(1,len(hex_x)):
             hex_x_ad[i] = hex_x[i] + shift*(hex_x[i] - hex_x[i-1])
 
-        plt.figure(1)
-        plt.subplot(221)
+        fig = plt.figure()
+        ax1 = fig.add_subplot(221)
         print "Interpolating MCA1"
         zi1 = griddata(hex_x_ad, hex_y, pfy_data[0], xi, yi, interp='linear')
         print "Done."
-        plt.title("PYF_SDD1")
-        plt.imshow(zi1)
-        plt.subplot(222)
+        ax1.set_title("PYF_SDD1")
+        ax1.imshow(zi1)
+        ax1.set_xlabel("Hex_XP")
+        ax1.set_ylabel("Hex_YP")
+
+        ax2 = fig.add_subplot(222)
         print "Interpolating MCA2"
         zi2 = griddata(hex_x_ad, hex_y, pfy_data[1], xi, yi, interp='linear')
         print "Done."
-        plt.title("PYF_SDD2")
-        plt.imshow(zi2)
-        plt.subplot(223)
+        ax2.set_title("PYF_SDD2")
+        ax2.imshow(zi2)
+        ax2.set_xlabel("Hex_XP")
+        ax2.set_ylabel("Hex_YP")
+
+        ax3 = fig.add_subplot(223)
         print "Interpolating MCA3"
         zi3 = griddata(hex_x_ad, hex_y, pfy_data[2], xi, yi, interp='linear')
         print "Done."
-        plt.title("PYF_SDD3")
-        plt.imshow(zi3)
-        plt.subplot(224)
+        ax3.set_title("PYF_SDD3")
+        ax3.imshow(zi3)
+        ax3.set_xlabel("Hex_XP")
+        ax3.set_ylabel("Hex_YP")
+
+        ax4 = fig.add_subplot(224)
         print "Interpolating MCA4"
         zi4 = griddata(hex_x_ad, hex_y, pfy_data[3], xi, yi, interp='linear')
         print "Done."
-        plt.title("PYF_SDD4")
-        plt.imshow(zi4)
-        plt.show()
-        # return zi1, zi2, zi3, zi4
+        ax4.set_title("PYF_SDD4")
+        ax4.imshow(zi4)
+        ax4.set_xlabel("Hex_XP")
+        ax4.set_ylabel("Hex_YP")
 
-    def plotpfyGridc(self, original_file_dictory, depth, shift):
+        return ax1, ax2, ax3, ax4, fig, export_directory, scan_num
+
+    def plotpfyGridc(self, original_file_directory, depth, shift):
         plt.close('all')
         print "Plotting contours."
+
+        matplotlib.rcParams['figure.figsize'] = (12, 11)
+
+        temp_list = original_file_directory.split(".")
+        export_directory = temp_list[0]
 
         hex_x = self.get_hex_x()
         hex_y = self.get_hex_y()
@@ -146,32 +173,28 @@ class SingleMap(object):
         ax1 = fig.add_subplot(221)
         ax1.tricontourf(hex_x_ad, hex_y, pfy_data[0], depth)
         ax1.set_title("PFY_SDD1")
+        ax1.set_xlabel("Hex_XP")
+        ax1.set_ylabel("Hex_YP")
 
         ax2 = fig.add_subplot(222)
         ax2.tricontourf(hex_x_ad, hex_y, pfy_data[1], depth)
         ax2.set_title("PFY_SDD2")
+        ax2.set_xlabel("Hex_XP")
+        ax2.set_ylabel("Hex_YP")
 
         ax3 = fig.add_subplot(223)
         ax3.tricontourf(hex_x_ad, hex_y, pfy_data[2], depth)
         ax3.set_title("PFY_SDD3")
+        ax3.set_xlabel("Hex_XP")
+        ax3.set_ylabel("Hex_YP")
 
         ax4 = fig.add_subplot(224)
         ax4.tricontourf(hex_x_ad, hex_y, pfy_data[3], depth)
         ax4.set_title("PFY_SDD4")
+        ax4.set_xlabel("Hex_XP")
+        ax4.set_ylabel("Hex_YP")
 
-        fig.show()
-
-        extent1 = ax1.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-        fig.savefig("data/"+original_file_dictory+"_"+scan_num+"_"+"pfy_sdd1.tiff", bbox_inches=extent1, dpi=500)
-
-        extent2 = ax2.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-        fig.savefig("data/"+original_file_dictory+"_"+scan_num+"_"+"pfy_sdd2.tiff", bbox_inches=extent2, dpi=500)
-
-        extent3 = ax3.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-        fig.savefig("data/"+original_file_dictory+"_"+scan_num+"_"+"pfy_sdd3.tiff", bbox_inches=extent3, dpi=500)
-
-        extent4 = ax4.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-        fig.savefig("data/"+original_file_dictory+"_"+scan_num+"_"+"pfy_sdd4.tiff", bbox_inches=extent4, dpi=500)
+        return ax1, ax2, ax3, ax4, fig, export_directory, scan_num
 
 
     # def plotMap(self, filename,scanNum, pfylow, pfyhigh):
@@ -181,6 +204,8 @@ class SingleMap(object):
     #     plotpfyGridc(f, g, 500, 0.75)
 
     def plot_xrf(self):
+        plt.close("all")
+        matplotlib.rcParams['figure.figsize'] = (12, 8)
         mca_array = self.get_mca_array()
         sum_mca1_array = np.zeros(255)
         sum_mca2_array = np.zeros(255)
@@ -193,23 +218,35 @@ class SingleMap(object):
             sum_mca4_array = sum_mca4_array + mca_array[3][i][0:255]
 
         fig = plt.figure()
+
         ax1 = fig.add_subplot(221)
         ax1.plot(sum_mca1_array)
         ax1.set_title("PFY_SDD1")
         ax1.set_xlim([0, 260])
+        ax1.set_xlabel("Emission Energy (*10 eV)")
+        ax1.set_ylabel("Sum of SDD1")
+
         ax2 = fig.add_subplot(222)
         ax2.plot(sum_mca2_array)
         ax2.set_title("PFY_SDD2")
         ax2.set_xlim([0, 260])
+        ax2.set_xlabel("Emission Energy (*10 eV)")
+        ax2.set_ylabel("Sum of SDD2")
+
         ax3 = fig.add_subplot(223)
         ax3.plot(sum_mca3_array)
         ax3.set_title("PFY_SDD3")
         ax3.set_xlim([0, 260])
+        ax3.set_xlabel("Emission Energy (*10 eV)")
+        ax3.set_ylabel("Sum of SDD3")
+
         ax4 = fig.add_subplot(224)
         ax4.plot(sum_mca4_array)
         ax4.set_title("PFY_SDD4")
         ax4.set_xlim([0, 260])
-
+        ax4.set_xlabel("Emission Energy (*10 eV)")
+        ax4.set_ylabel("Sum of SDD4")
+        fig.tight_layout()
         fig.show()
 
     def calculate_pfy(self, enStart, enStop):

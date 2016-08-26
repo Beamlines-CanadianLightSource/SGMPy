@@ -13,7 +13,15 @@ def summary_plot(xas_data, name, xas_process_para = None):
         scaler_data = xas_data.get_scaler_array()
         scan_num = xas_data.get_c_scan()
         generate_summary_plot_with_scaler(energy_data, scaler_data, scan_num, name)
-    elif name == "PFY_SDD1" or name == "PFY_SDD2" or name == "PFY_SDD3" or name == "PFY_SDD4":
+    elif name == "PFY_SDD1" or "PFY_SDD2" or "PFY_SDD3" or "PFY_SDD4" or "SDD1" or "SDD2" or "SDD3" or "SDD4":
+        if name == "PFY_SDD1":
+            name = "SDD1"
+        elif name == "PFY_SDD2":
+            name = "SDD2"
+        elif name == "PFY_SDD3":
+            name = "SDD3"
+        elif name == "PFY_SDD4":
+            name = "SDD4"
         energy_data = xas_data.get_energy_array()
         mca_data = xas_data.get_mca_array()
         scan_num = xas_data.get_c_scan()
@@ -27,7 +35,7 @@ def summary_plot(xas_data, name, xas_process_para = None):
 def generate_summary_plot_with_pfy(energy_data, mca_data, scan_nums, pfy_name, start_roi, stop_roi):
         
     # MCA is SDD; after getting PFY of ROI then it becomes PFY_SDD
-    pfy_dict = {'PFY_SDD1': 'MCA1', 'PFY_SDD2': 'MCA2', 'PFY_SDD3': 'MCA3', 'PFY_SDD4': 'MCA4'}
+    pfy_dict = {'SDD1': 'MCA1', 'SDD2': 'MCA2', 'SDD3': 'MCA3', 'SDD4': 'MCA4'}
     mca_dict = {'MCA1': 0, 'MCA2': 1, 'MCA3': 2, 'MCA4': 3}
     mca_name = pfy_dict[pfy_name]
 
@@ -57,7 +65,7 @@ def generate_summary_plot_with_pfy(energy_data, mca_data, scan_nums, pfy_name, s
     plt.xlabel('Incident Energy (eV)')
     plt.ylabel('Scan Numbers')
     plt.colorbar()
-    plt.title(['color is :', mca_name])
+    plt.title(['color is :', pfy_name])
     y_axis_height = total_cscan_num * 0.25
     # change the figure configuration
     fig = plt.gcf()
