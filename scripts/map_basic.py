@@ -117,6 +117,8 @@ class SingleMap(object):
         print "Done."
         ax1.set_title("PYF_SDD1")
         ax1.imshow(zi1)
+        ax1.set_xlabel("Hex_XP")
+        ax1.set_ylabel("Hex_YP")
 
         ax2 = fig.add_subplot(222)
         print "Interpolating MCA2"
@@ -124,6 +126,8 @@ class SingleMap(object):
         print "Done."
         ax2.set_title("PYF_SDD2")
         ax2.imshow(zi2)
+        ax2.set_xlabel("Hex_XP")
+        ax2.set_ylabel("Hex_YP")
 
         ax3 = fig.add_subplot(223)
         print "Interpolating MCA3"
@@ -131,6 +135,8 @@ class SingleMap(object):
         print "Done."
         ax3.set_title("PYF_SDD3")
         ax3.imshow(zi3)
+        ax3.set_xlabel("Hex_XP")
+        ax3.set_ylabel("Hex_YP")
 
         ax4 = fig.add_subplot(224)
         print "Interpolating MCA4"
@@ -138,6 +144,8 @@ class SingleMap(object):
         print "Done."
         ax4.set_title("PYF_SDD4")
         ax4.imshow(zi4)
+        ax4.set_xlabel("Hex_XP")
+        ax4.set_ylabel("Hex_YP")
 
         return ax1, ax2, ax3, ax4, fig, export_directory, scan_num
 
@@ -165,18 +173,26 @@ class SingleMap(object):
         ax1 = fig.add_subplot(221)
         ax1.tricontourf(hex_x_ad, hex_y, pfy_data[0], depth)
         ax1.set_title("PFY_SDD1")
+        ax1.set_xlabel("Hex_XP")
+        ax1.set_ylabel("Hex_YP")
 
         ax2 = fig.add_subplot(222)
         ax2.tricontourf(hex_x_ad, hex_y, pfy_data[1], depth)
         ax2.set_title("PFY_SDD2")
+        ax2.set_xlabel("Hex_XP")
+        ax2.set_ylabel("Hex_YP")
 
         ax3 = fig.add_subplot(223)
         ax3.tricontourf(hex_x_ad, hex_y, pfy_data[2], depth)
         ax3.set_title("PFY_SDD3")
+        ax3.set_xlabel("Hex_XP")
+        ax3.set_ylabel("Hex_YP")
 
         ax4 = fig.add_subplot(224)
         ax4.tricontourf(hex_x_ad, hex_y, pfy_data[3], depth)
         ax4.set_title("PFY_SDD4")
+        ax4.set_xlabel("Hex_XP")
+        ax4.set_ylabel("Hex_YP")
 
         return ax1, ax2, ax3, ax4, fig, export_directory, scan_num
 
@@ -207,29 +223,29 @@ class SingleMap(object):
         ax1.plot(sum_mca1_array)
         ax1.set_title("PFY_SDD1")
         ax1.set_xlim([0, 260])
-        ax1.set_xlabel('Energy (eV)')
-        ax1.set_ylabel('???')
+        ax1.set_xlabel("Emission Energy (*10 eV)")
+        ax1.set_ylabel("Sum of SDD1")
 
         ax2 = fig.add_subplot(222)
         ax2.plot(sum_mca2_array)
         ax2.set_title("PFY_SDD2")
         ax2.set_xlim([0, 260])
-        ax2.set_xlabel('Energy (eV)')
-        ax2.set_ylabel('???')
+        ax2.set_xlabel("Emission Energy (*10 eV)")
+        ax2.set_ylabel("Sum of SDD2")
 
         ax3 = fig.add_subplot(223)
         ax3.plot(sum_mca3_array)
         ax3.set_title("PFY_SDD3")
         ax3.set_xlim([0, 260])
-        ax3.set_xlabel('Energy (eV)')
-        ax3.set_ylabel('???')
+        ax3.set_xlabel("Emission Energy (*10 eV)")
+        ax3.set_ylabel("Sum of SDD3")
 
         ax4 = fig.add_subplot(224)
         ax4.plot(sum_mca4_array)
         ax4.set_title("PFY_SDD4")
         ax4.set_xlim([0, 260])
-        ax4.set_xlabel('Energy (eV)')
-        ax4.set_ylabel('???')
+        ax4.set_xlabel("Emission Energy (*10 eV)")
+        ax4.set_ylabel("Sum of SDD4")
         fig.tight_layout()
         fig.show()
 
