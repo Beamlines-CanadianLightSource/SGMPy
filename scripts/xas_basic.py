@@ -106,6 +106,8 @@ class SingleXAS(object):
         plt.close('all')
         print "Plotting XAS."
 
+        matplotlib.rcParams['figure.figsize'] = (12, 16)
+
         energy_data = self.get_energy_array()
         scaler_data = self.get_scaler_array()
         pfy_data = self.get_pfy_sdd_array()
