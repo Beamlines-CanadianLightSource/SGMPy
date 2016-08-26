@@ -396,6 +396,8 @@ class XASProcess(object):
     # plot a kind of average scaler
     def plot_avg_xas(self, name):
         plt.close('all')
+        matplotlib.rcParams['figure.figsize'] = (12, 10)
+
         if name == "TEY" or name == "I0" or name == "Diode":
             mean_energy_array = self.get_mean_energy_array()
             scaler_data = self.get_scaler_averaged_array()
@@ -408,7 +410,6 @@ class XASProcess(object):
             print "Errors with the name input"
 
     def plot_avg_xas_scaler(self, mean_energy_array, scaler_data, name):
-        plt.close('all')
         scaler_dict = {'TEY': 0, 'I0': 1, 'Diode':2}
         scaler_index = scaler_dict[name]
         plt.plot(mean_energy_array, scaler_data[scaler_index])
@@ -417,8 +418,6 @@ class XASProcess(object):
         plt.show()
     
     def plot_avg_xas_pfy(self, mean_energy_array, pfy_data, name):
-        plt.close('all')
-
         pfy_dict = {'PFY_SDD1': 0, 'PFY_SDD2': 1, 'PFY_SDD3': 2, 'PFY_SDD4': 3}
         pfy_index = pfy_dict[name]
         plt.plot(mean_energy_array, pfy_data[pfy_index])

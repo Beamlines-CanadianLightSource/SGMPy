@@ -11,7 +11,7 @@ class ExportData:
     def __init__(self, data_set):
         self.data_set = data_set
 
-    def export_data(self, export_file_directory, name, scan_number=None):
+    def export_solo(self, export_file_directory, name, scan_number=None):
 
         # MCA is SDD; after getting PFY of ROI then it becomes PFY_SDD
         pfy_dict = {'PFY_SDD1': 0, 'PFY_SDD2': 1, 'PFY_SDD3': 2, 'PFY_SDD4': 3}
