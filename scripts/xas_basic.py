@@ -12,6 +12,7 @@ class SingleXAS(object):
         self.mca_array = opened_one_cscan.get_mca_array()
         self.scaler_array = opened_one_cscan.get_scaler_array()
         self.scan_num = opened_one_cscan.get_scan_num()
+        self.file_direct = opened_one_cscan.get_file_direct()
         self.pfy_sdd_array = None
         self.data_type = data_type
 
@@ -35,6 +36,9 @@ class SingleXAS(object):
 
     def get_data_type(self):
         return self.data_type
+
+    def get_file_direct(self):
+        return self.file_direct
 
     def calculate_pfy(self, enStart, enStop):
         #print "Getting PFY ROIs"

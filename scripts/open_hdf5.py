@@ -27,6 +27,7 @@ class HDF5MultiCScan(object):
         self.mca_array = None
         self.scaler_array = None
         self.c_scan_num = None
+        self.file_direct = None
 
     def get_energy_array(self):
         return self.energy_array
@@ -51,6 +52,12 @@ class HDF5MultiCScan(object):
 
     def set_c_scan(self, c_scan_num):
         self.c_scan_num = c_scan_num
+
+    def get_file_direct(self):
+        return self.file_direct
+
+    def set_file_direct(self, file_direct):
+        self.file_direct = file_direct
 
     # open and read multiple c scan from the data file
     def read_all_hdf5_xas(self, file_directory):
@@ -88,6 +95,7 @@ class HDF5MultiCScan(object):
         self.set_mca_array(mca_array)
         self.set_scaler_array(scaler_array)
         self.set_c_scan(scan_number)
+        self.set_file_direct(file_directory)
         estimate_xas_process_para = self.estimate_roi(file_directory, scan_number)
         return estimate_xas_process_para
 
@@ -117,6 +125,7 @@ class HDF5SingleCScan(object):
         self.mca_array = None
         self.scaler_array = None
         self.scan_num = None
+        self.file_direct = None
 
     def get_energy_array(self):
         return self.energy_array
@@ -129,6 +138,9 @@ class HDF5SingleCScan(object):
 
     def get_scan_num(self):
         return self.scan_num
+
+    def get_file_direct(self):
+        return self.file_direct
 
     def read_hdf5_xas(self, file_directory, scan_number):
         energy_array = []
@@ -160,6 +172,7 @@ class HDF5SingleCScan(object):
                 self.mca_array = mca_array
                 self.scaler_array = scaler_array
                 self.scan_num = scan_number
+                self.file_direct = file_directory
             elif scan_name == "cscan" and len(scan['data']) == 2:
                 return "It is an empty c scan"
             else:

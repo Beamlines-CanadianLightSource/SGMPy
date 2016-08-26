@@ -185,6 +185,7 @@ class OpenSingleCScan(object):
         self.mca_array = None
         self.scaler_array = None
         self.scan_num = None
+        self.file_direct = None
 
     def get_energy_array(self):
         return self.energy_array
@@ -198,13 +199,16 @@ class OpenSingleCScan(object):
     def get_scan_num(self):
         return self.scan_num
 
+    def get_file_direct(self):
+        return self.file_direct
+
     # open a single scan of spectrum
-    def open_single_xas(self, sgm_file, scan_num):
+    def open_single_xas(self, file_directory, scan_num):
 
         print "Opening scan", str(scan_num)
-        print "in", sgm_file
+        #print "in", file_directory
 
-        f = spec.open(sgm_file)
+        f = spec.open(file_directory)
         scan=f[str(scan_num)]
 
         energy_array = scan['Energy']
@@ -227,6 +231,7 @@ class OpenSingleCScan(object):
         self.mca_array = mca_array
         self.scaler_array = scaler_array
         self.scan_num = scan_num
+        self.file_direct = file_directory
 
 
 class OpenSingleCMesh(object):

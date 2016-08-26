@@ -272,10 +272,8 @@ class ExportData:
         print ("Export data complete.")
             
         
-    def export_normalized_data(self, export_file_directory, column1_name, column2_name):
+    def export_normalized_data(self, export_file_directory, column1, column1_name, column2, column2_name):
         origin_file_directory = self.data_set.get_file_direct()
-        column1 = self.data_set.get_mean_energy_array()
-        column2 = self.data_set.get_normalized_array()
         file_extension, original_file_name = self.check_file_type(origin_file_directory)
 
         if file_extension == "dat":

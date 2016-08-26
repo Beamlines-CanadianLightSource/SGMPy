@@ -482,7 +482,7 @@ class XASProcess(object):
 
     def division(self, pfy_data, dividend, divisor, scaler_data = None):
         # initial new_mca_array
-        division_pfy_array = np.empty(len(pfy_data[0]))
+        # division_pfy_array = np.empty(len(pfy_data[0]))
         # initial a dictionary for 4 SDD(MCA) name
         pfy_dict = {'PFY_SDD1': 0, 'PFY_SDD2': 1, 'PFY_SDD3': 2, 'PFY_SDD4': 3}
         scaler_dict = {'TEY': 0, 'I0': 1, 'Diode': 2}
