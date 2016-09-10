@@ -154,3 +154,37 @@ class SingleXAS(object):
         plt.ylabel('PFY_SDD4')
         plt.show()
 
+    def plot_excitation_emission_matrix(self, name):
+
+        matplotlib.rcParams['figure.figsize'] = (12, 10)
+        plt.close('all')
+
+        energy_array = self.get_energy_array()[0:]
+        num_of_points = len(self.get_energy_array())
+        num_of_emission_bins = len(self.get_mca_array()[0][0])
+
+        bin_num_for_x = np.zeros(shape=(num_of_points, num_of_emission_bins))
+        for i in range(num_of_points):
+            bin_num_for_x[i].fill(energy_array[i])
+
+        bin_num_for_y = np.zeros(shape=(num_of_points, num_of_emission_bins))
+        bin_num_for_y[0:] = np.arange(10, (num_of_emission_bins + 1) * 10, 10)
+
+        mca_dict = {'SDD1': 0, 'SDD2': 1, 'SDD3': 2, 'SDD4': 3}
+        sub_mca_array_index = mca_dict[name]
+        sub_mca_array = self.get_mca_array()[sub_mca_array_index]
+        sub_mca_array = np.array(sub_mca_array)
+
+        v_max = max(sub_mca_array[0])
+        for i in range(1, num_of_points):
+            temp_max = max(sub_mca_array[i])
+            if temp_max > v_max:
+                v_max = temp_max
+        # print "v_max: ", v_max
+
+        plt.scatter(bin_num_for_x, bin_num_for_y, c=sub_mca_array, s=7, linewidths=0, vmax=v_max, vmin=0)
+        plt.yticks(np.arange(100, 2560, 100.0))
+        plt.xlabel('Incident Energy (eV)')
+        plt.ylabel('Emission Energy (eV)')
+        plt.grid()
+        plt.show()
