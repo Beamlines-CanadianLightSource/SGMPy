@@ -11,11 +11,13 @@ def open_spec_data_file(file_directory):
     opened_file = spec.open(file_directory)
     return opened_file
 
+
 def get_abs_path(rel_path):
     script_dir = os.path.dirname(os.path.realpath('__file__'))
     abs_path = os.path.join(script_dir, rel_path)
     print "File is at: ", abs_path
     return abs_path
+
 
 def get_scan_details(file_directory):
     opened_file = open_spec_data_file(file_directory)
@@ -25,6 +27,7 @@ def get_scan_details(file_directory):
         command = opened_file[scan_details_list[i]].attrs['command']
         date = opened_file[scan_details_list[i]].attrs['date']
         print 'Scan:', scan_details_list[i], '    The Command is: ', command, '    DateTime: ', date
+
 
 def get_diff_scan(file_directory):
     opened_file = open_spec_data_file(file_directory)
@@ -51,6 +54,7 @@ def get_diff_scan(file_directory):
     print "Mesh Scan: ", mesh_array, "\n"
     return c_array, a_array, cmesh_array, mesh_array
 
+
 def get_c_scan(opened_file):
     c_array = []
     for i in range(0, len(opened_file.keys())):
@@ -61,6 +65,7 @@ def get_c_scan(opened_file):
             # print "Scan No.", i
             c_array.append(index)
     return c_array
+
 
 def get_cmesh_scan(opened_file):
     cmesh_array = []
@@ -73,6 +78,7 @@ def get_cmesh_scan(opened_file):
             scan_num_str = str(index)
             cmesh_array.append(scan_num_str)
     return cmesh_array
+
 
 class OpenMultiCScan(object):
 
@@ -169,7 +175,7 @@ class OpenMultiCScan(object):
         self.set_c_scan(c_scan_num)
         self.set_file_direct(file_directory)
         estimate_xas_process_para = self.estimate_roi(file_directory, c_scan_num)
-        print("--- %s seconds ---" % (time.time() - start_time))
+        #print("--- %s seconds ---" % (time.time() - start_time))
         return estimate_xas_process_para
 
     def estimate_roi(self, file_directory, scan_num):
@@ -266,7 +272,7 @@ class OpenSingleCScan(object):
         self.scaler_array = scaler_array
         self.scan_num = scan_num
         self.file_direct = file_directory
-        print("--- %s seconds ---" % (time.time() - start_time))
+        # print("--- %s seconds ---" % (time.time() - start_time))
 
 
 class OpenSingleCMesh(object):
@@ -344,11 +350,23 @@ class OpenSingleCMesh(object):
 
                 mca_array = [[],[],[],[]]
 
-                for i in range(0,len(hex_x)):
-                    mca_array[0].append(mcadata[i*4])
-                    mca_array[1].append(mcadata[i*4 + 1])
-                    mca_array[2].append(mcadata[i*4 + 2])
-                    mca_array[3].append(mcadata[i*4 + 3])
+                num_points = len(scaler_array[0])
+                # print num_points
+                iteration_index1 = np.arange(0, num_points * 4, 4)
+                iteration_index2 = iteration_index1 + 1
+                iteration_index3 = iteration_index1 + 2
+                iteration_index4 = iteration_index1 + 3
+
+                mca_array[0] = list(scan['@A1'][iteration_index1[0:]])
+                mca_array[1] = list(scan['@A1'][iteration_index2[0:]])
+                mca_array[2] = list(scan['@A1'][iteration_index3[0:]])
+                mca_array[3] = list(scan['@A1'][iteration_index4[0:]])
+
+                # for i in range(0,len(hex_x)):
+                #     mca_array[0].append(mcadata[i*4])
+                #     mca_array[1].append(mcadata[i*4 + 1])
+                #     mca_array[2].append(mcadata[i*4 + 2])
+                #     mca_array[3].append(mcadata[i*4 + 3])
 
                 print "Done!"
                 self.hex_x = hex_x
