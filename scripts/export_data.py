@@ -11,29 +11,6 @@ class ExportData:
     def __init__(self, data_set):
         self.data_set = data_set
 
-    def export_solo(self, export_file_directory, name, scan_number=None):
-
-        # MCA is SDD; after getting PFY of ROI then it becomes PFY_SDD
-        pfy_dict = {'PFY_SDD1': 0, 'PFY_SDD2': 1, 'PFY_SDD3': 2, 'PFY_SDD4': 3}
-        scaler_dict = {'TEY': 0, 'I0': 1, 'Diode': 2}
-        energy_array = self.data_set.get_mean_energy_array()
-        origin_file_direct = self.data_set.get_file_direct()
-
-        if name == "PFY_SDD1" or name == "PFY_SDD2" or name == "PFY_SDD3" or name == "PFY_SDD4":
-            sub_pfy_index = pfy_dict[name]
-            pfy_data = self.data_set.get_pfy_sdd_averaged_array()
-            self.export_pfy(export_file_directory, origin_file_direct, energy_array, pfy_data[sub_pfy_index], name, scan_number)
-            print "Export data complete!"
-
-        elif name == "TEY" or name == "I0" or name == "Diode":
-            sub_scaler_index = scaler_dict[name]
-            scaler_data = self.data_set.get_scaler_averaged_array()
-            self.export_scaler(export_file_directory, origin_file_direct, energy_array, scaler_data[sub_scaler_index], name, scan_number)
-            print "Export data complete!"
-
-        else:
-            print "Unable to export data."
-
     def get_date_time(self, opened_file):
         str_date_time = opened_file['1'].attrs['file_date']
         return str_date_time[4:]
@@ -64,6 +41,7 @@ class ExportData:
                 stripe = split_dot[i+2][-1].strip()
         return grating[:-1], exit_slit, stripe[:-1]
 
+    # get comments and date from hdf5 data file
     def get_header_hdf5(self, file_directory):
         with h5py.File(file_directory,'r') as hf:
             comments = hf.get('S1/comments')
@@ -72,12 +50,14 @@ class ExportData:
             date = np.array(date)[0]
         return comments, date
 
+    # the method is to get grating from hdf5 data file
     def get_grating_hdf5(self, comments):
         parsed_str = comments[0].split('\n')
         grating_str = [x.strip() for x in parsed_str[1].split(",")]
         print grating_str[-1]
         return grating_str[-1][9:-1]    
 
+    # the method is to get exit_slit and stripe from hdf5 data file
     def get_exit_slit_and_stripe(self, comments):
         parsed_str = comments[0].split('\n')
         parsed_str_length = len(parsed_str)
@@ -102,14 +82,43 @@ class ExportData:
         file_name = file_directory[0].split('/')[-1]
         return file_extension, file_name
 
+    def export_solo(self, export_file_directory, name, scan_number=None):
+
+        # MCA is SDD; after getting PFY of ROI then it becomes PFY_SDD
+        pfy_dict = {'PFY_SDD1': 0, 'PFY_SDD2': 1, 'PFY_SDD3': 2, 'PFY_SDD4': 3}
+        scaler_dict = {'TEY': 0, 'I0': 1, 'Diode': 2}
+        energy_array = self.data_set.get_mean_energy_array()
+        origin_file_direct = self.data_set.get_file_direct()
+
+        if name == "PFY_SDD1" or name == "PFY_SDD2" or name == "PFY_SDD3" or name == "PFY_SDD4":
+            sub_pfy_index = pfy_dict[name]
+            pfy_data = self.data_set.get_pfy_sdd_averaged_array()
+            self.export_pfy(export_file_directory, origin_file_direct, energy_array, pfy_data[sub_pfy_index], name, scan_number)
+            print "Export data complete."
+            get_abs_path(export_file_directory)
+
+        elif name == "TEY" or name == "I0" or name == "Diode":
+            sub_scaler_index = scaler_dict[name]
+            scaler_data = self.data_set.get_scaler_averaged_array()
+            self.export_scaler(export_file_directory, origin_file_direct, energy_array, scaler_data[sub_scaler_index], name, scan_number)
+            print "Export data complete."
+            get_abs_path(export_file_directory)
+
+        else:
+            print "Unable to export data."
     
     def export_pfy(self, export_file_directory, origin_file_directory, energy_array, sub_pfy, name, scan_number=None):
         file_extension, original_file_name = self.check_file_type(origin_file_directory)
         if file_extension == "dat":
             opened_file = open_spec_data_file(origin_file_directory)
-            date = self.get_date_time(opened_file)
-            comments = self.get_comments(origin_file_directory)
-            grating, exit_slit, stripe = self.get_comment_details(comments)
+            try:
+                date = self.get_date_time(opened_file)
+                comments = self.get_comments(origin_file_directory)
+                grating, exit_slit, stripe = self.get_comment_details(comments)
+            except UnboundLocalError:
+                grating = "N/A"
+                exit_slit = "N/A"
+                stripe = "N/A"
         else:
             comments, date = self.get_header_hdf5(origin_file_directory)
             grating = self.get_grating_hdf5(comments)
@@ -151,14 +160,18 @@ class ExportData:
                 # print out_string
                 out_file.write(out_string)
 
-
     def export_scaler(self, export_file_directory, origin_file_directory, energy_array, sub_scaler, name, scan_number=None):
         file_extension, original_file_name = self.check_file_type(origin_file_directory)
         if file_extension == "dat":
             opened_file = open_spec_data_file(origin_file_directory)
-            date = self.get_date_time(opened_file)
-            comments = self.get_comments(origin_file_directory)
-            grating, exit_slit, stripe = self.get_comment_details(comments)
+            try:
+                date = self.get_date_time(opened_file)
+                comments = self.get_comments(origin_file_directory)
+                grating, exit_slit, stripe = self.get_comment_details(comments)
+            except UnboundLocalError:
+                grating = "N/A"
+                exit_slit = "N/A"
+                stripe = "N/A"
         else:
             comments, date = self.get_header_hdf5(origin_file_directory)
             grating = self.get_grating_hdf5(comments)
@@ -200,16 +213,20 @@ class ExportData:
                 out_string += "\n"
                 # print out_string
                 out_file.write(out_string)
-                
-                
+
     def export_all (self, export_file_directory):
         origin_file_directory = self.data_set.get_file_direct()
         file_extension, original_file_name = self.check_file_type(origin_file_directory)
         if file_extension == "dat":
             opened_file = open_spec_data_file(origin_file_directory)
-            date = self.get_date_time(opened_file)
-            comments = self.get_comments(origin_file_directory)
-            grating, exit_slit, stripe = self.get_comment_details(comments)
+            try:
+                date = self.get_date_time(opened_file)
+                comments = self.get_comments(origin_file_directory)
+                grating, exit_slit, stripe = self.get_comment_details(comments)
+            except UnboundLocalError:
+                grating = "N/A"
+                exit_slit = "N/A"
+                stripe = "N/A"
         else:
             comments, date = self.get_header_hdf5(origin_file_directory)
             grating = self.get_grating_hdf5(comments)
@@ -269,8 +286,8 @@ class ExportData:
                 out_string += "\n"
                 # print out_string
                 out_file.write(out_string)
-        print ("Export data complete.")
-            
+        print ("Export data complete")
+        get_abs_path(export_file_directory)
         
     def export_normalized_data(self, export_file_directory, column1, column1_name, column2, column2_name):
         origin_file_directory = self.data_set.get_file_direct()
@@ -278,9 +295,14 @@ class ExportData:
 
         if file_extension == "dat":
             opened_file = open_spec_data_file(origin_file_directory)
-            date = self.get_date_time(opened_file)
-            comments = self.get_comments(origin_file_directory)
-            grating, exit_slit, stripe = self.get_comment_details(comments)
+            try:
+                date = self.get_date_time(opened_file)
+                comments = self.get_comments(origin_file_directory)
+                grating, exit_slit, stripe = self.get_comment_details(comments)
+            except UnboundLocalError:
+                grating = "N/A"
+                exit_slit = "N/A"
+                stripe = "N/A"
         else:
             comments, date = self.get_header_hdf5(origin_file_directory)
             grating = self.get_grating_hdf5(comments)
@@ -315,6 +337,7 @@ class ExportData:
                 # print out_string
                 out_file.write(out_string)
         print ("Export data complete.")
+        get_abs_path(export_file_directory)
 
     # def export_map_all(self, export_file_directory):
     #     origin_file_directory = self.file_directory
