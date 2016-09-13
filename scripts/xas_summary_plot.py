@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np
 from open_spec import *
-
+import time
 
 def summary_plot(xas_data, name, xas_process_para = None):
     plt.close('all')
@@ -33,21 +33,22 @@ def summary_plot(xas_data, name, xas_process_para = None):
 
 
 def generate_summary_plot_with_pfy(energy_data, mca_data, scan_nums, pfy_name, start_roi, stop_roi):
-        
+
+    # start_time = time.time()
+
     # MCA is SDD; after getting PFY of ROI then it becomes PFY_SDD
     pfy_dict = {'SDD1': 'MCA1', 'SDD2': 'MCA2', 'SDD3': 'MCA3', 'SDD4': 'MCA4'}
-    mca_dict = {'MCA1': 0, 'MCA2': 1, 'MCA3': 2, 'MCA4': 3}
+    # mca_dict = {'MCA1': 0, 'MCA2': 1, 'MCA3': 2, 'MCA4': 3}
     mca_name = pfy_dict[pfy_name]
 
     total_cscan_num = len(scan_nums)
+    total_pfy = get_one_pfy_from_all_scan(mca_data, mca_name, start_roi, stop_roi)
 
     for index in range (0, total_cscan_num):
 
         scan_num_list = np.empty(len(energy_data[index]))
         scan_num_list.fill(index+1)
-        total_pfy = get_one_pfy_from_all_scan(mca_data, mca_name, start_roi, stop_roi)
-        # total_pfy = np.array(total_pfy) / 10
-        
+
         # real scan number from the data file
         cscan_number = scan_nums[index]
         
@@ -58,7 +59,7 @@ def generate_summary_plot_with_pfy(energy_data, mca_data, scan_nums, pfy_name, s
         # print "Generating plot for scan No.", cscan_number, "real scan number:", real_cscan_number
         plt.scatter(energy_data[index], scan_num_list, c=total_pfy[index],  s=140, linewidths=0, marker='s')
         print "Generated plot for No.", index+1, "in c scan array.  Real scan number is:", cscan_number
-        
+
     # setup the y-axis ticks
     plt.yticks(np.arange(0+1, total_cscan_num+1, 1.0))
     # add lable for x and y axis
@@ -73,12 +74,13 @@ def generate_summary_plot_with_pfy(energy_data, mca_data, scan_nums, pfy_name, s
     plt.grid()
     # show the plot
     plt.show()
+    # print("--- %s seconds ---" % (time.time() - start_time))
 
 
 def generate_summary_plot_with_scaler(energy_data, scaler_data, scan_nums, scaler_name):
     scaler_dict = {'TEY': 0, 'I0': 1, 'Diode':2}
     scaler_index = scaler_dict[scaler_name]
-    
+
     str_scaler_name = scaler_name
     total_cscan_num = len(scan_nums)
     for index in range (0, total_cscan_num):
