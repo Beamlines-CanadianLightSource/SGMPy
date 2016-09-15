@@ -132,35 +132,29 @@ class XASProcess(object):
         self.set_file_direct(file_direct)
 
     def get_good_datapoint(self, good_scan_index, energy_data, mca_data, scaler_data):
-        good_scan_index = np.asarray(good_scan_index)
         good_scan_index_length = len(good_scan_index)
         print "Total good scan numbers:", good_scan_index_length
 
         energy_array = []
         scaler_array = [[[],[],[]] for i in range(good_scan_index_length)]
         mca_array=[[[],[],[],[]] for i in range(good_scan_index_length)]
-        max_index = max(good_scan_index)
-        iterate_index = len(good_scan_index)
-        energy_array = energy_data[0:max_index]
-        scaler_array[0:iterate_index] = scaler_data[0:max_index]
-        mca_array[0:iterate_index] = mca_data[0:max_index]
-#        for i in range (0, len(good_scan_index)):
-#            # scan number is start from 1
-#            # print "This is the scan number: ", goodScanArray[i]
-#            # array index is start from 0
-#            # get all scalers of good scans from original scans' array
-#            energy_array.append(energy_data[good_scan_index[i]-1])
-#            scaler_array[i][0] = scaler_data[good_scan_index[i]-1][0]
-#            scaler_array[i][1] = scaler_data[good_scan_index[i]-1][1]
-#            scaler_array[i][2] = scaler_data[good_scan_index[i]-1][2]
-#            # get all MCA1 of good scans from original scans
-#            mca_array[i][0] = mca_data[good_scan_index[i]-1][0]
-#            # get all MCA2 of good scans from original scans
-#            mca_array[i][1] = mca_data[good_scan_index[i]-1][1]
-#            # get all MCA3 of good scans from original scans
-#            mca_array[i][2] = mca_data[good_scan_index[i]-1][2]
-#            # get all MCA4 of good scans from original scans
-#            mca_array[i][3] = mca_data[good_scan_index[i]-1][3]
+        for i in range (0, len(good_scan_index)):
+            # scan number is start from 1
+            # print "This is the scan number: ", goodScanArray[i]
+            # array index is start from 0
+            # get all scalers of good scans from original scans' array
+            energy_array.append(energy_data[good_scan_index[i]-1])
+            scaler_array[i][0] = scaler_data[good_scan_index[i]-1][0]
+            scaler_array[i][1] = scaler_data[good_scan_index[i]-1][1]
+            scaler_array[i][2] = scaler_data[good_scan_index[i]-1][2]
+            # get all MCA1 of good scans from original scans
+            mca_array[i][0] = mca_data[good_scan_index[i]-1][0]
+            # get all MCA2 of good scans from original scans
+            mca_array[i][1] = mca_data[good_scan_index[i]-1][1]
+            # get all MCA3 of good scans from original scans
+            mca_array[i][2] = mca_data[good_scan_index[i]-1][2]
+            # get all MCA4 of good scans from original scans
+            mca_array[i][3] = mca_data[good_scan_index[i]-1][3]
         return energy_array, mca_array, scaler_array
 
 
@@ -370,7 +364,7 @@ class XASProcess(object):
             temp_max = max(sub_mca_array[i])
             if temp_max > v_max:
                 v_max = temp_max
-        # print "v_max: ", v_max
+        print "v_max: ", v_max
 
         plt.scatter(bin_num_for_x, bin_num_for_y, c= sub_mca_array, s=7, linewidths=0, vmax=v_max, vmin=0)
 
