@@ -350,6 +350,7 @@ class XASProcess(object):
         mca_dict = {'SDD1': 0, 'SDD2': 1, 'SDD3': 2, 'SDD4': 3}
         sub_mca_array_index = mca_dict[name]
         sub_mca_array = bin_mca[sub_mca_array_index]
+        sub_mca_array = np.array(sub_mca_array)
 
         num_of_bin = len (bins_mean_array)
         num_of_emission_bins = len(sub_mca_array[0])
@@ -361,8 +362,9 @@ class XASProcess(object):
             bin_num_for_x[bin].fill(bins_mean_array[bin])
 
         # generate a list of number to present 1 - 256 bins for emission energy
-        bin_num_for_y = np.arange(10, (num_of_emission_bins+1)*10, 10)
-
+        bin_num_for_y = np.zeros(shape=(num_of_bin, num_of_emission_bins))
+        bin_num_for_y[0:] = np.arange(10, (num_of_emission_bins + 1) * 10, 10)
+        
         v_max = max(sub_mca_array[0])
         for i in range(1, num_of_bin):
             temp_max = max(sub_mca_array[i])
@@ -370,8 +372,7 @@ class XASProcess(object):
                 v_max = temp_max
         # print "v_max: ", v_max
 
-        for x in range (0, num_of_bin):
-            plt.scatter(bin_num_for_x[x], bin_num_for_y, c= sub_mca_array[x], s=7, linewidths=0, vmax=v_max, vmin=0)
+        plt.scatter(bin_num_for_x, bin_num_for_y, c= sub_mca_array, s=7, linewidths=0, vmax=v_max, vmin=0)
 
         plt.yticks(np.arange(100, 2560, 100.0))
         plt.xlabel('Incident Energy (eV)')
@@ -379,7 +380,7 @@ class XASProcess(object):
         plt.grid()
         plt.show()
         print "Incident Energy range:", bin_num_for_x[0][0], "-", bin_num_for_x[-1][0]
-        print "Emission Energy range:", bin_num_for_y[0], "-", bin_num_for_y[-1]
+        print "Emission Energy range:", bin_num_for_y[0][0], "-", bin_num_for_y[0][-1]
 
     def get_pfy_bin(self, mca_bin_array, start_energy, stop_energy):
 
