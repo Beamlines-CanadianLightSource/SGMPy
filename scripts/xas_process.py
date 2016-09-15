@@ -68,18 +68,18 @@ class XASProcess(object):
         else:
             # print "In else"
             # split the array based on comma symbol
-            bad_scan_index_array = [x.strip() for x in bad_scan_index_str.split(',')]
+            bad_scan_index = [x.strip() for x in bad_scan_index_str.split(',')]
             good_scan_index = range(1, length+1, 1)
-            print "Original scan", scan_num_index
+            # print "Original scan", scan_num_index
             for i in range(0, length):
-                for j in range (0, len(bad_scan_index_array)):
+                for j in range (0, len(bad_scan_index)):
                     # print "i=", i
                     # print "j=", j
                     # print scan_num_index[i]
-                    # print bad_scan_index_array[j]
-                    if scan_num_index[i] == bad_scan_index_array[j]:
-                        print "removed", bad_scan_index_array[j]
-                        good_scan_index.remove(i+1)
+                    # print bad_scan_index[j]
+                    if scan_num_index[i] == bad_scan_index[j]:
+                        print "removed", bad_scan_index[j], ", real scan number is",  scan_num_index[int(bad_scan_index[j])-1]
+                        good_scan_index.remove(int(bad_scan_index[j]))
         print ""
         return good_scan_index
 
@@ -378,7 +378,7 @@ class XASProcess(object):
 
     def get_pfy_bin(self, mca_bin_array, start_energy, stop_energy):
 
-        #print "Getting PFY ROIs"
+        # print "Getting PFY ROIs"
 
         pfy1=[]
         pfy2=[]
@@ -393,8 +393,7 @@ class XASProcess(object):
 
         return pfy1, pfy2, pfy3, pfy4
 
-
-    # plot a kind of average scaler
+    # plot a specific one of the averaged scalers
     def plot_avg_xas(self, name):
         plt.close('all')
         matplotlib.rcParams['figure.figsize'] = (12, 10)
