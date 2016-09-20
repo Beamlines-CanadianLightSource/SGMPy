@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from cStringIO import StringIO
 from open_hdf5 import *
+import time
 
 
 class XASProcess(object):
@@ -94,7 +95,7 @@ class XASProcess(object):
         end_energy = xas_process_para.get_energy_end()
         roi_start = xas_process_para.get_roi_start()
         roi_end = xas_process_para.get_roi_end()
-        bin_interval= xas_process_para.get_bin_interval()
+        bin_interval = xas_process_para.get_bin_interval()
 
         num_of_bins = int((end_energy - start_energy) / bin_interval)
         print "numb_of_bins after calculation", num_of_bins
@@ -104,7 +105,7 @@ class XASProcess(object):
 
         # create bins and assign bins
         edges_array, bins_mean_array = self.create_bins(start_energy, end_energy, num_of_bins)
-        assigned_data_array = self.assign_data(energy_array , edges_array)
+        assigned_data_array = self.assign_data(energy_array , edges_array, num_of_bins)
         
         # calculate mca
         calculate_bin_mca_result = self.calculate_bin_mca(assigned_data_array, mca_array)
@@ -112,11 +113,12 @@ class XASProcess(object):
         empty_bin_front = calculate_bin_mca_result[-2]
         empty_bin_back = calculate_bin_mca_result[-1]
 
-        # calculate bin of mca
+        # calculate scalers (I0, TEY, Diode)
         averaged_scaler = self.calculate_bin_scalers(assigned_data_array, scaler_array, empty_bin_front, empty_bin_back)
+        # calculate pfy of mca
         averaged_pfy_sdd = self.get_pfy_bin(bin_mca, roi_start, roi_end)
 
-        #remove empty bins
+        #remove empty bins in mean_energy_array
         if empty_bin_front == 0 and empty_bin_back == 0:
             self.set_mean_energy_array(bins_mean_array)
         elif empty_bin_front != 0 and empty_bin_back == 0:
@@ -178,9 +180,7 @@ class XASProcess(object):
         # print ""
         return  edges_array, mean_energy_array
 
-
-    def assign_data (self, energy_array, edges):
-        bin_num = len(edges) - 1
+    def assign_data (self, energy_array, edges, bin_num):
         bin_array = [[] for i in range(bin_num)]
         bin_width = (edges[-1] - edges[0]) / bin_num
         # print "The width of a bin is:", bin_width
@@ -198,7 +198,6 @@ class XASProcess(object):
         print "Assign data points completed\n"
         return bin_array
 
-
     def calculate_bin_mca(self, bin_array, mca_array):
         bin_num = len(bin_array)
         empty_bins = 0
@@ -212,7 +211,7 @@ class XASProcess(object):
         print "Start calcualting average of SDD1(MCA1), SDD2(MCA2), SDD3(MCA3) & SDD4(MCA4)..."
 
         for index1 in range (0, bin_num):
-            # get the total number of data points in a particular bins
+            # get the total number of data points in a particular bin
             total_data_point = len(bin_array[index1])
 
             for index2 in range (0, total_data_point):
@@ -220,7 +219,8 @@ class XASProcess(object):
                 index_of_scan = bin_array[index1][index2][0]
                 # get index of data points
                 index_of_data_point = bin_array[index1][index2][1]
-                # print "index_of_scan: ", index_of_scan_2, "  ;  ", "index_of_data_point: ", index_of_data_point
+
+                # print "index_of_scan: ", index_of_scan, "  ;  ", "index_of_data_point: ", index_of_data_point
 
                 # calculate the sum of MCA1
                 mca1_bin_array[index1] = mca1_bin_array[index1] + mca_array[index_of_scan][0][index_of_data_point]
@@ -272,9 +272,10 @@ class XASProcess(object):
         else:
             return mca1_bin_array[:-empty_bins], mca2_bin_array[:-empty_bins], mca3_bin_array[:-empty_bins], mca4_bin_array[:-empty_bins], 0, empty_bins
 
-    def calculate_bin_scalers(self, arrayOfBins, scaler_array, empty_bin_front, empty_bin_back):
+    def calculate_bin_scalers(self, bin_array, scaler_array, empty_bin_front, empty_bin_back):
+        start_time = time.time()
 
-        bin_num = len(arrayOfBins)
+        bin_num = len(bin_array)
         # empty_bins = 0
         tey_bin_array = np.zeros(bin_num)
         i0_bin_array = np.zeros(bin_num)
@@ -283,22 +284,23 @@ class XASProcess(object):
         print "Start calcualting Average of I0, TEY & Diode..."
 
         for index1 in range (0, bin_num):
-            for index2 in range (0, len(arrayOfBins[index1])):
+            # get the total number of data points in a particular bins
+            total_data_point = len(bin_array[index1])
+
+            for index2 in range (0, total_data_point):
                 # get index of scans
-                index_of_scan = arrayOfBins[index1][index2][0]
+                index_of_scan = bin_array[index1][index2][0]
                 # print index_of_scan
                 # get index of data points
-                index_of_data_point = arrayOfBins[index1][index2][1]
-                # print index_of_data_point_2
+                index_of_data_point = bin_array[index1][index2][1]
+                # print index_of_data_point
 
                 # calculate the sum of data (TEY, I0, Diode)
                 tey_bin_array[index1] = tey_bin_array[index1] + scaler_array[index_of_scan][0][index_of_data_point]
                 i0_bin_array[index1] = i0_bin_array[index1] + scaler_array[index_of_scan][1][index_of_data_point]
                 diode_bin_array[index1] = diode_bin_array[index1] + scaler_array[index_of_scan][2][index_of_data_point]
 
-            # get the total number of data points in a particular bins
-            total_data_point = len(arrayOfBins[index1])
-            # print "Bin No.", index1+1, "; it contains ", total_data_point, "data point"   
+                # print "Bin No.", index1+1, "; it contains ", total_data_point, "data point"
 
             if total_data_point == 0:
                 # empty_bins = empty_bins + 1
@@ -320,6 +322,7 @@ class XASProcess(object):
                 # print "Index of bins:", index1, "   Average of Diode:", diode_bin_array[index1]
                 # print
         print "Calculation completed."
+        print("--- %s seconds ---" % (time.time() - start_time))
         print
         # remove empty bins in the front or at the end
         last_bin = bin_num - empty_bin_back
