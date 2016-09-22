@@ -1,11 +1,11 @@
 # Present summary for multiple c scans
 
 import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
 import numpy as np
-from open_spec import *
+import time
 
 def summary_plot(xas_data, name, xas_process_para = None):
+    # start_time = time.time()
     plt.close('all')
     if name == "TEY" or name == "I0" or name == "Diode":
         energy_data = xas_data.get_energy_array()
@@ -29,6 +29,7 @@ def summary_plot(xas_data, name, xas_process_para = None):
         generate_summary_plot_with_pfy(energy_data, mca_data, scan_num, name, start_roi, stop_roi)
     else:
         print "Errors with the name input"
+    # print("--- %s seconds ---" % (time.time() - start_time))
 
 
 def generate_summary_plot_with_pfy(energy_data, mca_data, scan_nums, pfy_name, start_roi, stop_roi):
@@ -101,7 +102,7 @@ def generate_summary_plot_with_scaler(energy_data, scaler_data, scan_nums, scale
         # print len(scaler_data[index][scaler_index])
         
         # print "Generating plot for scan No.", cscan_number
-        plt.scatter(energy_data[index], scan_num_list, c=scaler_data[index][scaler_index],  s=140, linewidths=0, marker='s')
+        plt.scatter(energy_data[index], scan_num_list, c=scaler_data[index][scaler_index],  s=120, linewidths=0, marker='s')
         y_tick.append( str(index+1) + "(" + str(cscan_number) + ")" )
         # print "Generated plot for No.", index+1, "in c scan array.  Real scan number is:", cscan_number
         

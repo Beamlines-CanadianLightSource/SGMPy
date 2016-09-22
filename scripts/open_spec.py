@@ -122,7 +122,8 @@ class OpenMultiCScan(object):
     # open all scans of spectra
     def open_all_xas(self, file_directory):
 
-        start_time = time.time()
+        # start_time = time.time()
+        print "Start opening c-scans."
 
         sgm_file = open_spec_data_file(file_directory)
         counter = 0
@@ -175,7 +176,7 @@ class OpenMultiCScan(object):
         self.set_c_scan(c_scan_num)
         self.set_file_direct(file_directory)
         estimate_xas_process_para = self.estimate_roi(file_directory, c_scan_num)
-        #print("--- %s seconds ---" % (time.time() - start_time))
+        # print("--- %s seconds ---" % (time.time() - start_time))
         return estimate_xas_process_para
 
     def estimate_roi(self, file_directory, scan_num):
@@ -230,7 +231,7 @@ class OpenSingleCScan(object):
     # open a single scan of spectrum
     def open_single_xas(self, file_directory, scan_num):
 
-        start_time = time.time()
+        # start_time = time.time()
 
         print "Opening scan", str(scan_num)
         #print "in", file_directory
