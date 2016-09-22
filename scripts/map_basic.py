@@ -5,6 +5,9 @@ import numpy as np
 import os.path
 
 class SingleMap(object):
+    """
+        Test
+    """
 
     def __init__(self, open_one_cmesh):
         self.hex_x = open_one_cmesh.get_hex_x()
