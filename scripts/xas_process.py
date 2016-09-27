@@ -445,6 +445,7 @@ class XASProcess(object):
         plt.yticks(np.arange(100, 2560, 100.0))
         plt.xlabel('Incident Energy (eV)')
         plt.ylabel('Emission Energy (eV)')
+        plt.title("Excitation Emission Matrix")
         plt.grid()
         plt.show()
         print "Incident Energy range:", bin_num_for_x[0][0], "-", bin_num_for_x[-1][0]
@@ -632,10 +633,9 @@ class XASProcess(object):
         plt.plot(bins_mean_array, division_array)
         plt.xlabel('Energy (eV)')
         str_y_axis = StringIO()
-        str_y_axis.write(dividend)
-        str_y_axis.write(' / ')
-        str_y_axis.write(divisor)
+        str_y_axis.write(dividend + ' / ' + divisor)
         plt.ylabel(str_y_axis.getvalue())
+        plt.title("averaged %s / average %s"%(dividend, divisor))
         plt.show()
         self.set_normalized_array(division_array)
 

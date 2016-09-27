@@ -85,7 +85,7 @@ def generate_summary_plot_with_pfy(energy_data, mca_data, scan_nums, pfy_name, s
     plt.xlabel('Incident Energy (eV)')
     plt.ylabel('Scan Numbers')
     plt.colorbar()
-    plt.title(['color is :', pfy_name])
+    plt.title(["Summary Plot", "color is :", pfy_name])
     y_axis_height = total_cscan_num * 0.25
     # change the figure configuration
     fig = plt.gcf()
@@ -128,7 +128,7 @@ def generate_summary_plot_with_scaler(energy_data, scaler_data, scan_nums, scale
         # print len(scaler_data[index][scaler_index])
         
         # print "Generating plot for scan No.", cscan_number
-        plt.scatter(energy_data[index], scan_num_list, c=scaler_data[index][scaler_index],  s=120, linewidths=0, marker='s')
+        plt.scatter(energy_data[index], scan_num_list, c=scaler_data[index][scaler_index],  s=140, linewidths=0, marker='s')
         y_tick.append( str(index+1) + "(" + str(cscan_number) + ")" )
         # print "Generated plot for No.", index+1, "in c scan array.  Real scan number is:", cscan_number
         
@@ -138,7 +138,7 @@ def generate_summary_plot_with_scaler(energy_data, scaler_data, scan_nums, scale
     plt.xlabel('Incident Energy (eV)')
     plt.ylabel('Scan Numbers')
     plt.colorbar()
-    plt.title(['color is :', str_scaler_name])
+    plt.title(["Summary Plot", "color is :", str_scaler_name])
     y_axis_height = total_cscan_num * 0.25
     # change the figure configuration
     fig = plt.gcf()
