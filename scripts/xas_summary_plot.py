@@ -5,6 +5,13 @@ import numpy as np
 import time
 
 def summary_plot(xas_data, name, xas_process_para = None):
+    """
+    The functions is to plot a summary plot py invoking either generate_summary_plot_with_pfy or generate_summary_plot_with_scaler
+    :param xas_data: the original data set consists of energy, sdd and the other scalers
+    :param name: a string of sdd (mca) name
+    :param xas_process_para: a XASProcessPara type object has parameters including roi and energy range
+    :return: None
+    """
     # start_time = time.time()
     plt.close('all')
     if name == "TEY" or name == "I0" or name == "Diode":
@@ -33,6 +40,17 @@ def summary_plot(xas_data, name, xas_process_para = None):
 
 
 def generate_summary_plot_with_pfy(energy_data, mca_data, scan_nums, pfy_name, start_roi, stop_roi):
+    """
+    Generate a specific summary plot with pfy_sdd with original data
+    :param energy_data: the energy data from original data file
+    :param mca_data: the mca data from original data file
+    :param scan_nums: a list of index for c-scans
+    :param pfy_name: a string of pfy_sdd name
+    :param start_roi: the start range for region of interest
+    :param stop_roi: the stop range for region of interest
+    :return: None
+    """
+
     print ("Start plotting summary plot of", pfy_name, "...")
 
     # MCA is SDD; after getting PFY of ROI then it becomes PFY_SDD
@@ -79,6 +97,14 @@ def generate_summary_plot_with_pfy(energy_data, mca_data, scan_nums, pfy_name, s
 
 
 def generate_summary_plot_with_scaler(energy_data, scaler_data, scan_nums, scaler_name):
+    """
+    Generate a specific summary plot with scalers with original data
+    :param energy_data: the energy data from original data file
+    :param scaler_data: the scaler data from original data file
+    :param scan_nums: a list of index for c-scans
+    :param scaler_name: a string of scaler name
+    :return: None
+    """
     print ("Start plotting summary plot of", scaler_name, "...")
 
     scaler_dict = {'TEY': 0, 'I0': 1, 'Diode':2}
@@ -124,6 +150,15 @@ def generate_summary_plot_with_scaler(energy_data, scaler_data, scan_nums, scale
 
 
 def get_one_pfy_from_all_scan(mca_data, mca_name, enStart, enStop):
+
+    """
+    Get one of 4 pfy_sdd from all c-scans opened
+    :param mca_data:
+    :param mca_name:
+    :param enStart: the start range for region of interest
+    :param enStop: the end range for region of interest
+    :return: a 2D list consists 4 pfy_sdd sub-list
+    """
 
     if mca_name == "MCA1":
         mca = 0
