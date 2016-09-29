@@ -408,7 +408,7 @@ class XASProcess(object):
         :return: None
         """
 
-        matplotlib.rcParams['figure.figsize'] = (12, 10)
+        matplotlib.rcParams['figure.figsize'] = (14, 10)
 
         print "Plotting incident v emission energy coordinate based on average of SDD(MCA)"
         bins_mean_array = self.get_mean_energy_array()
@@ -445,6 +445,7 @@ class XASProcess(object):
         plt.yticks(np.arange(100, 2560, 100.0))
         plt.xlabel('Incident Energy (eV)')
         plt.ylabel('Emission Energy (eV)')
+        plt.colorbar()
         plt.title("Excitation Emission Matrix")
         plt.grid()
         plt.show()
@@ -635,7 +636,7 @@ class XASProcess(object):
         str_y_axis = StringIO()
         str_y_axis.write(dividend + ' / ' + divisor)
         plt.ylabel(str_y_axis.getvalue())
-        plt.title("averaged %s / average %s"%(dividend, divisor))
+        plt.title("averaged %s / averaged %s"%(dividend, divisor))
         plt.show()
         self.set_normalized_array(division_array)
 

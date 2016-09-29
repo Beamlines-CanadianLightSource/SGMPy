@@ -83,9 +83,9 @@ def generate_summary_plot_with_pfy(energy_data, mca_data, scan_nums, pfy_name, s
     plt.yticks(np.arange(0+1, total_cscan_num+1, 1.0), y_tick)
     # add lable for x and y axis
     plt.xlabel('Incident Energy (eV)')
-    plt.ylabel('Scan Numbers')
+    plt.ylabel('Scan Index (Scan Number)')
     plt.colorbar()
-    plt.title(["Summary Plot", "color is :", pfy_name])
+    plt.title("Summary Plot (Intensity: %s)" %(pfy_name))
     y_axis_height = total_cscan_num * 0.25
     # change the figure configuration
     fig = plt.gcf()
@@ -136,9 +136,9 @@ def generate_summary_plot_with_scaler(energy_data, scaler_data, scan_nums, scale
     plt.yticks(np.arange(0+1, total_cscan_num+1, 1.0), y_tick)
     # add lable for x and y axis
     plt.xlabel('Incident Energy (eV)')
-    plt.ylabel('Scan Numbers')
+    plt.ylabel('Scan Index (Scan Number)')
     plt.colorbar()
-    plt.title(["Summary Plot", "color is :", str_scaler_name])
+    plt.title("Summary Plot (Intensity: %s)"%(str_scaler_name))
     y_axis_height = total_cscan_num * 0.25
     # change the figure configuration
     fig = plt.gcf()
