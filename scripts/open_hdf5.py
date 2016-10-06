@@ -15,12 +15,21 @@ from xas_process_para import XASProcessPara
 #         return scan_num_array
 
 def check_scan_type(scan):
+    """
+
+    :param scan: a scan array contains all raw data read from hdf5
+    :return: type name of the scan
+    """
     temp_array = scan['command'][0].split( )
-    scan_name = temp_array[0]
-    return scan_name
+    scan_type = temp_array[0]
+    return scan_type
 
 
 class HDF5MultiCScan(object):
+
+    """
+    HDF5MultiCScan class is to open and read data from all non-empty c-scans
+    """
 
     def __init__(self):
         self.energy_array = None
@@ -61,6 +70,12 @@ class HDF5MultiCScan(object):
 
     # open and read multiple c scan from the data file
     def read_all_hdf5_xas(self, file_directory):
+        """
+        read data from hdf5
+        :param file_directory: the relative path of file directory
+        :return: estimate_xas_process_para
+        """
+
         energy_array = []
         scaler_array = []
         mca_array = []
@@ -100,6 +115,12 @@ class HDF5MultiCScan(object):
         return estimate_xas_process_para
 
     def estimate_roi(self, file_directory, scan_number):
+        """
+        Calculate estimated roi using energy range
+        :param file_directory:
+        :param scan_number: a list contains all the scan number
+        :return: estimate_xas_process_para
+        """
         with h5py.File(file_directory, 'r') as hf:
             scan = hf.get(scan_number[0])
             string =  scan['command'][0]
@@ -119,6 +140,10 @@ class HDF5MultiCScan(object):
         return estimate_xas_process_para
 
 class HDF5SingleCScan(object):
+
+    """
+    HDF5SingleCScan class is to open and get data from a specific c-scan
+    """
 
     def __init__(self):
         self.energy_array = None
@@ -143,6 +168,13 @@ class HDF5SingleCScan(object):
         return self.file_direct
 
     def read_hdf5_xas(self, file_directory, scan_number):
+        """
+        Open and read a specific c-scan data from HDF5 file
+        :param file_directory: the file directory
+        :param scan_number: the specific scan to open
+        :return: whether the scan that the system opens previously is c-scan or not
+        """
+
         energy_array = []
         scaler_array = []
         mca_array = []
@@ -179,6 +211,10 @@ class HDF5SingleCScan(object):
                 return "It is not a c scan."
 
 class HDF5SingleCmesh(object):
+    """
+        Open and read a specific cmesh-scan data from HDF5 file
+    """
+
 
     def __init__(self):
         self.hex_x = None
@@ -203,6 +239,12 @@ class HDF5SingleCmesh(object):
         return self.scan_num
 
     def read_hdf5_map(self, file_directory, scan_num):
+        """
+        read cmesh-scan (map) from specific scan
+        :param file_directory: the file directory
+        :param scan_number: the specific scan to open
+        :return: None
+        """
         hex_x_array = []
         hex_y_array = []
         scaler_array = []
