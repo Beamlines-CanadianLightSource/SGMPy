@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # SGMPy documentation build configuration file, created by
-# sphinx-quickstart on Thu Sep 22 12:48:05 2016.
+# sphinx-quickstart on Tue Oct 11 09:21:28 2016.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -14,8 +14,8 @@
 
 import sys
 import os
-sys.path.append('/Users/Henry/Documents/GitHub/SGMPy/')
 
+sys.path.append('C:\Users\hanr\GitHub\SGMPy')
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.

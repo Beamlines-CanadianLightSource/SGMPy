@@ -37,8 +37,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-scripts">
-<span id="scripts-package"></span><h1>scripts package<a class="headerlink" href="#module-scripts" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="scripts-package">
+<h1>scripts package<a class="headerlink" href="#scripts-package" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
@@ -346,10 +346,15 @@
 <dt id="scripts.open_hdf5.HDF5MultiCScan">
 <em class="property">class </em><code class="descclassname">scripts.open_hdf5.</code><code class="descname">HDF5MultiCScan</code><a class="headerlink" href="#scripts.open_hdf5.HDF5MultiCScan" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>HDF5MultiCScan class is to open and read data from all non-empty c-scans</p>
 <dl class="method">
 <dt id="scripts.open_hdf5.HDF5MultiCScan.estimate_roi">
 <code class="descname">estimate_roi</code><span class="sig-paren">(</span><em>file_directory</em>, <em>scan_number</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5MultiCScan.estimate_roi" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Calculate estimated roi using energy range
+:param file_directory:
+:param scan_number: a list contains all the scan number
+:return: estimate_xas_process_para</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="scripts.open_hdf5.HDF5MultiCScan.get_c_scan">
@@ -379,7 +384,10 @@
 <dl class="method">
 <dt id="scripts.open_hdf5.HDF5MultiCScan.read_all_hdf5_xas">
 <code class="descname">read_all_hdf5_xas</code><span class="sig-paren">(</span><em>file_directory</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5MultiCScan.read_all_hdf5_xas" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>read data from hdf5
+:param file_directory: the relative path of file directory
+:return: estimate_xas_process_para</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="scripts.open_hdf5.HDF5MultiCScan.set_c_scan">
@@ -412,6 +420,7 @@
 <dt id="scripts.open_hdf5.HDF5SingleCScan">
 <em class="property">class </em><code class="descclassname">scripts.open_hdf5.</code><code class="descname">HDF5SingleCScan</code><a class="headerlink" href="#scripts.open_hdf5.HDF5SingleCScan" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>HDF5SingleCScan class is to open and get data from a specific c-scan</p>
 <dl class="method">
 <dt id="scripts.open_hdf5.HDF5SingleCScan.get_energy_array">
 <code class="descname">get_energy_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5SingleCScan.get_energy_array" title="Permalink to this definition">¶</a></dt>
@@ -440,7 +449,11 @@
 <dl class="method">
 <dt id="scripts.open_hdf5.HDF5SingleCScan.read_hdf5_xas">
 <code class="descname">read_hdf5_xas</code><span class="sig-paren">(</span><em>file_directory</em>, <em>scan_number</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5SingleCScan.read_hdf5_xas" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Open and read a specific c-scan data from HDF5 file
+:param file_directory: the file directory
+:param scan_number: the specific scan to open
+:return: whether the scan that the system opens previously is c-scan or not</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -448,6 +461,7 @@
 <dt id="scripts.open_hdf5.HDF5SingleCmesh">
 <em class="property">class </em><code class="descclassname">scripts.open_hdf5.</code><code class="descname">HDF5SingleCmesh</code><a class="headerlink" href="#scripts.open_hdf5.HDF5SingleCmesh" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Open and read a specific cmesh-scan data from HDF5 file</p>
 <dl class="method">
 <dt id="scripts.open_hdf5.HDF5SingleCmesh.get_hex_x">
 <code class="descname">get_hex_x</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5SingleCmesh.get_hex_x" title="Permalink to this definition">¶</a></dt>
@@ -476,13 +490,32 @@
 <dl class="method">
 <dt id="scripts.open_hdf5.HDF5SingleCmesh.read_hdf5_map">
 <code class="descname">read_hdf5_map</code><span class="sig-paren">(</span><em>file_directory</em>, <em>scan_num</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5SingleCmesh.read_hdf5_map" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>read cmesh-scan (map) from specific scan
+:param file_directory: the file directory
+:param scan_number: the specific scan to open
+:return: None</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="function">
 <dt id="scripts.open_hdf5.check_scan_type">
 <code class="descclassname">scripts.open_hdf5.</code><code class="descname">check_scan_type</code><span class="sig-paren">(</span><em>scan</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.check_scan_type" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>scan</strong> &#8211; a scan array contains all raw data read from hdf5</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">type name of the scan</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="scripts.open_hdf5.get_abs_path">
+<code class="descclassname">scripts.open_hdf5.</code><code class="descname">get_abs_path</code><span class="sig-paren">(</span><em>rel_path</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.get_abs_path" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -757,113 +790,210 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <dl class="method">
 <dt id="scripts.xas_process.XASProcess.assign_data">
-<code class="descname">assign_data</code><span class="sig-paren">(</span><em>energy_array</em>, <em>edges</em>, <em>bin_num</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.assign_data" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descname">assign_data</code><span class="sig-paren">(</span><em>energy_array</em>, <em>edges</em>, <em>bin_num</em>, <em>scaler_array</em>, <em>mca_array</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.assign_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iteration and assign data points from different c-scans into desired bins
+:param energy_array: a list contains mean energy of bins
+:param edges: a list contains edges of bins
+:param bin_num: total number of bins were created in the previous steps
+:return: a 2D list contains distribution information of scan number and associate data points for each bin</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="scripts.xas_process.XASProcess.calculate_bin_mca">
-<code class="descname">calculate_bin_mca</code><span class="sig-paren">(</span><em>bin_array</em>, <em>mca_array</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.calculate_bin_mca" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descname">calculate_bin_mca</code><span class="sig-paren">(</span><em>bin_array</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.calculate_bin_mca" title="Permalink to this definition">¶</a></dt>
+<dd><p>Averaged the average mca(sdd)
+:param bin_array: a 2D list contains distribution information of scan number and associate data points for each bin
+:param mca_array: a array has 4 mca (sdd) without bad scan.
+:return: 4 binned and averaged pfy_mca</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="scripts.xas_process.XASProcess.calculate_bin_scalers">
-<code class="descname">calculate_bin_scalers</code><span class="sig-paren">(</span><em>bin_array</em>, <em>scaler_array</em>, <em>empty_bin_front</em>, <em>empty_bin_back</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.calculate_bin_scalers" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descname">calculate_bin_scalers</code><span class="sig-paren">(</span><em>bin_array</em>, <em>empty_bin_front</em>, <em>empty_bin_back</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.calculate_bin_scalers" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>bin_array</strong> &#8211; a 2D array contains distribution information of scan number and associate data points for each bin</li>
+<li><strong>scaler_array</strong> &#8211; a array has 3 different mca (sdd) without bad scan</li>
+<li><strong>empty_bin_front</strong> &#8211; a integer show the number of empty bins in the front</li>
+<li><strong>empty_bin_back</strong> &#8211; a integer show the number of empty bins in the back</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="scripts.xas_process.XASProcess.create_bins">
 <code class="descname">create_bins</code><span class="sig-paren">(</span><em>start_energy</em>, <em>end_energy</em>, <em>num_of_bins</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.create_bins" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Generate bins and get boundary of bins and mean energy of bins
+:param start_energy: this is an int number of beginning energy for c-scans
+:param end_energy: this is an int number of stopping energy for c-scans
+:param num_of_bins: total number of bins that the mehod will crate
+:return:</p>
+<blockquote>
+<div>edges of bins as an list
+and return mid-point of bins in a list&#8221;</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body">create_bins (startEnergy = 690, endEnergy = 750, numberOfBins = 600)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="scripts.xas_process.XASProcess.division">
 <code class="descname">division</code><span class="sig-paren">(</span><em>pfy_data</em>, <em>dividend</em>, <em>divisor</em>, <em>scaler_data=None</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.division" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Normalization process without carbon.
+:param pfy_data: averaged pfy data array
+:param dividend: dividend of the normalization cul
+:param divisor: divisor of the normalization cul
+:param scaler_data: averaged scaler data array
+:return: a normalized data array</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="scripts.xas_process.XASProcess.generate_good_scan_index">
 <code class="descname">generate_good_scan_index</code><span class="sig-paren">(</span><em>opened_xas_data</em>, <em>bad_scan_index_str</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.generate_good_scan_index" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This method to generate good scan index and eliminate bad scans by passing in bad scan index
+:param opened_xas_data: a OpenMultiCScan type object contains all original info of multiple c-scans
+:param bad_scan_index_str: str conatains index of bad scans that need to be eliminate
+:return: a list of good scan index (index may not as sams as the original scan numbers)</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="scripts.xas_process.XASProcess.get_data_type">
 <code class="descname">get_data_type</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.get_data_type" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns single scan or multiple scans.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="scripts.xas_process.XASProcess.get_file_direct">
 <code class="descname">get_file_direct</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.get_file_direct" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return the original data file directory.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="scripts.xas_process.XASProcess.get_good_datapoint">
 <code class="descname">get_good_datapoint</code><span class="sig-paren">(</span><em>good_scan_index</em>, <em>energy_data</em>, <em>mca_data</em>, <em>scaler_data</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.get_good_datapoint" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Removed all the bad scans from the originla data set
+:param good_scan_index: a list contains all good scan index
+:param energy_data: original energy data
+:param mca_data: original mca (sdd) data
+:param scaler_data: originla scalers data (TEY, I0, Diode)
+:return: energy_array, mca_array and scaler_array with no data pointsre</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="scripts.xas_process.XASProcess.get_mean_energy_array">
 <code class="descname">get_mean_energy_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.get_mean_energy_array" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return the energy array which is the mid-point of bins</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="scripts.xas_process.XASProcess.get_normalized_array">
 <code class="descname">get_normalized_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.get_normalized_array" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return a specific normalized data array.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="scripts.xas_process.XASProcess.get_pfy_bin">
 <code class="descname">get_pfy_bin</code><span class="sig-paren">(</span><em>mca_bin_array</em>, <em>start_energy</em>, <em>stop_energy</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.get_pfy_bin" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Use a specific Region of Interest to calculate pyf_sdd
+:param mca_bin_array: averaged and binned eneryg aray
+:param start_energy: this is an int number of beginning energy of scans
+:param stop_energy: this is an int number of stopping energy
+:return: 4 lists of pfy_sdd</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="scripts.xas_process.XASProcess.get_pfy_sdd_averaged_array">
 <code class="descname">get_pfy_sdd_averaged_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.get_pfy_sdd_averaged_array" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return averaged pfy_sdd array</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="scripts.xas_process.XASProcess.get_scaler_averaged_array">
 <code class="descname">get_scaler_averaged_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.get_scaler_averaged_array" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return averaged scaler array</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="scripts.xas_process.XASProcess.get_sdd_binned_array">
 <code class="descname">get_sdd_binned_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.get_sdd_binned_array" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return binned sdd array</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="scripts.xas_process.XASProcess.plot_avg_xas">
 <code class="descname">plot_avg_xas</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.plot_avg_xas" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Generate a single averaged plot, it can distinguish pfy_sdd and the other scalers
+:param name: a string of scaler&#8217;s name (eg. SDD1, SDD2, TEY, IO)
+:return: None</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="scripts.xas_process.XASProcess.plot_avg_xas_all">
 <code class="descname">plot_avg_xas_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.plot_avg_xas_all" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Generate all plots (matplotlib figures) for averaged data at once
+:return: None</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="scripts.xas_process.XASProcess.plot_avg_xas_pfy">
 <code class="descname">plot_avg_xas_pfy</code><span class="sig-paren">(</span><em>mean_energy_array</em>, <em>pfy_data</em>, <em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.plot_avg_xas_pfy" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Generate a specific pfy_sdd plot (matplotlib figure)
+:param mean_energy_array: mean energy of bins (x-axis)
+:param pfy_data: averaged pfy_sdd data (y-axis)
+:param name: the string of pfy_sdd name
+:return: None</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="scripts.xas_process.XASProcess.plot_avg_xas_scaler">
 <code class="descname">plot_avg_xas_scaler</code><span class="sig-paren">(</span><em>mean_energy_array</em>, <em>scaler_data</em>, <em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.plot_avg_xas_scaler" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Generate TEY, I0 or Diode plot (matplotlib figure)
+:param mean_energy_array: mean energy of bins (x-axis)
+:param scaler_data: averaged scaler data (y-axis)
+:param name: the string of scaler name
+:return: None</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="scripts.xas_process.XASProcess.plot_division">
 <code class="descname">plot_division</code><span class="sig-paren">(</span><em>dividend</em>, <em>divisor</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.plot_division" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Plot the normalized data (not including carbon)
+:param dividend: string of dividend name
+:param divisor:  string of divisor name
+:return: None</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="scripts.xas_process.XASProcess.plot_excitation_emission_matrix">
 <code class="descname">plot_excitation_emission_matrix</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.plot_excitation_emission_matrix" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Generate Excitation Emission Matrix for identify Region of Interest
+:param name: a string of mca (sdd) name
+:return: None</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="scripts.xas_process.XASProcess.process_xas">
 <code class="descname">process_xas</code><span class="sig-paren">(</span><em>good_scan_index</em>, <em>opened_xas_data</em>, <em>xas_process_para</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.process_xas" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>The method is to execute all the related binning and averaging calculation and get binned and averaged data
+:param good_scan_index: a list contains all the good scan index
+:param opened_xas_data: a OpenMultiCScan type object contains all original info of multiple c-scans
+:param xas_process_para:  a XASProcessPara type object has parameters including roi and energy range
+:return: None</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="scripts.xas_process.XASProcess.set_file_direct">
@@ -957,26 +1087,54 @@
 <dl class="function">
 <dt id="scripts.xas_summary_plot.generate_summary_plot_with_pfy">
 <code class="descclassname">scripts.xas_summary_plot.</code><code class="descname">generate_summary_plot_with_pfy</code><span class="sig-paren">(</span><em>energy_data</em>, <em>mca_data</em>, <em>scan_nums</em>, <em>pfy_name</em>, <em>start_roi</em>, <em>stop_roi</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_summary_plot.generate_summary_plot_with_pfy" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Generate a specific summary plot with pfy_sdd with original data
+:param energy_data: the energy data from original data file
+:param mca_data: the mca data from original data file
+:param scan_nums: a list of index for c-scans
+:param pfy_name: a string of pfy_sdd name
+:param start_roi: the start range for region of interest
+:param stop_roi: the stop range for region of interest
+:return: None</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="scripts.xas_summary_plot.generate_summary_plot_with_scaler">
 <code class="descclassname">scripts.xas_summary_plot.</code><code class="descname">generate_summary_plot_with_scaler</code><span class="sig-paren">(</span><em>energy_data</em>, <em>scaler_data</em>, <em>scan_nums</em>, <em>scaler_name</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_summary_plot.generate_summary_plot_with_scaler" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Generate a specific summary plot with scalers with original data
+:param energy_data: the energy data from original data file
+:param scaler_data: the scaler data from original data file
+:param scan_nums: a list of index for c-scans
+:param scaler_name: a string of scaler name
+:return: None</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="scripts.xas_summary_plot.get_one_pfy_from_all_scan">
 <code class="descclassname">scripts.xas_summary_plot.</code><code class="descname">get_one_pfy_from_all_scan</code><span class="sig-paren">(</span><em>mca_data</em>, <em>mca_name</em>, <em>enStart</em>, <em>enStop</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_summary_plot.get_one_pfy_from_all_scan" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Get one of 4 pfy_sdd from all c-scans opened
+:param mca_data:
+:param mca_name:
+:param enStart: the start range for region of interest
+:param enStop: the end range for region of interest
+:return: a 2D list consists 4 pfy_sdd sub-list</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="scripts.xas_summary_plot.summary_plot">
 <code class="descclassname">scripts.xas_summary_plot.</code><code class="descname">summary_plot</code><span class="sig-paren">(</span><em>xas_data</em>, <em>name</em>, <em>xas_process_para=None</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_summary_plot.summary_plot" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>The functions is to plot a summary plot py invoking either generate_summary_plot_with_pfy or generate_summary_plot_with_scaler
+:param xas_data: the original data set consists of energy, sdd and the other scalers
+:param name: a string of sdd (mca) name
+:param xas_process_para: a XASProcessPara type object has parameters including roi and energy range
+:return: None</p>
+</dd></dl>
 
 </div>
 <div class="section" id="module-scripts.xas_tool">
 <span id="scripts-xas-tool-module"></span><h2>scripts.xas_tool module<a class="headerlink" href="#module-scripts.xas_tool" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-scripts">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-scripts" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -1003,6 +1161,7 @@
 <li><a class="reference internal" href="#module-scripts.xas_process_para">scripts.xas_process_para module</a></li>
 <li><a class="reference internal" href="#module-scripts.xas_summary_plot">scripts.xas_summary_plot module</a></li>
 <li><a class="reference internal" href="#module-scripts.xas_tool">scripts.xas_tool module</a></li>
+<li><a class="reference internal" href="#module-scripts">Module contents</a></li>
 </ul>
 </li>
 </ul>

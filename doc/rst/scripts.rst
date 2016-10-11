@@ -1,11 +1,6 @@
 scripts package
 ===============
 
-.. automodule:: scripts
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 Submodules
 ----------
 
@@ -114,3 +109,10 @@ scripts.xas_tool module
     :show-inheritance:
 
 
+Module contents
+---------------
+
+.. automodule:: scripts
+    :members:
+    :undoc-members:
+    :show-inheritance:
