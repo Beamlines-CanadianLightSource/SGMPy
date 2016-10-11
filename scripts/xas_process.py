@@ -4,7 +4,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 from cStringIO import StringIO
-from open_hdf5 import *
+# from open_hdf5 import *
 import time
 
 
@@ -539,7 +539,7 @@ class XASProcess(object):
         print "Plotting average XAS."    
         plt.close('all')
 
-        matplotlib.rcParams['figure.figsize'] = (14, 20)
+        matplotlib.rcParams['figure.figsize'] = (14, 22)
 
         en = self.get_mean_energy_array()
         scaler_array = self.get_scaler_averaged_array()
@@ -549,44 +549,50 @@ class XASProcess(object):
         i0 = scaler_array[1]
         diode = scaler_array[2]
 
-        plt.figure(1)
         plt.subplot(4, 2, 1)
         plt.plot(en, tey)
         # add lable for x and y axis
         plt.xlabel('Energy (eV)')
         plt.ylabel('TEY')
+        plt.title('Binned(Averaged) TEY')
 
         plt.subplot(4, 2, 2)
         plt.plot(en, i0)
         plt.xlabel('Energy (eV)')
         plt.ylabel('I0')
+        plt.title('Binned(Averaged) I0')
 
         plt.subplot(4, 2, 3)
         plt.plot(en, diode)
         plt.xlabel('Energy (eV)')
         plt.ylabel('Diode')
+        plt.title('Binned(Averaged) Diode')
 
         plt.subplot(4, 2, 5)
         plt.plot(en, pfy_data[0])
         plt.xlabel('Energy (eV)')
         plt.ylabel('PFY_SDD1')
+        plt.title('Binned(Averaged) PFY_SDD1')
+
 
         plt.subplot(4, 2, 6)
         plt.plot(en, pfy_data[1])
         plt.xlabel('Energy (eV)')
         plt.ylabel('PFY_SDD2')
+        plt.title('Binned(Averaged) PFY_SDD2')
 
         plt.subplot(4, 2, 7)
         plt.plot(en, pfy_data[2])
         plt.xlabel('Energy (eV)')
         plt.ylabel('PFY_SDD3')
+        plt.title('Binned(Averaged) PFY_SDD3')
 
         plt.subplot(4, 2, 8)
         plt.plot(en, pfy_data[3])
         plt.xlabel('Energy (eV)')
         plt.ylabel('PFY_SDD4')
+        plt.title('Binned(Averaged) PFY_SDD4')
 
-        plt.suptitle("Binned and averaged data")
         plt.show()
 
     def division(self, pfy_data, dividend, divisor, scaler_data = None):
@@ -639,7 +645,7 @@ class XASProcess(object):
         str_y_axis = StringIO()
         str_y_axis.write(dividend + ' / ' + divisor)
         plt.ylabel(str_y_axis.getvalue())
-        plt.title("averaged %s / averaged %s"%(dividend, divisor))
+        plt.title("Averaged %s / Averaged %s"%(dividend, divisor))
         plt.show()
         self.set_normalized_array(division_array)
 
@@ -656,13 +662,26 @@ class XASProcessCarbon(object):
     def get_blank_xas_process_data(self):
         return self.blank_xas_process_data
 
-    def carbon_normalize(self):
+    def carbon_normalize(self, dividend, divisor):
         plt.close("all")
         matplotlib.rcParams['figure.figsize'] = (12, 10)
-
         xas_process_data = self.get_xas_process_data()
         blank_xas_process_data = self.get_blank_xas_process_data()
-        pfy_sdd_normalized = np.array(xas_process_data.get_pfy_sdd_averaged_array()[2]) / np.array(blank_xas_process_data.get_pfy_sdd_averaged_array()[0])
-        plt.close('all')
+
+        pfy_sdd_xas_dict = {'PFY_SDD1': 0, 'PFY_SDD2': 1, 'PFY_SDD3': 2, 'PFY_SDD4': 3}
+        scaler_xas_dict = {'TEY': 0, 'I0': 1, 'Diode': 2}
+
+        if dividend == 'PFY_SDD1' or  dividend == 'PFY_SDD2' or dividend == 'PFY_SDD3' or dividend == 'PFY_SDD4':
+            dividend_array = np.array(xas_process_data.get_pfy_sdd_averaged_array()[pfy_sdd_xas_dict[dividend]])
+        else:
+            dividend_array = np.array(xas_process_data.get_scaler_averaged_array()[scaler_xas_dict[dividend]])
+
+        if divisor == 'PFY_SDD1' or divisor == 'PFY_SDD2' or divisor == 'PFY_SDD3' or divisor == 'PFY_SDD4':
+            divisor_array = np.array(blank_xas_process_data.get_pfy_sdd_averaged_array()[pfy_sdd_xas_dict[divisor]])
+        else:
+            divisor_array = np.array(blank_xas_process_data.get_scaler_averaged_array()[scaler_xas_dict[divisor]])
+
+        pfy_sdd_normalized = np.array(dividend_array / divisor_array)
         plt.plot(xas_process_data.get_mean_energy_array(), pfy_sdd_normalized)
+        plt.title("Averaged %s / Blank Averaged %s"%(dividend, divisor))
         plt.show()
