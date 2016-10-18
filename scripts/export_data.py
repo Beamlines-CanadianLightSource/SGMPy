@@ -28,18 +28,36 @@ class ExportData:
     def get_comment_details(self, comments):
         split_comma = []
         split_dot = []
+        split_colon = []
         for i in range(0, len(comments)):
-            split_comma.append(comments[i].split(','))      
+            temp_arr = comments[i].split(',')
+            # print temp_arr
+            for i in range (len(temp_arr)):
+                split_comma.append(temp_arr[i])
+        print split_comma[0:]
+        # split dot with white space
         for i in range(0, len(split_comma)):
-            for j in range(0, len(split_comma[i])):
-                split_dot.append(split_comma[i][j].split(':'))
+            temp_arr = split_comma[i].split('. ')
+            # print temp_arr
+            for i in range (len(temp_arr)):
+                split_dot.append(temp_arr[i])
+        # split colon
+        print split_dot[0:]
+        for i in range(0, len(split_dot)):
+            split_colon.append(split_dot[i].split(':'))
+        print split_colon[0:]
 
-        for i in range (0, len(split_dot)):
-            if split_dot[i][0] == ' Grating':
-                grating = split_dot[i][1].strip()
-                exit_slit = split_dot[i+1][-1].strip()
-                stripe = split_dot[i+2][-1].strip()
-        return grating[:-1], exit_slit, stripe[:-1]
+
+        for i in range (0, len(split_colon)):
+            if split_colon[i][0] == ' Photon Energy':
+                photon_energy = split_colon[i][1].strip()
+            if split_colon[i][0] == ' Grating':
+                grating = split_colon[i][1].strip()
+            if split_colon[i][0] == ' Exit Slit':
+                exit_slit = split_colon[i][1].strip()
+            if split_colon[i][0] == ' Stripe':
+                stripe = split_colon[i][1].strip()
+        return photon_energy, grating[:-1], exit_slit, stripe[:-1]
 
     # get comments and date from hdf5 data file
     def get_header_hdf5(self, file_directory):
@@ -114,12 +132,14 @@ class ExportData:
             try:
                 date = self.get_date_time(opened_file)
                 comments = self.get_comments(origin_file_directory)
-                grating, exit_slit, stripe = self.get_comment_details(comments)
+                photon_energy, grating, exit_slit, stripe = self.get_comment_details(comments)
             except UnboundLocalError:
+                photon_energy = "N/A"
                 grating = "N/A"
                 exit_slit = "N/A"
                 stripe = "N/A"
         else:
+            # need to add a new function to get photon energy of hdf5
             comments, date = self.get_header_hdf5(origin_file_directory)
             grating = self.get_grating_hdf5(comments)
             exit_slit, stripe = self.get_exit_slit_and_stripe(comments)
@@ -134,6 +154,8 @@ class ExportData:
             str_origin_file_name = "# Beamline.origin-filename: " + original_file_name + "\n"
             out_file.write(str_origin_file_name)
             out_file.write("# Beamline.name: SGM\n")
+            str_photon_energy = "# Beamline.photon-energy: "+ photon_energy + "\n"
+            out_file.write(str_photon_energy)
             str_grating = "# Beamline.grating: " + grating + "\n"
             out_file.write(str_grating)
             str_stripe = "# Beamline.stripe: " + stripe + "\n"
@@ -167,12 +189,14 @@ class ExportData:
             try:
                 date = self.get_date_time(opened_file)
                 comments = self.get_comments(origin_file_directory)
-                grating, exit_slit, stripe = self.get_comment_details(comments)
+                photon_energy, grating, exit_slit, stripe = self.get_comment_details(comments)
             except UnboundLocalError:
+                photon_energy = "N/A"
                 grating = "N/A"
                 exit_slit = "N/A"
                 stripe = "N/A"
         else:
+            # need to add a new function to get photon energy of hdf5
             comments, date = self.get_header_hdf5(origin_file_directory)
             grating = self.get_grating_hdf5(comments)
             exit_slit, stripe = self.get_exit_slit_and_stripe(comments)
@@ -188,6 +212,8 @@ class ExportData:
             str_origin_file_name = "# Beamline.origin-filename: " + original_file_name + "\n"
             out_file.write(str_origin_file_name)
             out_file.write("# Beamline.name: SGM\n")
+            str_photon_energy = "# Beamline.photon-energy: "+ photon_energy + "\n"
+            out_file.write(str_photon_energy)
             str_grating = "# Beamline.grating: " + grating + "\n"
             out_file.write(str_grating)
             str_stripe = "# Beamline.stripe: " + stripe + "\n"
@@ -222,12 +248,14 @@ class ExportData:
             try:
                 date = self.get_date_time(opened_file)
                 comments = self.get_comments(origin_file_directory)
-                grating, exit_slit, stripe = self.get_comment_details(comments)
+                photon_energy, grating, exit_slit, stripe = self.get_comment_details(comments)
             except UnboundLocalError:
+                photon_energy = "N/A"
                 grating = "N/A"
                 exit_slit = "N/A"
                 stripe = "N/A"
         else:
+            # need to add a new function to get photon energy of hdf5
             comments, date = self.get_header_hdf5(origin_file_directory)
             grating = self.get_grating_hdf5(comments)
             exit_slit, stripe = self.get_exit_slit_and_stripe(comments)
@@ -252,6 +280,8 @@ class ExportData:
             str_origin_file_name = "# Beamline.origin-filename: " + original_file_name + "\n"
             out_file.write(str_origin_file_name)
             out_file.write("# Beamline.name: SGM\n")
+            str_photon_energy = "# Beamline.photon-energy: "+ photon_energy + "\n"
+            out_file.write(str_photon_energy)
             str_grating = "# Beamline.grating: " + grating + "\n"
             out_file.write(str_grating)
             str_stripe = "# Beamline.stripe: " + stripe + "\n"
@@ -298,12 +328,14 @@ class ExportData:
             try:
                 date = self.get_date_time(opened_file)
                 comments = self.get_comments(origin_file_directory)
-                grating, exit_slit, stripe = self.get_comment_details(comments)
+                photon_energy, grating, exit_slit, stripe = self.get_comment_details(comments)
             except UnboundLocalError:
+                photon_energy = "N/A"
                 grating = "N/A"
                 exit_slit = "N/A"
                 stripe = "N/A"
         else:
+            # need to add a new function to get photon energy of hdf5
             comments, date = self.get_header_hdf5(origin_file_directory)
             grating = self.get_grating_hdf5(comments)
             exit_slit, stripe = self.get_exit_slit_and_stripe(comments)
@@ -314,6 +346,8 @@ class ExportData:
             str_origin_file_name = "# Beamline.origin-filename: " + original_file_name + "\n"
             out_file.write(str_origin_file_name)
             out_file.write("# Beamline.name: SGM\n")
+            str_photon_energy = "# Beamline.photon-energy: "+ photon_energy + "\n"
+            out_file.write(str_photon_energy)
             str_grating = "# Beamline.grating: " + grating + "\n"
             out_file.write(str_grating)
             str_stripe = "# Beamline.stripe: " + stripe + "\n"
