@@ -18,7 +18,10 @@ def summary_plot(xas_data, name, xas_process_para = None):
         energy_data = xas_data.get_energy_array()
         scaler_data = xas_data.get_scaler_array()
         scan_num = xas_data.get_c_scan()
-        generate_summary_plot_with_scaler(energy_data, scaler_data, scan_num, name)
+        if scan_num == None:
+            print ("Cannot process xas data without a qualified cscan")
+        else:
+            generate_summary_plot_with_scaler(energy_data, scaler_data, scan_num, name)
     elif name == "PFY_SDD1" or "PFY_SDD2" or "PFY_SDD3" or "PFY_SDD4" or "SDD1" or "SDD2" or "SDD3" or "SDD4":
         if name == "PFY_SDD1":
             name = "SDD1"
@@ -31,11 +34,19 @@ def summary_plot(xas_data, name, xas_process_para = None):
         energy_data = xas_data.get_energy_array()
         mca_data = xas_data.get_mca_array()
         scan_num = xas_data.get_c_scan()
-        start_roi = xas_process_para.get_roi_start()
-        stop_roi = xas_process_para.get_roi_end()
-        generate_summary_plot_with_pfy(energy_data, mca_data, scan_num, name, start_roi, stop_roi)
+        if (xas_process_para == None):
+            print ("Cannot process xas data without a valid ROI range")
+            return None
+        else:
+            start_roi = xas_process_para.get_roi_start()
+            stop_roi = xas_process_para.get_roi_end()
+        if scan_num == None:
+            print ("Cannot process xas data without a qualified cscan")
+            return None
+        else:
+            generate_summary_plot_with_pfy(energy_data, mca_data, scan_num, name, start_roi, stop_roi)
     else:
-        print "Errors with the name input"
+        print ("Errors with the name input")
     # print("--- %s seconds ---" % (time.time() - start_time))
 
 
@@ -92,7 +103,7 @@ def generate_summary_plot_with_pfy(energy_data, mca_data, scan_nums, pfy_name, s
     fig.set_size_inches(16, y_axis_height)
     plt.grid()
     # show the plot
-    print "Plot generating complete"
+    print ("Plot generating complete")
     plt.show()
 
 
@@ -145,7 +156,7 @@ def generate_summary_plot_with_scaler(energy_data, scaler_data, scan_nums, scale
     fig.set_size_inches(16, y_axis_height)
     plt.grid()
     # show the plot
-    print "Plot generating complete"
+    print ("Plot generating complete")
     plt.show()
 
 

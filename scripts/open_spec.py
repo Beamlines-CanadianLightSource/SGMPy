@@ -125,7 +125,11 @@ class OpenMultiCScan(object):
         # start_time = time.time()
         print "Start opening c-scans."
 
-        sgm_file = open_spec_data_file(file_directory)
+        try:
+            sgm_file = open_spec_data_file(file_directory)
+        except IOError:
+            print("No such file or directory:", file_directory)
+            return None
         counter = 0
         c_scan_num = get_c_scan(sgm_file)
         total_scan_num = len(c_scan_num)
