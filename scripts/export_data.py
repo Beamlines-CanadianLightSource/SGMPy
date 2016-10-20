@@ -34,7 +34,7 @@ class ExportData:
             # print temp_arr
             for i in range (len(temp_arr)):
                 split_comma.append(temp_arr[i])
-        print split_comma[0:]
+        # print split_comma[0:]
         # split dot with white space
         for i in range(0, len(split_comma)):
             temp_arr = split_comma[i].split('. ')
@@ -42,10 +42,10 @@ class ExportData:
             for i in range (len(temp_arr)):
                 split_dot.append(temp_arr[i])
         # split colon
-        print split_dot[0:]
+        # print split_dot[0:]
         for i in range(0, len(split_dot)):
             split_colon.append(split_dot[i].split(':'))
-        print split_colon[0:]
+        # print split_colon[0:]
 
 
         for i in range (0, len(split_colon)):
@@ -81,13 +81,13 @@ class ExportData:
         parsed_str_length = len(parsed_str)
         if parsed_str_length == 2:
             temp_str = [x.strip() for x in parsed_str[1].split(",")]
-            print temp_str[-2]
+            # print temp_str[-2]
             temp_str_2 = [x.strip() for x in temp_str[-2].split(":")]
             exit_slit_str = temp_str_2[-1]    
             stripe_str = temp_str[-1][7:-1]
         else:
             temp_str = [x.strip() for x in parsed_str[2].split(",")]
-            print temp_str[-2]
+            # print temp_str[-2]
             temp_str_2 = [x.strip() for x in temp_str[-2].split(":")]
             exit_slit_str = temp_str_2[-1]    
             stripe_str = temp_str[-1][7:-1]
@@ -111,39 +111,35 @@ class ExportData:
         if name == "PFY_SDD1" or name == "PFY_SDD2" or name == "PFY_SDD3" or name == "PFY_SDD4":
             sub_pfy_index = pfy_dict[name]
             pfy_data = self.data_set.get_pfy_sdd_averaged_array()
-            self.export_pfy(export_file_directory, origin_file_direct, energy_array, pfy_data[sub_pfy_index], name, scan_number)
+            self.export_pfy(export_file_directory, energy_array, pfy_data[sub_pfy_index], name, scan_number)
             print "Export data complete."
             get_abs_path(export_file_directory)
 
         elif name == "TEY" or name == "I0" or name == "Diode":
             sub_scaler_index = scaler_dict[name]
             scaler_data = self.data_set.get_scaler_averaged_array()
-            self.export_scaler(export_file_directory, origin_file_direct, energy_array, scaler_data[sub_scaler_index], name, scan_number)
+            self.export_scaler(export_file_directory, energy_array, scaler_data[sub_scaler_index], name, scan_number)
             print "Export data complete."
             get_abs_path(export_file_directory)
 
         else:
             print "Unable to export data."
     
-    def export_pfy(self, export_file_directory, origin_file_directory, energy_array, sub_pfy, name, scan_number=None):
-        file_extension, original_file_name = self.check_file_type(origin_file_directory)
-        if file_extension == "dat":
-            opened_file = open_spec_data_file(origin_file_directory)
-            try:
-                date = self.get_date_time(opened_file)
-                comments = self.get_comments(origin_file_directory)
-                photon_energy, grating, exit_slit, stripe = self.get_comment_details(comments)
-            except UnboundLocalError:
-                photon_energy = "N/A"
-                grating = "N/A"
-                exit_slit = "N/A"
-                stripe = "N/A"
+    def export_pfy(self, export_file_directory, name, scan_number=None):
+
+        if self.data_set.get_data_type() == "single":
+            energy_array = self.data_set.get_energy_array()
+            pfy_data = self.data_set.get_pfy_sdd_array()
+            scan_number = str(self.data_set.get_scan_num())
+
         else:
-            # need to add a new function to get photon energy of hdf5
-            comments, date = self.get_header_hdf5(origin_file_directory)
-            grating = self.get_grating_hdf5(comments)
-            exit_slit, stripe = self.get_exit_slit_and_stripe(comments)
-            # date = date[0]
+            energy_array = self.data_set.get_mean_energy_array()
+            pfy_data = self.data_set.get_pfy_sdd_averaged_array()
+            scan_number = None
+
+        pfy_dict = {'PFY_SDD1': 0, 'PFY_SDD2': 1, 'PFY_SDD3': 2, 'PFY_SDD4': 3}
+        pfy_index = pfy_dict[name]
+        sub_pfy = pfy_data[pfy_index]
 
         with open(export_file_directory, "w") as out_file:
             # write header into the data file
@@ -151,20 +147,7 @@ class ExportData:
                 out_file.write("# Beamline.file-content: binned and averaged " + name + "\n")
             else:
                 out_file.write("# Beamline.file-content: " + name + " of scan No." + scan_number + "\n")
-            str_origin_file_name = "# Beamline.origin-filename: " + original_file_name + "\n"
-            out_file.write(str_origin_file_name)
-            out_file.write("# Beamline.name: SGM\n")
-            str_photon_energy = "# Beamline.photon-energy: "+ photon_energy + "\n"
-            out_file.write(str_photon_energy)
-            str_grating = "# Beamline.grating: " + grating + "\n"
-            out_file.write(str_grating)
-            str_stripe = "# Beamline.stripe: " + stripe + "\n"
-            out_file.write(str_stripe)
-            str_exit_slit = "# Beamline.exit-slit: " + exit_slit + "\n"
-            out_file.write(str_exit_slit)
-            str_date_time = "# Time.start: " + date + "\n"
-            out_file.write(str_date_time)
-            out_file.write("#-----------------------------------------------------------\n")
+            self.write_header(out_file)
 
             # write table header into the data file
             out_file.write("# Energy\t")
@@ -182,25 +165,20 @@ class ExportData:
                 # print out_string
                 out_file.write(out_string)
 
-    def export_scaler(self, export_file_directory, origin_file_directory, energy_array, sub_scaler, name, scan_number=None):
-        file_extension, original_file_name = self.check_file_type(origin_file_directory)
-        if file_extension == "dat":
-            opened_file = open_spec_data_file(origin_file_directory)
-            try:
-                date = self.get_date_time(opened_file)
-                comments = self.get_comments(origin_file_directory)
-                photon_energy, grating, exit_slit, stripe = self.get_comment_details(comments)
-            except UnboundLocalError:
-                photon_energy = "N/A"
-                grating = "N/A"
-                exit_slit = "N/A"
-                stripe = "N/A"
+    def export_scaler(self, export_file_directory, name, scan_number=None):
+        if self.data_set.get_data_type() == "single":
+            energy_array = self.data_set.get_energy_array()
+            scaler_data = self.data_set.get_scaler_averaged_array()
+            scan_number = str(self.data_set.get_scan_num())
+
         else:
-            # need to add a new function to get photon energy of hdf5
-            comments, date = self.get_header_hdf5(origin_file_directory)
-            grating = self.get_grating_hdf5(comments)
-            exit_slit, stripe = self.get_exit_slit_and_stripe(comments)
-            # date = date[0]
+            energy_array = self.data_set.get_mean_energy_array()
+            scaler_data = self.data_set.get_pfy_sdd_averaged_array()
+            scan_number = None
+
+        scaler_dict = {'TEY': 0, 'I0': 1, 'Diode':2}
+        scaler_index = scaler_dict[name]
+        sub_scaler = scaler_data[scaler_index]
 
         with open(export_file_directory, "w") as out_file:
             # write header into the data file
@@ -208,21 +186,7 @@ class ExportData:
                 out_file.write("# Beamline.file-content: binned and averaged " + name + "\n")
             else:
                 out_file.write("# Beamline.file-content: " + name + " of scan No." + scan_number + "\n")
-            str_origin_file_name = "# Beamline.origin-filename: " + original_file_name + "\n"
-            str_origin_file_name = "# Beamline.origin-filename: " + original_file_name + "\n"
-            out_file.write(str_origin_file_name)
-            out_file.write("# Beamline.name: SGM\n")
-            str_photon_energy = "# Beamline.photon-energy: "+ photon_energy + "\n"
-            out_file.write(str_photon_energy)
-            str_grating = "# Beamline.grating: " + grating + "\n"
-            out_file.write(str_grating)
-            str_stripe = "# Beamline.stripe: " + stripe + "\n"
-            out_file.write(str_stripe)
-            str_exit_slit = "# Beamline.exit-slit: " + exit_slit + "\n"
-            out_file.write(str_exit_slit)
-            str_date_time = "# Time.start: " + date + "\n"
-            out_file.write(str_date_time)
-            out_file.write("#-----------------------------------------------------------\n")
+            self.write_header(out_file)
 
             # write table header into the data file
             out_file.write("# Energy\t")
@@ -241,24 +205,6 @@ class ExportData:
                 out_file.write(out_string)
 
     def export_all (self, export_file_directory):
-        origin_file_directory = self.data_set.get_file_direct()
-        file_extension, original_file_name = self.check_file_type(origin_file_directory)
-        if file_extension == "dat":
-            opened_file = open_spec_data_file(origin_file_directory)
-            try:
-                date = self.get_date_time(opened_file)
-                comments = self.get_comments(origin_file_directory)
-                photon_energy, grating, exit_slit, stripe = self.get_comment_details(comments)
-            except UnboundLocalError:
-                photon_energy = "N/A"
-                grating = "N/A"
-                exit_slit = "N/A"
-                stripe = "N/A"
-        else:
-            # need to add a new function to get photon energy of hdf5
-            comments, date = self.get_header_hdf5(origin_file_directory)
-            grating = self.get_grating_hdf5(comments)
-            exit_slit, stripe = self.get_exit_slit_and_stripe(comments)
 
         if self.data_set.get_data_type() == "single":
             energy_array = self.data_set.get_energy_array()
@@ -273,24 +219,25 @@ class ExportData:
 
         with open(export_file_directory, "w") as out_file:
             # write header into the data file
-            if scan_num== None:
+            if scan_num == None:
                 out_file.write("# Beamline.file-content: all data\n")
             else:
                 out_file.write("# Beamline.file-content: all data of scan No." + scan_num + "\n")
-            str_origin_file_name = "# Beamline.origin-filename: " + original_file_name + "\n"
-            out_file.write(str_origin_file_name)
-            out_file.write("# Beamline.name: SGM\n")
-            str_photon_energy = "# Beamline.photon-energy: "+ photon_energy + "\n"
-            out_file.write(str_photon_energy)
-            str_grating = "# Beamline.grating: " + grating + "\n"
-            out_file.write(str_grating)
-            str_stripe = "# Beamline.stripe: " + stripe + "\n"
-            out_file.write(str_stripe)
-            str_exit_slit = "# Beamline.exit-slit: " + exit_slit + "\n"
-            out_file.write(str_exit_slit)
-            str_date_time = "# Time.start: " + date + "\n"
-            out_file.write(str_date_time)
-            out_file.write("#-----------------------------------------------------------\n")
+            self.write_header(out_file)
+            # str_origin_file_name = "# Beamline.origin-filename: " + original_file_name + "\n"
+            # out_file.write(str_origin_file_name)
+            # out_file.write("# Beamline.name: SGM\n")
+            # str_photon_energy = "# Beamline.photon-energy: "+ photon_energy + "\n"
+            # out_file.write(str_photon_energy)
+            # str_grating = "# Beamline.grating: " + grating + "\n"
+            # out_file.write(str_grating)
+            # str_stripe = "# Beamline.stripe: " + stripe + "\n"
+            # out_file.write(str_stripe)
+            # str_exit_slit = "# Beamline.exit-slit: " + exit_slit + "\n"
+            # out_file.write(str_exit_slit)
+            # str_date_time = "# Time.start: " + date + "\n"
+            # out_file.write(str_date_time)
+            # out_file.write("#-----------------------------------------------------------\n")
 
             # write table header into the data file
             out_file.write("# Energy\tTEY\tI0\tDiode\tPFY_SDD1\tPFY_SDD2\tPFY_SDD3\tPFY_SDD4\n")
@@ -318,8 +265,8 @@ class ExportData:
                 out_file.write(out_string)
         print ("Export data complete")
         get_abs_path(export_file_directory)
-        
-    def export_normalized_data(self, export_file_directory, column1, column1_name, column2, column2_name):
+
+    def write_header(self, out_file):
         origin_file_directory = self.data_set.get_file_direct()
         file_extension, original_file_name = self.check_file_type(origin_file_directory)
 
@@ -340,23 +287,29 @@ class ExportData:
             grating = self.get_grating_hdf5(comments)
             exit_slit, stripe = self.get_exit_slit_and_stripe(comments)
 
+        str_origin_file_name = "# Beamline.origin-filename: " + original_file_name + "\n"
+        out_file.write(str_origin_file_name)
+        out_file.write("# Beamline.name: SGM\n")
+        str_photon_energy = "# Beamline.photon-energy: " + photon_energy + "\n"
+        out_file.write(str_photon_energy)
+        str_grating = "# Beamline.grating: " + grating + "\n"
+        out_file.write(str_grating)
+        str_stripe = "# Beamline.stripe: " + stripe + "\n"
+        out_file.write(str_stripe)
+        str_exit_slit = "# Beamline.exit-slit: " + exit_slit + "\n"
+        out_file.write(str_exit_slit)
+        str_date_time = "# Time.start: " + date + "\n"
+        out_file.write(str_date_time)
+        out_file.write("#-----------------------------------------------------------\n")
+
+
+    def export_normalized_data(self, export_file_directory, column1, column1_name, column2, column2_name):
+
+
         with open(export_file_directory, "w") as out_file:
             # write header into the data file
             out_file.write("# Beamline.file-content: Normalized " + column2_name + "\n")
-            str_origin_file_name = "# Beamline.origin-filename: " + original_file_name + "\n"
-            out_file.write(str_origin_file_name)
-            out_file.write("# Beamline.name: SGM\n")
-            str_photon_energy = "# Beamline.photon-energy: "+ photon_energy + "\n"
-            out_file.write(str_photon_energy)
-            str_grating = "# Beamline.grating: " + grating + "\n"
-            out_file.write(str_grating)
-            str_stripe = "# Beamline.stripe: " + stripe + "\n"
-            out_file.write(str_stripe)
-            str_exit_slit = "# Beamline.exit-slit: " + exit_slit + "\n"
-            out_file.write(str_exit_slit)
-            str_date_time = "# Time.start: " + date + "\n"
-            out_file.write(str_date_time)
-            out_file.write("#-----------------------------------------------------------\n")
+            self.write_header(out_file)
             # write table header into the data file
             string_table_header = "# "+ column1_name + "\t" + column2_name + "\n"
             out_file.write(string_table_header)
