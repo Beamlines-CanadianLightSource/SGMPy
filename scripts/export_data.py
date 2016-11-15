@@ -73,7 +73,7 @@ class ExportData:
         parsed_str = comments[0].split('\n')
         grating_str = [x.strip() for x in parsed_str[1].split(",")]
         print grating_str[-1]
-        return grating_str[-1][9:-1]    
+        return grating_str[-1][9:-1]
 
     # the method is to get exit_slit and stripe from hdf5 data file
     def get_exit_slit_and_stripe(self, comments):
@@ -286,6 +286,7 @@ class ExportData:
             comments, date = self.get_header_hdf5(origin_file_directory)
             grating = self.get_grating_hdf5(comments)
             exit_slit, stripe = self.get_exit_slit_and_stripe(comments)
+            photon_energy = "N/A"
 
         str_origin_file_name = "# Beamline.origin-filename: " + original_file_name + "\n"
         out_file.write(str_origin_file_name)
@@ -304,7 +305,6 @@ class ExportData:
 
 
     def export_normalized_data(self, export_file_directory, column1, column1_name, column2, column2_name):
-
 
         with open(export_file_directory, "w") as out_file:
             # write header into the data file

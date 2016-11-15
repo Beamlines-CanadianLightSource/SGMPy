@@ -18,7 +18,7 @@ def summary_plot(xas_data, name, xas_process_para = None):
         energy_data = xas_data.get_energy_array()
         scaler_data = xas_data.get_scaler_array()
         scan_num = xas_data.get_c_scan()
-        if scan_num == None:
+        if scan_num is None:
             print ("Cannot process xas data without a qualified cscan")
         else:
             generate_summary_plot_with_scaler(energy_data, scaler_data, scan_num, name)
@@ -40,7 +40,7 @@ def summary_plot(xas_data, name, xas_process_para = None):
         else:
             start_roi = xas_process_para.get_roi_start()
             stop_roi = xas_process_para.get_roi_end()
-        if scan_num == None:
+        if scan_num is None:
             print ("Cannot process xas data without a qualified cscan")
             return None
         else:
