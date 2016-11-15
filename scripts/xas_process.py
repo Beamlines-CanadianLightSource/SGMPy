@@ -4,7 +4,8 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 from cStringIO import StringIO
-from open_hdf5 import *
+# from open_hdf5 import *
+import time
 
 
 class XASProcess(object):
@@ -22,42 +23,57 @@ class XASProcess(object):
         self.mean_energy_array = mean_energy_array
 
     def get_mean_energy_array(self):
+        """Return the energy array which is the mid-point of bins"""
         return self.mean_energy_array
 
     def set_sdd_binned_array(self, sdd_binned_array):
         self.sdd_binned_array = sdd_binned_array
 
     def get_sdd_binned_array(self):
+        """Return binned sdd array"""
         return self.sdd_binned_array
 
     def set_scaler_averaged_array(self, scaler_averaged_array):
         self.scaler_averaged_array = scaler_averaged_array
 
     def get_scaler_averaged_array(self):
+        """Return averaged scaler array"""
         return self.scaler_averaged_array
 
     def set_pfy_sdd_averaged_array(self, pfy_sdd_averaged_array):
         self.pfy_sdd_averaged_array = pfy_sdd_averaged_array
 
     def get_pfy_sdd_averaged_array(self):
+        """Return averaged pfy_sdd array"""
         return self.pfy_sdd_averaged_array
 
     def set_normalized_array(self, normalized_array):
         self.normalized_array = normalized_array
 
     def get_file_direct(self):
+        """Return the original data file directory."""
         return self.file_direct
 
     def set_file_direct(self, file_direct):
         self.file_direct = file_direct
 
     def get_normalized_array(self):
+        """Return a specific normalized data array."""
         return self.normalized_array
 
     def get_data_type(self):
+        """Returns single scan or multiple scans."""
         return self.data_type
 
     def generate_good_scan_index(self, opened_xas_data, bad_scan_index_str):
+        """
+        This method to generate good scan index and eliminate bad scans by passing in bad scan index
+        :param opened_xas_data: a OpenMultiCScan type object contains all original info of multiple c-scans
+        :param bad_scan_index_str: str conatains index of bad scans that need to be eliminate
+        :return: a list of good scan index (index may not as sams as the original scan numbers)
+
+        """
+
         scan_num_index = opened_xas_data.get_c_scan()
         length = len(scan_num_index)
         # if badScanStr is null, then return original arrays
@@ -68,23 +84,32 @@ class XASProcess(object):
         else:
             # print "In else"
             # split the array based on comma symbol
-            bad_scan_index_array = [x.strip() for x in bad_scan_index_str.split(',')]
+            bad_scan_index = [x.strip() for x in bad_scan_index_str.split(',')]
             good_scan_index = range(1, length+1, 1)
-            print "Original scan", scan_num_index
+            # print "Original scan", scan_num_index
             for i in range(0, length):
-                for j in range (0, len(bad_scan_index_array)):
+                for j in range (0, len(bad_scan_index)):
                     # print "i=", i
                     # print "j=", j
                     # print scan_num_index[i]
-                    # print bad_scan_index_array[j]
-                    if scan_num_index[i] == bad_scan_index_array[j]:
-                        print "removed", bad_scan_index_array[j]
-                        good_scan_index.remove(i+1)
+                    # print bad_scan_index[j]
+                    if scan_num_index[i] == bad_scan_index[j]:
+                        print "removed", bad_scan_index[j], ", real scan number is",  scan_num_index[int(bad_scan_index[j])-1]
+                        good_scan_index.remove(int(bad_scan_index[j]))
         print ""
         return good_scan_index
 
     def process_xas(self, good_scan_index, opened_xas_data, xas_process_para):
-        
+        """
+        The method is to execute all the related binning and averaging calculation and get binned and averaged data
+        :param good_scan_index: a list contains all the good scan index
+        :param opened_xas_data: a OpenMultiCScan type object contains all original info of multiple c-scans
+        :param xas_process_para:  a XASProcessPara type object has parameters including roi and energy range
+        :return: None
+        """
+
+        start_time = time.time()
+
         energy_data = opened_xas_data.get_energy_array()
         mca_data = opened_xas_data.get_mca_array()
         scaler_data = opened_xas_data.get_scaler_array()
@@ -94,7 +119,7 @@ class XASProcess(object):
         end_energy = xas_process_para.get_energy_end()
         roi_start = xas_process_para.get_roi_start()
         roi_end = xas_process_para.get_roi_end()
-        bin_interval= xas_process_para.get_bin_interval()
+        bin_interval = xas_process_para.get_bin_interval()
 
         num_of_bins = int((end_energy - start_energy) / bin_interval)
         print "numb_of_bins after calculation", num_of_bins
@@ -104,19 +129,20 @@ class XASProcess(object):
 
         # create bins and assign bins
         edges_array, bins_mean_array = self.create_bins(start_energy, end_energy, num_of_bins)
-        assigned_data_array = self.assign_data(energy_array , edges_array)
+        assigned_data_array = self.assign_data(energy_array , edges_array, num_of_bins, scaler_array, mca_array)
         
         # calculate mca
-        calculate_bin_mca_result = self.calculate_bin_mca(assigned_data_array, mca_array)
+        calculate_bin_mca_result = self.calculate_bin_mca(assigned_data_array)
         bin_mca = calculate_bin_mca_result[:-2]
         empty_bin_front = calculate_bin_mca_result[-2]
         empty_bin_back = calculate_bin_mca_result[-1]
 
-        # calculate bin of mca
-        averaged_scaler = self.calculate_bin_scalers(assigned_data_array, scaler_array, empty_bin_front, empty_bin_back)
+        # calculate scalers (I0, TEY, Diode)
+        averaged_scaler = self.calculate_bin_scalers(assigned_data_array, empty_bin_front, empty_bin_back)
+        # calculate pfy of mca
         averaged_pfy_sdd = self.get_pfy_bin(bin_mca, roi_start, roi_end)
 
-        #remove empty bins
+        #remove empty bins in mean_energy_array
         if empty_bin_front == 0 and empty_bin_back == 0:
             self.set_mean_energy_array(bins_mean_array)
         elif empty_bin_front != 0 and empty_bin_back == 0:
@@ -130,8 +156,17 @@ class XASProcess(object):
         self.set_scaler_averaged_array(averaged_scaler)
         self.set_pfy_sdd_averaged_array(averaged_pfy_sdd)
         self.set_file_direct(file_direct)
+        print("--- %s seconds ---" % (time.time() - start_time))
 
     def get_good_datapoint(self, good_scan_index, energy_data, mca_data, scaler_data):
+        """
+        Removed all the bad scans from the originla data set
+        :param good_scan_index: a list contains all good scan index
+        :param energy_data: original energy data
+        :param mca_data: original mca (sdd) data
+        :param scaler_data: originla scalers data (TEY, I0, Diode)
+        :return: energy_array, mca_array and scaler_array with no data pointsre
+        """
         good_scan_index_length = len(good_scan_index)
         print "Total good scan numbers:", good_scan_index_length
 
@@ -142,7 +177,7 @@ class XASProcess(object):
             # scan number is start from 1
             # print "This is the scan number: ", goodScanArray[i]
             # array index is start from 0
-            # get all scalers of good scans from original scans' array
+            # get all MCAs of good scans from original scans' array
             energy_array.append(energy_data[good_scan_index[i]-1])
             scaler_array[i][0] = scaler_data[good_scan_index[i]-1][0]
             scaler_array[i][1] = scaler_data[good_scan_index[i]-1][1]
@@ -158,8 +193,17 @@ class XASProcess(object):
         return energy_array, mca_array, scaler_array
 
 
-    # create bins (startEnergy = 690, endEnergy = 750, numberOfBins = 600)
     def create_bins(self, start_energy, end_energy, num_of_bins):
+        """
+        Generate bins and get boundary of bins and mean energy of bins
+        :param start_energy: this is an int number of beginning energy for c-scans
+        :param end_energy: this is an int number of stopping energy for c-scans
+        :param num_of_bins: total number of bins that the mehod will crate
+        :return:
+                edges of bins as an list
+                and return mid-point of bins in a list"
+        :examples: create_bins (startEnergy = 690, endEnergy = 750, numberOfBins = 600)
+        """
         print "Start creating bins" 
         num_of_edges = num_of_bins + 1
         # print "Number of Bins:", num_of_bins
@@ -178,30 +222,21 @@ class XASProcess(object):
         # print ""
         return  edges_array, mean_energy_array
 
+    def assign_data (self, energy_array, edges, bin_num, scaler_array, mca_array):
+        """
+        Iteration and assign data points from different c-scans into desired bins
+        :param energy_array: a list contains mean energy of bins
+        :param edges: a list contains edges of bins
+        :param bin_num: total number of bins were created in the previous steps
+        :return: a 2D list contains distribution information of scan number and associate data points for each bin
+        """
+        # start_time = time.time()
 
-    def assign_data (self, energy_array, edges):
-        bin_num = len(edges) - 1
-        bin_array = [[] for i in range(bin_num)]
-        bin_width = (edges[-1] - edges[0]) / bin_num
-        # print "The width of a bin is:", bin_width
+        # Initial 3 arrays for each scaler
+        tey_bin_array = np.zeros(bin_num)
+        i0_bin_array = np.zeros(bin_num)
+        diode_bin_array = np.zeros(bin_num)
 
-        # interation to assign data into bins
-        print "Start assigning data points into bins" 
-        for scan_index in range (0, len(energy_array)):
-            for datapoint_index in range (0, len(energy_array[scan_index]) ):
-                if energy_array[scan_index][datapoint_index] <= edges[-1]:
-                    x = energy_array[scan_index][datapoint_index] - edges[0]
-                    # get integer part and plus 1
-                    assign_bin_num = int(x / bin_width) + 1
-                    # print assign_bin_num
-                    bin_array[assign_bin_num-1].append([scan_index, datapoint_index])
-        print "Assign data points completed\n"
-        return bin_array
-
-
-    def calculate_bin_mca(self, bin_array, mca_array):
-        bin_num = len(bin_array)
-        empty_bins = 0
         # Initial 4 arrays for 4 average of MCAs
         # Added 256 of zero into each sub array, so that it could calculate summary and then get the average
         mca1_bin_array = np.zeros(shape=(bin_num,256))
@@ -209,27 +244,61 @@ class XASProcess(object):
         mca3_bin_array = np.zeros(shape=(bin_num,256))
         mca4_bin_array = np.zeros(shape=(bin_num,256))
 
+        bin_array = [[] for i in range(bin_num)]
+        bin_width = (edges[-1] - edges[0]) / bin_num
+        # print "The width of a bin is:", bin_width
+
+        # interation to assign data into bins
+        print "Start assigning data points into bins"
+        len_energy_array = len(energy_array)
+        for scan_index in range (0, len_energy_array):
+            len_sub_energy_array = len(energy_array[scan_index])
+            for datapoint_index in range (0,  len_sub_energy_array):
+                if energy_array[scan_index][datapoint_index] <= edges[-1]:
+                    x = energy_array[scan_index][datapoint_index] - edges[0]
+                    # get integer part and plus 1
+                    assign_bin_num = int(x / bin_width) + 1
+                    # print assign_bin_num
+                    bin_array[assign_bin_num-1].append([scan_index, datapoint_index])
+
+                    tey_bin_array[assign_bin_num-1] = tey_bin_array[assign_bin_num-1] + scaler_array[scan_index][0][datapoint_index]
+                    i0_bin_array[assign_bin_num-1] = i0_bin_array[assign_bin_num-1] + scaler_array[scan_index][1][datapoint_index]
+                    diode_bin_array[assign_bin_num-1] = diode_bin_array[assign_bin_num-1] + scaler_array[scan_index][2][datapoint_index]
+
+                    # calculate the sum of MCA1
+                    mca1_bin_array[assign_bin_num-1] = mca1_bin_array[assign_bin_num-1] + mca_array[scan_index][0][datapoint_index]
+                    # calculate the sum of MCA2
+                    mca2_bin_array[assign_bin_num-1] = mca2_bin_array[assign_bin_num-1] + mca_array[scan_index][1][datapoint_index]
+                    # calculate the sum of MCA3
+                    mca3_bin_array[assign_bin_num-1] = mca3_bin_array[assign_bin_num-1] + mca_array[scan_index][2][datapoint_index]
+                    # calculate the sum of MCA4
+                    mca4_bin_array[assign_bin_num-1] = mca4_bin_array[assign_bin_num-1] + mca_array[scan_index][3][datapoint_index]
+
+        print "Assign data points completed\n"
+        # print("--- %s seconds ---" % (time.time() - start_time))
+        return bin_array, tey_bin_array, i0_bin_array, diode_bin_array, mca1_bin_array, mca2_bin_array, mca3_bin_array, mca4_bin_array
+
+    def calculate_bin_mca(self, bin_array):
+        """
+        Averaged the average mca(sdd)
+        :param bin_array: a 2D list contains distribution information of scan number and associate data points for each bin
+        :param mca_array: a array has 4 mca (sdd) without bad scan.
+        :return: 4 binned and averaged pfy_mca
+        """
+
+        bin_num = len(bin_array[0])
+        mca1_bin_array = bin_array[4]
+        mca2_bin_array = bin_array[5]
+        mca3_bin_array = bin_array[6]
+        mca4_bin_array = bin_array[7]
+
+        empty_bins = 0
+
         print "Start calcualting average of SDD1(MCA1), SDD2(MCA2), SDD3(MCA3) & SDD4(MCA4)..."
 
         for index1 in range (0, bin_num):
-            # get the total number of data points in a particular bins
-            total_data_point = len(bin_array[index1])
-
-            for index2 in range (0, total_data_point):
-                # get index of scans
-                index_of_scan = bin_array[index1][index2][0]
-                # get index of data points
-                index_of_data_point = bin_array[index1][index2][1]
-                # print "index_of_scan: ", index_of_scan_2, "  ;  ", "index_of_data_point: ", index_of_data_point
-
-                # calculate the sum of MCA1
-                mca1_bin_array[index1] = mca1_bin_array[index1] + mca_array[index_of_scan][0][index_of_data_point]
-                # calculate the sum of MCA2
-                mca2_bin_array[index1] = mca2_bin_array[index1] + mca_array[index_of_scan][1][index_of_data_point]
-                # calculate the sum of MCA3
-                mca3_bin_array[index1] = mca3_bin_array[index1] + mca_array[index_of_scan][2][index_of_data_point]
-                # calculate the sum of MCA4
-                mca4_bin_array[index1] = mca4_bin_array[index1] + mca_array[index_of_scan][3][index_of_data_point]
+            # get the total number of data points in a particular bin
+            total_data_point = len(bin_array[0][index1])
 
             # print "Bin No.", index1+1, "; it contains ", total_data_point, "data points"
 
@@ -253,7 +322,7 @@ class XASProcess(object):
 
         print "Calculation completed.\n"
 
-        # remove empty bins in the front or at the end
+        # remove empty bins in the front or at the end using slice indices
         if empty_bins == 0:
             return mca1_bin_array, mca2_bin_array, mca3_bin_array, mca4_bin_array, 0, 0
         elif mca1_bin_array[0].any() == 0 :
@@ -272,33 +341,30 @@ class XASProcess(object):
         else:
             return mca1_bin_array[:-empty_bins], mca2_bin_array[:-empty_bins], mca3_bin_array[:-empty_bins], mca4_bin_array[:-empty_bins], 0, empty_bins
 
-    def calculate_bin_scalers(self, arrayOfBins, scaler_array, empty_bin_front, empty_bin_back):
+    def calculate_bin_scalers(self, bin_array, empty_bin_front, empty_bin_back):
+        """
 
-        bin_num = len(arrayOfBins)
-        # empty_bins = 0
-        tey_bin_array = np.zeros(bin_num)
-        i0_bin_array = np.zeros(bin_num)
-        diode_bin_array = np.zeros(bin_num)
+        :param bin_array: a 2D array contains distribution information of scan number and associate data points for each bin
+        :param scaler_array: a array has 3 different mca (sdd) without bad scan
+        :param empty_bin_front: a integer show the number of empty bins in the front
+        :param empty_bin_back:  a integer show the number of empty bins in the back
+        :return:
+        """
+
+        # start_time = time.time()
+
+        bin_num = len(bin_array[0])
+        tey_bin_array = bin_array[1]
+        i0_bin_array = bin_array[2]
+        diode_bin_array = bin_array[3]
 
         print "Start calcualting Average of I0, TEY & Diode..."
 
         for index1 in range (0, bin_num):
-            for index2 in range (0, len(arrayOfBins[index1])):
-                # get index of scans
-                index_of_scan = arrayOfBins[index1][index2][0]
-                # print index_of_scan
-                # get index of data points
-                index_of_data_point = arrayOfBins[index1][index2][1]
-                # print index_of_data_point_2
-
-                # calculate the sum of data (TEY, I0, Diode)
-                tey_bin_array[index1] = tey_bin_array[index1] + scaler_array[index_of_scan][0][index_of_data_point]
-                i0_bin_array[index1] = i0_bin_array[index1] + scaler_array[index_of_scan][1][index_of_data_point]
-                diode_bin_array[index1] = diode_bin_array[index1] + scaler_array[index_of_scan][2][index_of_data_point]
-
             # get the total number of data points in a particular bins
-            total_data_point = len(arrayOfBins[index1])
-            # print "Bin No.", index1+1, "; it contains ", total_data_point, "data point"   
+            total_data_point = len(bin_array[0][index1])
+
+            # print "Bin No.", index1+1, "; it contains ", total_data_point, "data point"
 
             if total_data_point == 0:
                 # empty_bins = empty_bins + 1
@@ -320,21 +386,31 @@ class XASProcess(object):
                 # print "Index of bins:", index1, "   Average of Diode:", diode_bin_array[index1]
                 # print
         print "Calculation completed."
+        # print("--- %s seconds ---" % (time.time() - start_time))
         print
         # remove empty bins in the front or at the end
         last_bin = bin_num - empty_bin_back
+        # if there is no empty bins
         if empty_bin_front == 0 and empty_bin_back == 0:
             return tey_bin_array, i0_bin_array, diode_bin_array
+        # if there are empty bins in the front
         elif empty_bin_front != 0 and empty_bin_back == 0:
             return tey_bin_array[empty_bin_front:], i0_bin_array[empty_bin_front:], diode_bin_array[empty_bin_front:]
+        # if there are empty bins in the back
         elif empty_bin_front == 0 and empty_bin_back != 0:
             return tey_bin_array[:-empty_bin_back], i0_bin_array[:-empty_bin_back], diode_bin_array[:-empty_bin_back]
+        # if there are empty bin in the front and bak
         else:
             return tey_bin_array[empty_bin_front:last_bin], i0_bin_array[empty_bin_front:last_bin], diode_bin_array[empty_bin_front:last_bin]
 
     def plot_excitation_emission_matrix(self, name):
+        """
+        Generate Excitation Emission Matrix for identify Region of Interest
+        :param name: a string of mca (sdd) name
+        :return: None
+        """
 
-        matplotlib.rcParams['figure.figsize'] = (12, 10)
+        matplotlib.rcParams['figure.figsize'] = (14, 10)
 
         print "Plotting incident v emission energy coordinate based on average of SDD(MCA)"
         bins_mean_array = self.get_mean_energy_array()
@@ -344,6 +420,7 @@ class XASProcess(object):
         mca_dict = {'SDD1': 0, 'SDD2': 1, 'SDD3': 2, 'SDD4': 3}
         sub_mca_array_index = mca_dict[name]
         sub_mca_array = bin_mca[sub_mca_array_index]
+        sub_mca_array = np.array(sub_mca_array)
 
         num_of_bin = len (bins_mean_array)
         num_of_emission_bins = len(sub_mca_array[0])
@@ -355,8 +432,9 @@ class XASProcess(object):
             bin_num_for_x[bin].fill(bins_mean_array[bin])
 
         # generate a list of number to present 1 - 256 bins for emission energy
-        bin_num_for_y = np.arange(10, (num_of_emission_bins+1)*10, 10)
-
+        bin_num_for_y = np.zeros(shape=(num_of_bin, num_of_emission_bins))
+        bin_num_for_y[0:] = np.arange(10, (num_of_emission_bins + 1) * 10, 10)
+        
         v_max = max(sub_mca_array[0])
         for i in range(1, num_of_bin):
             temp_max = max(sub_mca_array[i])
@@ -364,20 +442,28 @@ class XASProcess(object):
                 v_max = temp_max
         print "v_max: ", v_max
 
-        for x in range (0, num_of_bin):
-            plt.scatter(bin_num_for_x[x], bin_num_for_y, c= sub_mca_array[x], s=7, linewidths=0, vmax=v_max, vmin=0)
+        plt.scatter(bin_num_for_x, bin_num_for_y, c= sub_mca_array, s=7, linewidths=0, vmax=v_max, vmin=0)
 
         plt.yticks(np.arange(100, 2560, 100.0))
         plt.xlabel('Incident Energy (eV)')
         plt.ylabel('Emission Energy (eV)')
+        plt.colorbar()
+        plt.title("Excitation Emission Matrix")
         plt.grid()
         plt.show()
         print "Incident Energy range:", bin_num_for_x[0][0], "-", bin_num_for_x[-1][0]
-        print "Emission Energy range:", bin_num_for_y[0], "-", bin_num_for_y[-1]
+        print "Emission Energy range:", bin_num_for_y[0][0], "-", bin_num_for_y[0][-1]
 
     def get_pfy_bin(self, mca_bin_array, start_energy, stop_energy):
+        """
+        Use a specific Region of Interest to calculate pyf_sdd
+        :param mca_bin_array: averaged and binned eneryg aray
+        :param start_energy: this is an int number of beginning energy of scans
+        :param stop_energy: this is an int number of stopping energy
+        :return: 4 lists of pfy_sdd
+        """
 
-        #print "Getting PFY ROIs"
+        # print "Getting PFY ROIs"
 
         pfy1=[]
         pfy2=[]
@@ -392,9 +478,13 @@ class XASProcess(object):
 
         return pfy1, pfy2, pfy3, pfy4
 
-
-    # plot a kind of average scaler
+    # plot a specific one of the averaged scalers
     def plot_avg_xas(self, name):
+        """
+        Generate a single averaged plot, it can distinguish pfy_sdd and the other scalers
+        :param name: a string of scaler's name (eg. SDD1, SDD2, TEY, IO)
+        :return: None
+        """
         plt.close('all')
         matplotlib.rcParams['figure.figsize'] = (12, 10)
 
@@ -410,6 +500,14 @@ class XASProcess(object):
             print "Errors with the name input"
 
     def plot_avg_xas_scaler(self, mean_energy_array, scaler_data, name):
+        """
+        Generate TEY, I0 or Diode plot (matplotlib figure)
+        :param mean_energy_array: mean energy of bins (x-axis)
+        :param scaler_data: averaged scaler data (y-axis)
+        :param name: the string of scaler name
+        :return: None
+        """
+
         scaler_dict = {'TEY': 0, 'I0': 1, 'Diode':2}
         scaler_index = scaler_dict[name]
         plt.plot(mean_energy_array, scaler_data[scaler_index])
@@ -418,6 +516,14 @@ class XASProcess(object):
         plt.show()
     
     def plot_avg_xas_pfy(self, mean_energy_array, pfy_data, name):
+        """
+        Generate a specific pfy_sdd plot (matplotlib figure)
+        :param mean_energy_array: mean energy of bins (x-axis)
+        :param pfy_data: averaged pfy_sdd data (y-axis)
+        :param name: the string of pfy_sdd name
+        :return: None
+        """
+
         pfy_dict = {'PFY_SDD1': 0, 'PFY_SDD2': 1, 'PFY_SDD3': 2, 'PFY_SDD4': 3}
         pfy_index = pfy_dict[name]
         plt.plot(mean_energy_array, pfy_data[pfy_index])
@@ -426,11 +532,14 @@ class XASProcess(object):
         plt.show()
 
     def plot_avg_xas_all(self):
-
+        """
+        Generate all plots (matplotlib figures) for averaged data at once
+        :return: None
+        """
         print "Plotting average XAS."    
         plt.close('all')
 
-        matplotlib.rcParams['figure.figsize'] = (14, 20)
+        matplotlib.rcParams['figure.figsize'] = (14, 22)
 
         en = self.get_mean_energy_array()
         scaler_array = self.get_scaler_averaged_array()
@@ -440,46 +549,61 @@ class XASProcess(object):
         i0 = scaler_array[1]
         diode = scaler_array[2]
 
-        plt.figure(1)
         plt.subplot(4, 2, 1)
         plt.plot(en, tey)
         # add lable for x and y axis
         plt.xlabel('Energy (eV)')
         plt.ylabel('TEY')
+        plt.title('Binned(Averaged) TEY')
 
         plt.subplot(4, 2, 2)
         plt.plot(en, i0)
         plt.xlabel('Energy (eV)')
         plt.ylabel('I0')
+        plt.title('Binned(Averaged) I0')
 
         plt.subplot(4, 2, 3)
         plt.plot(en, diode)
         plt.xlabel('Energy (eV)')
         plt.ylabel('Diode')
+        plt.title('Binned(Averaged) Diode')
 
         plt.subplot(4, 2, 5)
         plt.plot(en, pfy_data[0])
         plt.xlabel('Energy (eV)')
         plt.ylabel('PFY_SDD1')
+        plt.title('Binned(Averaged) PFY_SDD1')
+
 
         plt.subplot(4, 2, 6)
         plt.plot(en, pfy_data[1])
         plt.xlabel('Energy (eV)')
         plt.ylabel('PFY_SDD2')
+        plt.title('Binned(Averaged) PFY_SDD2')
 
         plt.subplot(4, 2, 7)
         plt.plot(en, pfy_data[2])
         plt.xlabel('Energy (eV)')
         plt.ylabel('PFY_SDD3')
+        plt.title('Binned(Averaged) PFY_SDD3')
 
         plt.subplot(4, 2, 8)
         plt.plot(en, pfy_data[3])
         plt.xlabel('Energy (eV)')
         plt.ylabel('PFY_SDD4')
+        plt.title('Binned(Averaged) PFY_SDD4')
 
         plt.show()
 
     def division(self, pfy_data, dividend, divisor, scaler_data = None):
+        """
+        Normalization process without carbon.
+        :param pfy_data: averaged pfy data array
+        :param dividend: dividend of the normalization cul
+        :param divisor: divisor of the normalization cul
+        :param scaler_data: averaged scaler data array
+        :return: a normalized data array
+        """
         # initial new_mca_array
         # division_pfy_array = np.empty(len(pfy_data[0]))
         # initial a dictionary for 4 SDD(MCA) name
@@ -500,6 +624,12 @@ class XASProcess(object):
             return division_array
 
     def plot_division(self, dividend, divisor):
+        """
+        Plot the normalized data (not including carbon)
+        :param dividend: string of dividend name
+        :param divisor:  string of divisor name
+        :return: None
+        """
 
         print "Plotting disivion SDD."
         plt.close('all')
@@ -513,10 +643,9 @@ class XASProcess(object):
         plt.plot(bins_mean_array, division_array)
         plt.xlabel('Energy (eV)')
         str_y_axis = StringIO()
-        str_y_axis.write(dividend)
-        str_y_axis.write(' / ')
-        str_y_axis.write(divisor)
+        str_y_axis.write(dividend + ' / ' + divisor)
         plt.ylabel(str_y_axis.getvalue())
+        plt.title("Averaged %s / Averaged %s"%(dividend, divisor))
         plt.show()
         self.set_normalized_array(division_array)
 
@@ -533,13 +662,26 @@ class XASProcessCarbon(object):
     def get_blank_xas_process_data(self):
         return self.blank_xas_process_data
 
-    def carbon_normalize(self):
+    def carbon_normalize(self, dividend, divisor):
         plt.close("all")
         matplotlib.rcParams['figure.figsize'] = (12, 10)
-
         xas_process_data = self.get_xas_process_data()
         blank_xas_process_data = self.get_blank_xas_process_data()
-        pfy_sdd_normalized = np.array(xas_process_data.get_pfy_sdd_averaged_array()[2]) / np.array(blank_xas_process_data.get_pfy_sdd_averaged_array()[0])
-        plt.close('all')
+
+        pfy_sdd_xas_dict = {'PFY_SDD1': 0, 'PFY_SDD2': 1, 'PFY_SDD3': 2, 'PFY_SDD4': 3}
+        scaler_xas_dict = {'TEY': 0, 'I0': 1, 'Diode': 2}
+
+        if dividend == 'PFY_SDD1' or  dividend == 'PFY_SDD2' or dividend == 'PFY_SDD3' or dividend == 'PFY_SDD4':
+            dividend_array = np.array(xas_process_data.get_pfy_sdd_averaged_array()[pfy_sdd_xas_dict[dividend]])
+        else:
+            dividend_array = np.array(xas_process_data.get_scaler_averaged_array()[scaler_xas_dict[dividend]])
+
+        if divisor == 'PFY_SDD1' or divisor == 'PFY_SDD2' or divisor == 'PFY_SDD3' or divisor == 'PFY_SDD4':
+            divisor_array = np.array(blank_xas_process_data.get_pfy_sdd_averaged_array()[pfy_sdd_xas_dict[divisor]])
+        else:
+            divisor_array = np.array(blank_xas_process_data.get_scaler_averaged_array()[scaler_xas_dict[divisor]])
+
+        pfy_sdd_normalized = np.array(dividend_array / divisor_array)
         plt.plot(xas_process_data.get_mean_energy_array(), pfy_sdd_normalized)
+        plt.title("Averaged %s / Blank Averaged %s"%(dividend, divisor))
         plt.show()

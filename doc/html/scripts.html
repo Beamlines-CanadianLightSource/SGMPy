@@ -1,0 +1,1216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>scripts package &mdash; SGMPy 0.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="SGMPy 0.2.0 documentation" href="index.html" />
+    <link rel="prev" title="scripts" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="scripts-package">
+<h1>scripts package<a class="headerlink" href="#scripts-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-scripts.export_data">
+<span id="scripts-export-data-module"></span><h2>scripts.export_data module<a class="headerlink" href="#module-scripts.export_data" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="scripts.export_data.ExportData">
+<em class="property">class </em><code class="descclassname">scripts.export_data.</code><code class="descname">ExportData</code><span class="sig-paren">(</span><em>data_set</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.export_data.ExportData" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="scripts.export_data.ExportData.check_file_type">
+<code class="descname">check_file_type</code><span class="sig-paren">(</span><em>origin_file_directory</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.export_data.ExportData.check_file_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.export_data.ExportData.export_all">
+<code class="descname">export_all</code><span class="sig-paren">(</span><em>export_file_directory</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.export_data.ExportData.export_all" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.export_data.ExportData.export_normalized_data">
+<code class="descname">export_normalized_data</code><span class="sig-paren">(</span><em>export_file_directory</em>, <em>column1</em>, <em>column1_name</em>, <em>column2</em>, <em>column2_name</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.export_data.ExportData.export_normalized_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.export_data.ExportData.export_pfy">
+<code class="descname">export_pfy</code><span class="sig-paren">(</span><em>export_file_directory</em>, <em>origin_file_directory</em>, <em>energy_array</em>, <em>sub_pfy</em>, <em>name</em>, <em>scan_number=None</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.export_data.ExportData.export_pfy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.export_data.ExportData.export_scaler">
+<code class="descname">export_scaler</code><span class="sig-paren">(</span><em>export_file_directory</em>, <em>origin_file_directory</em>, <em>energy_array</em>, <em>sub_scaler</em>, <em>name</em>, <em>scan_number=None</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.export_data.ExportData.export_scaler" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.export_data.ExportData.export_solo">
+<code class="descname">export_solo</code><span class="sig-paren">(</span><em>export_file_directory</em>, <em>name</em>, <em>scan_number=None</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.export_data.ExportData.export_solo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.export_data.ExportData.get_comment_details">
+<code class="descname">get_comment_details</code><span class="sig-paren">(</span><em>comments</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.export_data.ExportData.get_comment_details" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.export_data.ExportData.get_comments">
+<code class="descname">get_comments</code><span class="sig-paren">(</span><em>file_directory</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.export_data.ExportData.get_comments" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.export_data.ExportData.get_date_time">
+<code class="descname">get_date_time</code><span class="sig-paren">(</span><em>opened_file</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.export_data.ExportData.get_date_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.export_data.ExportData.get_exit_slit_and_stripe">
+<code class="descname">get_exit_slit_and_stripe</code><span class="sig-paren">(</span><em>comments</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.export_data.ExportData.get_exit_slit_and_stripe" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.export_data.ExportData.get_grating_hdf5">
+<code class="descname">get_grating_hdf5</code><span class="sig-paren">(</span><em>comments</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.export_data.ExportData.get_grating_hdf5" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.export_data.ExportData.get_header_hdf5">
+<code class="descname">get_header_hdf5</code><span class="sig-paren">(</span><em>file_directory</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.export_data.ExportData.get_header_hdf5" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="scripts.export_data.ExportMap">
+<em class="property">class </em><code class="descclassname">scripts.export_data.</code><code class="descname">ExportMap</code><span class="sig-paren">(</span><em>export_info</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.export_data.ExportMap" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="scripts.export_data.ExportMap.save_image">
+<code class="descname">save_image</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.export_data.ExportMap.save_image" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="scripts.export_data.ExportMapData">
+<em class="property">class </em><code class="descclassname">scripts.export_data.</code><code class="descname">ExportMapData</code><span class="sig-paren">(</span><em>data_set</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.export_data.ExportMapData" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="scripts.export_data.ExportMapData.export_binned_data">
+<code class="descname">export_binned_data</code><span class="sig-paren">(</span><em>export_file_directory</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.export_data.ExportMapData.export_binned_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.export_data.ExportMapData.get_header_command">
+<code class="descname">get_header_command</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.export_data.ExportMapData.get_header_command" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-scripts.map_basic">
+<span id="scripts-map-basic-module"></span><h2>scripts.map_basic module<a class="headerlink" href="#module-scripts.map_basic" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="scripts.map_basic.SingleMap">
+<em class="property">class </em><code class="descclassname">scripts.map_basic.</code><code class="descname">SingleMap</code><span class="sig-paren">(</span><em>open_one_cmesh</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_basic.SingleMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Test</p>
+<dl class="method">
+<dt id="scripts.map_basic.SingleMap.calculate_pfy">
+<code class="descname">calculate_pfy</code><span class="sig-paren">(</span><em>enStart</em>, <em>enStop</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_basic.SingleMap.calculate_pfy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_basic.SingleMap.getXRF">
+<code class="descname">getXRF</code><span class="sig-paren">(</span><em>sgmData</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_basic.SingleMap.getXRF" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_basic.SingleMap.get_hex_x">
+<code class="descname">get_hex_x</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_basic.SingleMap.get_hex_x" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_basic.SingleMap.get_hex_y">
+<code class="descname">get_hex_y</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_basic.SingleMap.get_hex_y" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_basic.SingleMap.get_mca_array">
+<code class="descname">get_mca_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_basic.SingleMap.get_mca_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_basic.SingleMap.get_pfy_sdd_array">
+<code class="descname">get_pfy_sdd_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_basic.SingleMap.get_pfy_sdd_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_basic.SingleMap.get_scaler_array">
+<code class="descname">get_scaler_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_basic.SingleMap.get_scaler_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_basic.SingleMap.get_scan_num">
+<code class="descname">get_scan_num</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_basic.SingleMap.get_scan_num" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_basic.SingleMap.plot_xrf">
+<code class="descname">plot_xrf</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_basic.SingleMap.plot_xrf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_basic.SingleMap.plotpfyGrid">
+<code class="descname">plotpfyGrid</code><span class="sig-paren">(</span><em>original_file_directory</em>, <em>xpts</em>, <em>ypts</em>, <em>shift</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_basic.SingleMap.plotpfyGrid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_basic.SingleMap.plotpfyGridc">
+<code class="descname">plotpfyGridc</code><span class="sig-paren">(</span><em>original_file_directory</em>, <em>depth</em>, <em>shift</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_basic.SingleMap.plotpfyGridc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_basic.SingleMap.plotpfyScatter">
+<code class="descname">plotpfyScatter</code><span class="sig-paren">(</span><em>hex_x</em>, <em>hex_y</em>, <em>pfyData</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_basic.SingleMap.plotpfyScatter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_basic.SingleMap.set_pfy_sdd_array">
+<code class="descname">set_pfy_sdd_array</code><span class="sig-paren">(</span><em>pfy_sdd_array</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_basic.SingleMap.set_pfy_sdd_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-scripts.map_binned">
+<span id="scripts-map-binned-module"></span><h2>scripts.map_binned module<a class="headerlink" href="#module-scripts.map_binned" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="scripts.map_binned.MapProcess">
+<em class="property">class </em><code class="descclassname">scripts.map_binned.</code><code class="descname">MapProcess</code><span class="sig-paren">(</span><em>single_map</em>, <em>map_process_para</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_binned.MapProcess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="scripts.map_binned.MapProcess.assign_data">
+<code class="descname">assign_data</code><span class="sig-paren">(</span><em>x_edges_array</em>, <em>y_edges_array</em>, <em>x_energy_array</em>, <em>y_energy_array</em>, <em>x_bin_num</em>, <em>y_bin_num</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_binned.MapProcess.assign_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_binned.MapProcess.calculate_pfy">
+<code class="descname">calculate_pfy</code><span class="sig-paren">(</span><em>enStart</em>, <em>enStop</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_binned.MapProcess.calculate_pfy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_binned.MapProcess.calculation">
+<code class="descname">calculation</code><span class="sig-paren">(</span><em>single_map</em>, <em>x_bin_num</em>, <em>y_bin_num</em>, <em>grid_array</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_binned.MapProcess.calculation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_binned.MapProcess.create_grid">
+<code class="descname">create_grid</code><span class="sig-paren">(</span><em>x_start_energy</em>, <em>x_end_energy</em>, <em>x_num_of_bins</em>, <em>y_start_energy</em>, <em>y_end_energy</em>, <em>y_num_of_bins</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_binned.MapProcess.create_grid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_binned.MapProcess.get_averaged__pfy_sdd">
+<code class="descname">get_averaged__pfy_sdd</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_binned.MapProcess.get_averaged__pfy_sdd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_binned.MapProcess.get_averaged_diode">
+<code class="descname">get_averaged_diode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_binned.MapProcess.get_averaged_diode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_binned.MapProcess.get_averaged_i0">
+<code class="descname">get_averaged_i0</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_binned.MapProcess.get_averaged_i0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_binned.MapProcess.get_averaged_mca">
+<code class="descname">get_averaged_mca</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_binned.MapProcess.get_averaged_mca" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_binned.MapProcess.get_averaged_tey">
+<code class="descname">get_averaged_tey</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_binned.MapProcess.get_averaged_tey" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_binned.MapProcess.get_file_direct">
+<code class="descname">get_file_direct</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_binned.MapProcess.get_file_direct" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_binned.MapProcess.get_mean_energy_array">
+<code class="descname">get_mean_energy_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_binned.MapProcess.get_mean_energy_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_binned.MapProcess.get_scan_num">
+<code class="descname">get_scan_num</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_binned.MapProcess.get_scan_num" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_binned.MapProcess.process_map">
+<code class="descname">process_map</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_binned.MapProcess.process_map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_binned.MapProcess.set_averaged_pfy_sdd">
+<code class="descname">set_averaged_pfy_sdd</code><span class="sig-paren">(</span><em>averaged_pfy_sdd</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_binned.MapProcess.set_averaged_pfy_sdd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-scripts.map_process_para">
+<span id="scripts-map-process-para-module"></span><h2>scripts.map_process_para module<a class="headerlink" href="#module-scripts.map_process_para" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="scripts.map_process_para.MapProcessPara">
+<em class="property">class </em><code class="descclassname">scripts.map_process_para.</code><code class="descname">MapProcessPara</code><span class="sig-paren">(</span><em>x_start_energy</em>, <em>x_end_energy</em>, <em>x_bin_num</em>, <em>y_start_energy</em>, <em>y_end_energy</em>, <em>y_bin_num</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_process_para.MapProcessPara" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="scripts.map_process_para.MapProcessPara.get_x_bin_num">
+<code class="descname">get_x_bin_num</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_process_para.MapProcessPara.get_x_bin_num" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_process_para.MapProcessPara.get_x_end_energy">
+<code class="descname">get_x_end_energy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_process_para.MapProcessPara.get_x_end_energy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_process_para.MapProcessPara.get_x_start_energy">
+<code class="descname">get_x_start_energy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_process_para.MapProcessPara.get_x_start_energy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_process_para.MapProcessPara.get_y_bin_num">
+<code class="descname">get_y_bin_num</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_process_para.MapProcessPara.get_y_bin_num" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_process_para.MapProcessPara.get_y_end_energy">
+<code class="descname">get_y_end_energy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_process_para.MapProcessPara.get_y_end_energy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_process_para.MapProcessPara.get_y_start_energy">
+<code class="descname">get_y_start_energy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_process_para.MapProcessPara.get_y_start_energy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_process_para.MapProcessPara.set_x_bin_num">
+<code class="descname">set_x_bin_num</code><span class="sig-paren">(</span><em>x_bin_num</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_process_para.MapProcessPara.set_x_bin_num" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.map_process_para.MapProcessPara.set_y_bin_num">
+<code class="descname">set_y_bin_num</code><span class="sig-paren">(</span><em>y_bin_num</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.map_process_para.MapProcessPara.set_y_bin_num" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-scripts.map_tool">
+<span id="scripts-map-tool-module"></span><h2>scripts.map_tool module<a class="headerlink" href="#module-scripts.map_tool" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-scripts.open_hdf5">
+<span id="scripts-open-hdf5-module"></span><h2>scripts.open_hdf5 module<a class="headerlink" href="#module-scripts.open_hdf5" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="scripts.open_hdf5.HDF5MultiCScan">
+<em class="property">class </em><code class="descclassname">scripts.open_hdf5.</code><code class="descname">HDF5MultiCScan</code><a class="headerlink" href="#scripts.open_hdf5.HDF5MultiCScan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>HDF5MultiCScan class is to open and read data from all non-empty c-scans</p>
+<dl class="method">
+<dt id="scripts.open_hdf5.HDF5MultiCScan.estimate_roi">
+<code class="descname">estimate_roi</code><span class="sig-paren">(</span><em>file_directory</em>, <em>scan_number</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5MultiCScan.estimate_roi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate estimated roi using energy range
+:param file_directory:
+:param scan_number: a list contains all the scan number
+:return: estimate_xas_process_para</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_hdf5.HDF5MultiCScan.get_c_scan">
+<code class="descname">get_c_scan</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5MultiCScan.get_c_scan" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_hdf5.HDF5MultiCScan.get_energy_array">
+<code class="descname">get_energy_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5MultiCScan.get_energy_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_hdf5.HDF5MultiCScan.get_file_direct">
+<code class="descname">get_file_direct</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5MultiCScan.get_file_direct" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_hdf5.HDF5MultiCScan.get_mca_array">
+<code class="descname">get_mca_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5MultiCScan.get_mca_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_hdf5.HDF5MultiCScan.get_scaler_array">
+<code class="descname">get_scaler_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5MultiCScan.get_scaler_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_hdf5.HDF5MultiCScan.read_all_hdf5_xas">
+<code class="descname">read_all_hdf5_xas</code><span class="sig-paren">(</span><em>file_directory</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5MultiCScan.read_all_hdf5_xas" title="Permalink to this definition">¶</a></dt>
+<dd><p>read data from hdf5
+:param file_directory: the relative path of file directory
+:return: estimate_xas_process_para</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_hdf5.HDF5MultiCScan.set_c_scan">
+<code class="descname">set_c_scan</code><span class="sig-paren">(</span><em>c_scan_num</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5MultiCScan.set_c_scan" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_hdf5.HDF5MultiCScan.set_energy_array">
+<code class="descname">set_energy_array</code><span class="sig-paren">(</span><em>energy_array</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5MultiCScan.set_energy_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_hdf5.HDF5MultiCScan.set_file_direct">
+<code class="descname">set_file_direct</code><span class="sig-paren">(</span><em>file_direct</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5MultiCScan.set_file_direct" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_hdf5.HDF5MultiCScan.set_mca_array">
+<code class="descname">set_mca_array</code><span class="sig-paren">(</span><em>mca_array</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5MultiCScan.set_mca_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_hdf5.HDF5MultiCScan.set_scaler_array">
+<code class="descname">set_scaler_array</code><span class="sig-paren">(</span><em>scaler_array</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5MultiCScan.set_scaler_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="scripts.open_hdf5.HDF5SingleCScan">
+<em class="property">class </em><code class="descclassname">scripts.open_hdf5.</code><code class="descname">HDF5SingleCScan</code><a class="headerlink" href="#scripts.open_hdf5.HDF5SingleCScan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>HDF5SingleCScan class is to open and get data from a specific c-scan</p>
+<dl class="method">
+<dt id="scripts.open_hdf5.HDF5SingleCScan.get_energy_array">
+<code class="descname">get_energy_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5SingleCScan.get_energy_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_hdf5.HDF5SingleCScan.get_file_direct">
+<code class="descname">get_file_direct</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5SingleCScan.get_file_direct" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_hdf5.HDF5SingleCScan.get_mca_array">
+<code class="descname">get_mca_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5SingleCScan.get_mca_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_hdf5.HDF5SingleCScan.get_scaler_array">
+<code class="descname">get_scaler_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5SingleCScan.get_scaler_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_hdf5.HDF5SingleCScan.get_scan_num">
+<code class="descname">get_scan_num</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5SingleCScan.get_scan_num" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_hdf5.HDF5SingleCScan.read_hdf5_xas">
+<code class="descname">read_hdf5_xas</code><span class="sig-paren">(</span><em>file_directory</em>, <em>scan_number</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5SingleCScan.read_hdf5_xas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open and read a specific c-scan data from HDF5 file
+:param file_directory: the file directory
+:param scan_number: the specific scan to open
+:return: whether the scan that the system opens previously is c-scan or not</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="scripts.open_hdf5.HDF5SingleCmesh">
+<em class="property">class </em><code class="descclassname">scripts.open_hdf5.</code><code class="descname">HDF5SingleCmesh</code><a class="headerlink" href="#scripts.open_hdf5.HDF5SingleCmesh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Open and read a specific cmesh-scan data from HDF5 file</p>
+<dl class="method">
+<dt id="scripts.open_hdf5.HDF5SingleCmesh.get_hex_x">
+<code class="descname">get_hex_x</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5SingleCmesh.get_hex_x" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_hdf5.HDF5SingleCmesh.get_hex_y">
+<code class="descname">get_hex_y</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5SingleCmesh.get_hex_y" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_hdf5.HDF5SingleCmesh.get_mca_array">
+<code class="descname">get_mca_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5SingleCmesh.get_mca_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_hdf5.HDF5SingleCmesh.get_scaler_array">
+<code class="descname">get_scaler_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5SingleCmesh.get_scaler_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_hdf5.HDF5SingleCmesh.get_scan_num">
+<code class="descname">get_scan_num</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5SingleCmesh.get_scan_num" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_hdf5.HDF5SingleCmesh.read_hdf5_map">
+<code class="descname">read_hdf5_map</code><span class="sig-paren">(</span><em>file_directory</em>, <em>scan_num</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.HDF5SingleCmesh.read_hdf5_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>read cmesh-scan (map) from specific scan
+:param file_directory: the file directory
+:param scan_number: the specific scan to open
+:return: None</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="scripts.open_hdf5.check_scan_type">
+<code class="descclassname">scripts.open_hdf5.</code><code class="descname">check_scan_type</code><span class="sig-paren">(</span><em>scan</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.check_scan_type" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>scan</strong> &#8211; a scan array contains all raw data read from hdf5</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">type name of the scan</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="scripts.open_hdf5.get_abs_path">
+<code class="descclassname">scripts.open_hdf5.</code><code class="descname">get_abs_path</code><span class="sig-paren">(</span><em>rel_path</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_hdf5.get_abs_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-scripts.open_spec">
+<span id="scripts-open-spec-module"></span><h2>scripts.open_spec module<a class="headerlink" href="#module-scripts.open_spec" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="scripts.open_spec.OpenMultiCScan">
+<em class="property">class </em><code class="descclassname">scripts.open_spec.</code><code class="descname">OpenMultiCScan</code><a class="headerlink" href="#scripts.open_spec.OpenMultiCScan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="scripts.open_spec.OpenMultiCScan.estimate_roi">
+<code class="descname">estimate_roi</code><span class="sig-paren">(</span><em>file_directory</em>, <em>scan_num</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.OpenMultiCScan.estimate_roi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_spec.OpenMultiCScan.get_c_scan">
+<code class="descname">get_c_scan</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.OpenMultiCScan.get_c_scan" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_spec.OpenMultiCScan.get_energy_array">
+<code class="descname">get_energy_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.OpenMultiCScan.get_energy_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_spec.OpenMultiCScan.get_file_direct">
+<code class="descname">get_file_direct</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.OpenMultiCScan.get_file_direct" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_spec.OpenMultiCScan.get_mca_array">
+<code class="descname">get_mca_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.OpenMultiCScan.get_mca_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_spec.OpenMultiCScan.get_scaler_array">
+<code class="descname">get_scaler_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.OpenMultiCScan.get_scaler_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_spec.OpenMultiCScan.open_all_xas">
+<code class="descname">open_all_xas</code><span class="sig-paren">(</span><em>file_directory</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.OpenMultiCScan.open_all_xas" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_spec.OpenMultiCScan.set_c_scan">
+<code class="descname">set_c_scan</code><span class="sig-paren">(</span><em>c_scan_num</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.OpenMultiCScan.set_c_scan" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_spec.OpenMultiCScan.set_energy_array">
+<code class="descname">set_energy_array</code><span class="sig-paren">(</span><em>energy_array</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.OpenMultiCScan.set_energy_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_spec.OpenMultiCScan.set_file_direct">
+<code class="descname">set_file_direct</code><span class="sig-paren">(</span><em>file_direct</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.OpenMultiCScan.set_file_direct" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_spec.OpenMultiCScan.set_mca_array">
+<code class="descname">set_mca_array</code><span class="sig-paren">(</span><em>mca_array</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.OpenMultiCScan.set_mca_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_spec.OpenMultiCScan.set_scaler_array">
+<code class="descname">set_scaler_array</code><span class="sig-paren">(</span><em>scaler_array</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.OpenMultiCScan.set_scaler_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="scripts.open_spec.OpenSingleCMesh">
+<em class="property">class </em><code class="descclassname">scripts.open_spec.</code><code class="descname">OpenSingleCMesh</code><a class="headerlink" href="#scripts.open_spec.OpenSingleCMesh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="scripts.open_spec.OpenSingleCMesh.get_file_direct">
+<code class="descname">get_file_direct</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.OpenSingleCMesh.get_file_direct" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_spec.OpenSingleCMesh.get_hex_x">
+<code class="descname">get_hex_x</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.OpenSingleCMesh.get_hex_x" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_spec.OpenSingleCMesh.get_hex_y">
+<code class="descname">get_hex_y</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.OpenSingleCMesh.get_hex_y" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_spec.OpenSingleCMesh.get_mca_array">
+<code class="descname">get_mca_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.OpenSingleCMesh.get_mca_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_spec.OpenSingleCMesh.get_scaler_array">
+<code class="descname">get_scaler_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.OpenSingleCMesh.get_scaler_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_spec.OpenSingleCMesh.get_scan_num">
+<code class="descname">get_scan_num</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.OpenSingleCMesh.get_scan_num" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_spec.OpenSingleCMesh.open_sgm_map">
+<code class="descname">open_sgm_map</code><span class="sig-paren">(</span><em>file_directory</em>, <em>scan_num</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.OpenSingleCMesh.open_sgm_map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="scripts.open_spec.OpenSingleCScan">
+<em class="property">class </em><code class="descclassname">scripts.open_spec.</code><code class="descname">OpenSingleCScan</code><a class="headerlink" href="#scripts.open_spec.OpenSingleCScan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="scripts.open_spec.OpenSingleCScan.get_energy_array">
+<code class="descname">get_energy_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.OpenSingleCScan.get_energy_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_spec.OpenSingleCScan.get_file_direct">
+<code class="descname">get_file_direct</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.OpenSingleCScan.get_file_direct" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_spec.OpenSingleCScan.get_mca_array">
+<code class="descname">get_mca_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.OpenSingleCScan.get_mca_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_spec.OpenSingleCScan.get_scaler_array">
+<code class="descname">get_scaler_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.OpenSingleCScan.get_scaler_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_spec.OpenSingleCScan.get_scan_num">
+<code class="descname">get_scan_num</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.OpenSingleCScan.get_scan_num" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.open_spec.OpenSingleCScan.open_single_xas">
+<code class="descname">open_single_xas</code><span class="sig-paren">(</span><em>file_directory</em>, <em>scan_num</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.OpenSingleCScan.open_single_xas" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="scripts.open_spec.get_abs_path">
+<code class="descclassname">scripts.open_spec.</code><code class="descname">get_abs_path</code><span class="sig-paren">(</span><em>rel_path</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.get_abs_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="scripts.open_spec.get_c_scan">
+<code class="descclassname">scripts.open_spec.</code><code class="descname">get_c_scan</code><span class="sig-paren">(</span><em>opened_file</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.get_c_scan" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="scripts.open_spec.get_cmesh_scan">
+<code class="descclassname">scripts.open_spec.</code><code class="descname">get_cmesh_scan</code><span class="sig-paren">(</span><em>opened_file</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.get_cmesh_scan" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="scripts.open_spec.get_diff_scan">
+<code class="descclassname">scripts.open_spec.</code><code class="descname">get_diff_scan</code><span class="sig-paren">(</span><em>file_directory</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.get_diff_scan" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="scripts.open_spec.get_scan_details">
+<code class="descclassname">scripts.open_spec.</code><code class="descname">get_scan_details</code><span class="sig-paren">(</span><em>file_directory</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.get_scan_details" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="scripts.open_spec.open_spec_data_file">
+<code class="descclassname">scripts.open_spec.</code><code class="descname">open_spec_data_file</code><span class="sig-paren">(</span><em>file_directory</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.open_spec.open_spec_data_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-scripts.widget">
+<span id="scripts-widget-module"></span><h2>scripts.widget module<a class="headerlink" href="#module-scripts.widget" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="scripts.widget.text_field">
+<code class="descclassname">scripts.widget.</code><code class="descname">text_field</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.widget.text_field" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-scripts.xas_basic">
+<span id="scripts-xas-basic-module"></span><h2>scripts.xas_basic module<a class="headerlink" href="#module-scripts.xas_basic" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="scripts.xas_basic.SingleXAS">
+<em class="property">class </em><code class="descclassname">scripts.xas_basic.</code><code class="descname">SingleXAS</code><span class="sig-paren">(</span><em>opened_one_cscan</em>, <em>data_type</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_basic.SingleXAS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="scripts.xas_basic.SingleXAS.calculate_pfy">
+<code class="descname">calculate_pfy</code><span class="sig-paren">(</span><em>enStart</em>, <em>enStop</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_basic.SingleXAS.calculate_pfy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_basic.SingleXAS.get_data_type">
+<code class="descname">get_data_type</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_basic.SingleXAS.get_data_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_basic.SingleXAS.get_energy_array">
+<code class="descname">get_energy_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_basic.SingleXAS.get_energy_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_basic.SingleXAS.get_file_direct">
+<code class="descname">get_file_direct</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_basic.SingleXAS.get_file_direct" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_basic.SingleXAS.get_mca_array">
+<code class="descname">get_mca_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_basic.SingleXAS.get_mca_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_basic.SingleXAS.get_pfy_sdd_array">
+<code class="descname">get_pfy_sdd_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_basic.SingleXAS.get_pfy_sdd_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_basic.SingleXAS.get_scaler_array">
+<code class="descname">get_scaler_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_basic.SingleXAS.get_scaler_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_basic.SingleXAS.get_scan_num">
+<code class="descname">get_scan_num</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_basic.SingleXAS.get_scan_num" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_basic.SingleXAS.plot_excitation_emission_matrix">
+<code class="descname">plot_excitation_emission_matrix</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_basic.SingleXAS.plot_excitation_emission_matrix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_basic.SingleXAS.plot_xas">
+<code class="descname">plot_xas</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_basic.SingleXAS.plot_xas" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_basic.SingleXAS.plot_xas_all">
+<code class="descname">plot_xas_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_basic.SingleXAS.plot_xas_all" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_basic.SingleXAS.plot_xas_pfy">
+<code class="descname">plot_xas_pfy</code><span class="sig-paren">(</span><em>energy_data</em>, <em>pfy_data</em>, <em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_basic.SingleXAS.plot_xas_pfy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_basic.SingleXAS.plot_xas_scaler">
+<code class="descname">plot_xas_scaler</code><span class="sig-paren">(</span><em>energy_data</em>, <em>scaler_data</em>, <em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_basic.SingleXAS.plot_xas_scaler" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_basic.SingleXAS.set_pfy_sdd_array">
+<code class="descname">set_pfy_sdd_array</code><span class="sig-paren">(</span><em>pfy_sdd_array</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_basic.SingleXAS.set_pfy_sdd_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-scripts.xas_process">
+<span id="scripts-xas-process-module"></span><h2>scripts.xas_process module<a class="headerlink" href="#module-scripts.xas_process" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="scripts.xas_process.XASProcess">
+<em class="property">class </em><code class="descclassname">scripts.xas_process.</code><code class="descname">XASProcess</code><span class="sig-paren">(</span><em>data_type</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="scripts.xas_process.XASProcess.assign_data">
+<code class="descname">assign_data</code><span class="sig-paren">(</span><em>energy_array</em>, <em>edges</em>, <em>bin_num</em>, <em>scaler_array</em>, <em>mca_array</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.assign_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iteration and assign data points from different c-scans into desired bins
+:param energy_array: a list contains mean energy of bins
+:param edges: a list contains edges of bins
+:param bin_num: total number of bins were created in the previous steps
+:return: a 2D list contains distribution information of scan number and associate data points for each bin</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process.XASProcess.calculate_bin_mca">
+<code class="descname">calculate_bin_mca</code><span class="sig-paren">(</span><em>bin_array</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.calculate_bin_mca" title="Permalink to this definition">¶</a></dt>
+<dd><p>Averaged the average mca(sdd)
+:param bin_array: a 2D list contains distribution information of scan number and associate data points for each bin
+:param mca_array: a array has 4 mca (sdd) without bad scan.
+:return: 4 binned and averaged pfy_mca</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process.XASProcess.calculate_bin_scalers">
+<code class="descname">calculate_bin_scalers</code><span class="sig-paren">(</span><em>bin_array</em>, <em>empty_bin_front</em>, <em>empty_bin_back</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.calculate_bin_scalers" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>bin_array</strong> &#8211; a 2D array contains distribution information of scan number and associate data points for each bin</li>
+<li><strong>scaler_array</strong> &#8211; a array has 3 different mca (sdd) without bad scan</li>
+<li><strong>empty_bin_front</strong> &#8211; a integer show the number of empty bins in the front</li>
+<li><strong>empty_bin_back</strong> &#8211; a integer show the number of empty bins in the back</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process.XASProcess.create_bins">
+<code class="descname">create_bins</code><span class="sig-paren">(</span><em>start_energy</em>, <em>end_energy</em>, <em>num_of_bins</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.create_bins" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate bins and get boundary of bins and mean energy of bins
+:param start_energy: this is an int number of beginning energy for c-scans
+:param end_energy: this is an int number of stopping energy for c-scans
+:param num_of_bins: total number of bins that the mehod will crate
+:return:</p>
+<blockquote>
+<div>edges of bins as an list
+and return mid-point of bins in a list&#8221;</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body">create_bins (startEnergy = 690, endEnergy = 750, numberOfBins = 600)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process.XASProcess.division">
+<code class="descname">division</code><span class="sig-paren">(</span><em>pfy_data</em>, <em>dividend</em>, <em>divisor</em>, <em>scaler_data=None</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.division" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalization process without carbon.
+:param pfy_data: averaged pfy data array
+:param dividend: dividend of the normalization cul
+:param divisor: divisor of the normalization cul
+:param scaler_data: averaged scaler data array
+:return: a normalized data array</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process.XASProcess.generate_good_scan_index">
+<code class="descname">generate_good_scan_index</code><span class="sig-paren">(</span><em>opened_xas_data</em>, <em>bad_scan_index_str</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.generate_good_scan_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method to generate good scan index and eliminate bad scans by passing in bad scan index
+:param opened_xas_data: a OpenMultiCScan type object contains all original info of multiple c-scans
+:param bad_scan_index_str: str conatains index of bad scans that need to be eliminate
+:return: a list of good scan index (index may not as sams as the original scan numbers)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process.XASProcess.get_data_type">
+<code class="descname">get_data_type</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.get_data_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns single scan or multiple scans.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process.XASProcess.get_file_direct">
+<code class="descname">get_file_direct</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.get_file_direct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the original data file directory.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process.XASProcess.get_good_datapoint">
+<code class="descname">get_good_datapoint</code><span class="sig-paren">(</span><em>good_scan_index</em>, <em>energy_data</em>, <em>mca_data</em>, <em>scaler_data</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.get_good_datapoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removed all the bad scans from the originla data set
+:param good_scan_index: a list contains all good scan index
+:param energy_data: original energy data
+:param mca_data: original mca (sdd) data
+:param scaler_data: originla scalers data (TEY, I0, Diode)
+:return: energy_array, mca_array and scaler_array with no data pointsre</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process.XASProcess.get_mean_energy_array">
+<code class="descname">get_mean_energy_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.get_mean_energy_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the energy array which is the mid-point of bins</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process.XASProcess.get_normalized_array">
+<code class="descname">get_normalized_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.get_normalized_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a specific normalized data array.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process.XASProcess.get_pfy_bin">
+<code class="descname">get_pfy_bin</code><span class="sig-paren">(</span><em>mca_bin_array</em>, <em>start_energy</em>, <em>stop_energy</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.get_pfy_bin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use a specific Region of Interest to calculate pyf_sdd
+:param mca_bin_array: averaged and binned eneryg aray
+:param start_energy: this is an int number of beginning energy of scans
+:param stop_energy: this is an int number of stopping energy
+:return: 4 lists of pfy_sdd</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process.XASProcess.get_pfy_sdd_averaged_array">
+<code class="descname">get_pfy_sdd_averaged_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.get_pfy_sdd_averaged_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return averaged pfy_sdd array</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process.XASProcess.get_scaler_averaged_array">
+<code class="descname">get_scaler_averaged_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.get_scaler_averaged_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return averaged scaler array</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process.XASProcess.get_sdd_binned_array">
+<code class="descname">get_sdd_binned_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.get_sdd_binned_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return binned sdd array</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process.XASProcess.plot_avg_xas">
+<code class="descname">plot_avg_xas</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.plot_avg_xas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a single averaged plot, it can distinguish pfy_sdd and the other scalers
+:param name: a string of scaler&#8217;s name (eg. SDD1, SDD2, TEY, IO)
+:return: None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process.XASProcess.plot_avg_xas_all">
+<code class="descname">plot_avg_xas_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.plot_avg_xas_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate all plots (matplotlib figures) for averaged data at once
+:return: None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process.XASProcess.plot_avg_xas_pfy">
+<code class="descname">plot_avg_xas_pfy</code><span class="sig-paren">(</span><em>mean_energy_array</em>, <em>pfy_data</em>, <em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.plot_avg_xas_pfy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a specific pfy_sdd plot (matplotlib figure)
+:param mean_energy_array: mean energy of bins (x-axis)
+:param pfy_data: averaged pfy_sdd data (y-axis)
+:param name: the string of pfy_sdd name
+:return: None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process.XASProcess.plot_avg_xas_scaler">
+<code class="descname">plot_avg_xas_scaler</code><span class="sig-paren">(</span><em>mean_energy_array</em>, <em>scaler_data</em>, <em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.plot_avg_xas_scaler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate TEY, I0 or Diode plot (matplotlib figure)
+:param mean_energy_array: mean energy of bins (x-axis)
+:param scaler_data: averaged scaler data (y-axis)
+:param name: the string of scaler name
+:return: None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process.XASProcess.plot_division">
+<code class="descname">plot_division</code><span class="sig-paren">(</span><em>dividend</em>, <em>divisor</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.plot_division" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the normalized data (not including carbon)
+:param dividend: string of dividend name
+:param divisor:  string of divisor name
+:return: None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process.XASProcess.plot_excitation_emission_matrix">
+<code class="descname">plot_excitation_emission_matrix</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.plot_excitation_emission_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate Excitation Emission Matrix for identify Region of Interest
+:param name: a string of mca (sdd) name
+:return: None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process.XASProcess.process_xas">
+<code class="descname">process_xas</code><span class="sig-paren">(</span><em>good_scan_index</em>, <em>opened_xas_data</em>, <em>xas_process_para</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.process_xas" title="Permalink to this definition">¶</a></dt>
+<dd><p>The method is to execute all the related binning and averaging calculation and get binned and averaged data
+:param good_scan_index: a list contains all the good scan index
+:param opened_xas_data: a OpenMultiCScan type object contains all original info of multiple c-scans
+:param xas_process_para:  a XASProcessPara type object has parameters including roi and energy range
+:return: None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process.XASProcess.set_file_direct">
+<code class="descname">set_file_direct</code><span class="sig-paren">(</span><em>file_direct</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.set_file_direct" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process.XASProcess.set_mean_energy_array">
+<code class="descname">set_mean_energy_array</code><span class="sig-paren">(</span><em>mean_energy_array</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.set_mean_energy_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process.XASProcess.set_normalized_array">
+<code class="descname">set_normalized_array</code><span class="sig-paren">(</span><em>normalized_array</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.set_normalized_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process.XASProcess.set_pfy_sdd_averaged_array">
+<code class="descname">set_pfy_sdd_averaged_array</code><span class="sig-paren">(</span><em>pfy_sdd_averaged_array</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.set_pfy_sdd_averaged_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process.XASProcess.set_scaler_averaged_array">
+<code class="descname">set_scaler_averaged_array</code><span class="sig-paren">(</span><em>scaler_averaged_array</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.set_scaler_averaged_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process.XASProcess.set_sdd_binned_array">
+<code class="descname">set_sdd_binned_array</code><span class="sig-paren">(</span><em>sdd_binned_array</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcess.set_sdd_binned_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="scripts.xas_process.XASProcessCarbon">
+<em class="property">class </em><code class="descclassname">scripts.xas_process.</code><code class="descname">XASProcessCarbon</code><span class="sig-paren">(</span><em>xas_process_data</em>, <em>blank_xas_process_data</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcessCarbon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="scripts.xas_process.XASProcessCarbon.carbon_normalize">
+<code class="descname">carbon_normalize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcessCarbon.carbon_normalize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process.XASProcessCarbon.get_blank_xas_process_data">
+<code class="descname">get_blank_xas_process_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcessCarbon.get_blank_xas_process_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process.XASProcessCarbon.get_xas_process_data">
+<code class="descname">get_xas_process_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process.XASProcessCarbon.get_xas_process_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-scripts.xas_process_para">
+<span id="scripts-xas-process-para-module"></span><h2>scripts.xas_process_para module<a class="headerlink" href="#module-scripts.xas_process_para" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="scripts.xas_process_para.XASProcessPara">
+<em class="property">class </em><code class="descclassname">scripts.xas_process_para.</code><code class="descname">XASProcessPara</code><span class="sig-paren">(</span><em>energy_start</em>, <em>energy_end</em>, <em>roi_start</em>, <em>roi_end</em>, <em>bin_interval</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process_para.XASProcessPara" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="scripts.xas_process_para.XASProcessPara.get_bin_interval">
+<code class="descname">get_bin_interval</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process_para.XASProcessPara.get_bin_interval" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process_para.XASProcessPara.get_energy_end">
+<code class="descname">get_energy_end</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process_para.XASProcessPara.get_energy_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process_para.XASProcessPara.get_energy_start">
+<code class="descname">get_energy_start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process_para.XASProcessPara.get_energy_start" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process_para.XASProcessPara.get_roi_end">
+<code class="descname">get_roi_end</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process_para.XASProcessPara.get_roi_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scripts.xas_process_para.XASProcessPara.get_roi_start">
+<code class="descname">get_roi_start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_process_para.XASProcessPara.get_roi_start" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-scripts.xas_summary_plot">
+<span id="scripts-xas-summary-plot-module"></span><h2>scripts.xas_summary_plot module<a class="headerlink" href="#module-scripts.xas_summary_plot" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="scripts.xas_summary_plot.generate_summary_plot_with_pfy">
+<code class="descclassname">scripts.xas_summary_plot.</code><code class="descname">generate_summary_plot_with_pfy</code><span class="sig-paren">(</span><em>energy_data</em>, <em>mca_data</em>, <em>scan_nums</em>, <em>pfy_name</em>, <em>start_roi</em>, <em>stop_roi</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_summary_plot.generate_summary_plot_with_pfy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a specific summary plot with pfy_sdd with original data
+:param energy_data: the energy data from original data file
+:param mca_data: the mca data from original data file
+:param scan_nums: a list of index for c-scans
+:param pfy_name: a string of pfy_sdd name
+:param start_roi: the start range for region of interest
+:param stop_roi: the stop range for region of interest
+:return: None</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="scripts.xas_summary_plot.generate_summary_plot_with_scaler">
+<code class="descclassname">scripts.xas_summary_plot.</code><code class="descname">generate_summary_plot_with_scaler</code><span class="sig-paren">(</span><em>energy_data</em>, <em>scaler_data</em>, <em>scan_nums</em>, <em>scaler_name</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_summary_plot.generate_summary_plot_with_scaler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a specific summary plot with scalers with original data
+:param energy_data: the energy data from original data file
+:param scaler_data: the scaler data from original data file
+:param scan_nums: a list of index for c-scans
+:param scaler_name: a string of scaler name
+:return: None</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="scripts.xas_summary_plot.get_one_pfy_from_all_scan">
+<code class="descclassname">scripts.xas_summary_plot.</code><code class="descname">get_one_pfy_from_all_scan</code><span class="sig-paren">(</span><em>mca_data</em>, <em>mca_name</em>, <em>enStart</em>, <em>enStop</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_summary_plot.get_one_pfy_from_all_scan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get one of 4 pfy_sdd from all c-scans opened
+:param mca_data:
+:param mca_name:
+:param enStart: the start range for region of interest
+:param enStop: the end range for region of interest
+:return: a 2D list consists 4 pfy_sdd sub-list</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="scripts.xas_summary_plot.summary_plot">
+<code class="descclassname">scripts.xas_summary_plot.</code><code class="descname">summary_plot</code><span class="sig-paren">(</span><em>xas_data</em>, <em>name</em>, <em>xas_process_para=None</em><span class="sig-paren">)</span><a class="headerlink" href="#scripts.xas_summary_plot.summary_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>The functions is to plot a summary plot py invoking either generate_summary_plot_with_pfy or generate_summary_plot_with_scaler
+:param xas_data: the original data set consists of energy, sdd and the other scalers
+:param name: a string of sdd (mca) name
+:param xas_process_para: a XASProcessPara type object has parameters including roi and energy range
+:return: None</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-scripts.xas_tool">
+<span id="scripts-xas-tool-module"></span><h2>scripts.xas_tool module<a class="headerlink" href="#module-scripts.xas_tool" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-scripts">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-scripts" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">scripts package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-scripts.export_data">scripts.export_data module</a></li>
+<li><a class="reference internal" href="#module-scripts.map_basic">scripts.map_basic module</a></li>
+<li><a class="reference internal" href="#module-scripts.map_binned">scripts.map_binned module</a></li>
+<li><a class="reference internal" href="#module-scripts.map_process_para">scripts.map_process_para module</a></li>
+<li><a class="reference internal" href="#module-scripts.map_tool">scripts.map_tool module</a></li>
+<li><a class="reference internal" href="#module-scripts.open_hdf5">scripts.open_hdf5 module</a></li>
+<li><a class="reference internal" href="#module-scripts.open_spec">scripts.open_spec module</a></li>
+<li><a class="reference internal" href="#module-scripts.widget">scripts.widget module</a></li>
+<li><a class="reference internal" href="#module-scripts.xas_basic">scripts.xas_basic module</a></li>
+<li><a class="reference internal" href="#module-scripts.xas_process">scripts.xas_process module</a></li>
+<li><a class="reference internal" href="#module-scripts.xas_process_para">scripts.xas_process_para module</a></li>
+<li><a class="reference internal" href="#module-scripts.xas_summary_plot">scripts.xas_summary_plot module</a></li>
+<li><a class="reference internal" href="#module-scripts.xas_tool">scripts.xas_tool module</a></li>
+<li><a class="reference internal" href="#module-scripts">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">scripts</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/scripts.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, SGM.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/scripts.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

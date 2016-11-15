@@ -1,7 +1,9 @@
 import os
+import numpy as np
 from praxes.io import spec
 from xas_process_para import XASProcessPara
 from map_process_para import MapProcessPara
+import time
 
 
 # For Windows, Please use "/" instead of "\" in the file directory (URI)
@@ -9,11 +11,13 @@ def open_spec_data_file(file_directory):
     opened_file = spec.open(file_directory)
     return opened_file
 
+
 def get_abs_path(rel_path):
     script_dir = os.path.dirname(os.path.realpath('__file__'))
     abs_path = os.path.join(script_dir, rel_path)
     print "File is at: ", abs_path
     return abs_path
+
 
 def get_scan_details(file_directory):
     opened_file = open_spec_data_file(file_directory)
@@ -23,6 +27,7 @@ def get_scan_details(file_directory):
         command = opened_file[scan_details_list[i]].attrs['command']
         date = opened_file[scan_details_list[i]].attrs['date']
         print 'Scan:', scan_details_list[i], '    The Command is: ', command, '    DateTime: ', date
+
 
 def get_diff_scan(file_directory):
     opened_file = open_spec_data_file(file_directory)
@@ -49,6 +54,7 @@ def get_diff_scan(file_directory):
     print "Mesh Scan: ", mesh_array, "\n"
     return c_array, a_array, cmesh_array, mesh_array
 
+
 def get_c_scan(opened_file):
     c_array = []
     for i in range(0, len(opened_file.keys())):
@@ -59,6 +65,7 @@ def get_c_scan(opened_file):
             # print "Scan No.", i
             c_array.append(index)
     return c_array
+
 
 def get_cmesh_scan(opened_file):
     cmesh_array = []
@@ -71,6 +78,7 @@ def get_cmesh_scan(opened_file):
             scan_num_str = str(index)
             cmesh_array.append(scan_num_str)
     return cmesh_array
+
 
 class OpenMultiCScan(object):
 
@@ -113,7 +121,15 @@ class OpenMultiCScan(object):
 
     # open all scans of spectra
     def open_all_xas(self, file_directory):
-        sgm_file = open_spec_data_file(file_directory)
+
+        # start_time = time.time()
+        print "Start opening c-scans."
+
+        try:
+            sgm_file = open_spec_data_file(file_directory)
+        except IOError:
+            print("No such file or directory:", file_directory)
+            return None
         counter = 0
         c_scan_num = get_c_scan(sgm_file)
         total_scan_num = len(c_scan_num)
@@ -129,20 +145,33 @@ class OpenMultiCScan(object):
 
             scan.append(sgm_file[ c_scan_num[j] ])
             energy_array.append( scan[j]['Energy'])
+            num_points = len(scan[j]['Energy'])
+            # print num_points
+            iteration_index1 = np.arange(0, num_points*4, 4)
+            iteration_index2 = iteration_index1 + 1
+            iteration_index3 = iteration_index1 + 2
+            iteration_index4 = iteration_index1 + 3
+            # print iteration_index1
+            # print iteration_index2
+            # print iteration_index3
+            # print iteration_index4
             scaler_array[j][0] = scan[j]['TEY']
             scaler_array[j][1] = scan[j]['I0']
             scaler_array[j][2] = scan[j]['Diode']
-            mcadata = scan[j]['@A1']
-
+            # print "scan[j]['@A1']: ", len(scan[j]['@A1'])
+            mca_array[j][0] = list(scan[j]['@A1'][iteration_index1[0:]])
+            mca_array[j][1] = list(scan[j]['@A1'][iteration_index2[0:]])
+            mca_array[j][2] = list(scan[j]['@A1'][iteration_index3[0:]])
+            mca_array[j][3] = list(scan[j]['@A1'][iteration_index4[0:]])
             counter += 1
 
             # print "Parsing MCAs"
 
-            for i in range(0,len(scan[j]['Energy'])):
-                mca_array[j][0].append(mcadata[i*4])
-                mca_array[j][1].append(mcadata[i*4 + 1])
-                mca_array[j][2].append(mcadata[i*4 + 2])
-                mca_array[j][3].append(mcadata[i*4 + 3])
+            # for i in range(0,len(scan[j]['Energy'])):
+            #     mca_array[j][0].append(mcadata[i*4])
+            #     mca_array[j][1].append(mcadata[i*4 + 1])
+            #     mca_array[j][2].append(mcadata[i*4 + 2])
+            #     mca_array[j][3].append(mcadata[i*4 + 3])
 
         print "Opened ", counter, " c-scans.\n"
         self.set_energy_array(energy_array)
@@ -151,6 +180,7 @@ class OpenMultiCScan(object):
         self.set_c_scan(c_scan_num)
         self.set_file_direct(file_directory)
         estimate_xas_process_para = self.estimate_roi(file_directory, c_scan_num)
+        # print("--- %s seconds ---" % (time.time() - start_time))
         return estimate_xas_process_para
 
     def estimate_roi(self, file_directory, scan_num):
@@ -205,6 +235,8 @@ class OpenSingleCScan(object):
     # open a single scan of spectrum
     def open_single_xas(self, file_directory, scan_num):
 
+        # start_time = time.time()
+
         print "Opening scan", str(scan_num)
         #print "in", file_directory
 
@@ -217,14 +249,27 @@ class OpenSingleCScan(object):
         scaler_array[1] =  scan['I0']
         scaler_array[2] =  scan['Diode']
 
-        mcadata = scan['@A1']
+        # mcadata = scan['@A1']
         print "Parsing MCAs"
         mca_array = [[],[],[],[]]
-        for i in range(0,len(energy_array)):
-            mca_array[0].append(mcadata[i*4])
-            mca_array[1].append(mcadata[i*4 + 1])
-            mca_array[2].append(mcadata[i*4 + 2])
-            mca_array[3].append(mcadata[i*4 + 3])
+
+        num_points = len(energy_array)
+        # print num_points
+        iteration_index1 = np.arange(0, num_points * 4, 4)
+        iteration_index2 = iteration_index1 + 1
+        iteration_index3 = iteration_index1 + 2
+        iteration_index4 = iteration_index1 + 3
+
+        mca_array[0] = list(scan['@A1'][iteration_index1[0:]])
+        mca_array[1] = list(scan['@A1'][iteration_index2[0:]])
+        mca_array[2] = list(scan['@A1'][iteration_index3[0:]])
+        mca_array[3] = list(scan['@A1'][iteration_index4[0:]])
+
+        # for i in range(0,len(energy_array)):
+        #     mca_array[0].append(mcadata[i*4])
+        #     mca_array[1].append(mcadata[i*4 + 1])
+        #     mca_array[2].append(mcadata[i*4 + 2])
+        #     mca_array[3].append(mcadata[i*4 + 3])
 
         print "Done!"
         self.energy_array = energy_array
@@ -232,6 +277,7 @@ class OpenSingleCScan(object):
         self.scaler_array = scaler_array
         self.scan_num = scan_num
         self.file_direct = file_directory
+        # print("--- %s seconds ---" % (time.time() - start_time))
 
 
 class OpenSingleCMesh(object):
@@ -309,11 +355,23 @@ class OpenSingleCMesh(object):
 
                 mca_array = [[],[],[],[]]
 
-                for i in range(0,len(hex_x)):
-                    mca_array[0].append(mcadata[i*4])
-                    mca_array[1].append(mcadata[i*4 + 1])
-                    mca_array[2].append(mcadata[i*4 + 2])
-                    mca_array[3].append(mcadata[i*4 + 3])
+                num_points = len(scaler_array[0])
+                # print num_points
+                iteration_index1 = np.arange(0, num_points * 4, 4)
+                iteration_index2 = iteration_index1 + 1
+                iteration_index3 = iteration_index1 + 2
+                iteration_index4 = iteration_index1 + 3
+
+                mca_array[0] = list(scan['@A1'][iteration_index1[0:]])
+                mca_array[1] = list(scan['@A1'][iteration_index2[0:]])
+                mca_array[2] = list(scan['@A1'][iteration_index3[0:]])
+                mca_array[3] = list(scan['@A1'][iteration_index4[0:]])
+
+                # for i in range(0,len(hex_x)):
+                #     mca_array[0].append(mcadata[i*4])
+                #     mca_array[1].append(mcadata[i*4 + 1])
+                #     mca_array[2].append(mcadata[i*4 + 2])
+                #     mca_array[3].append(mcadata[i*4 + 3])
 
                 print "Done!"
                 self.hex_x = hex_x
