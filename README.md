@@ -1,3 +1,5 @@
+This project is no longer being maintained
+
 # SGMPy
 Data Analysis &amp; Visualization Tools for SGM Beamline, called **SGMπ**
 
